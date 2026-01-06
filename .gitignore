@@ -1,0 +1,27 @@
+# 配置文件（包含敏感信息）
+config.php
+
+# 依赖
+/vendor/
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 上传的临时文件
+uploads/

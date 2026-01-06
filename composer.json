@@ -1,0 +1,14 @@
+{
+    "name": "eatsysu/food-sharing",
+    "description": "中山大学美食分享网站",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "aws/aws-sdk-php": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eatsysu\\": "src/"
+        }
+    }
+}
