@@ -134,8 +134,8 @@ $campuses = getCampusList();
             text-decoration: none;
             color: inherit;
             position: relative;
-            display: flex;
-            flex-direction: column;
+            height: auto;
+            width: 100%;
         }
         .restaurant-card:hover {
             transform: translateY(-8px);
@@ -168,9 +168,6 @@ $campuses = getCampusList();
         }
         .restaurant-content {
             padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
         .restaurant-campus {
             font-size: 12px;
@@ -220,10 +217,14 @@ $campuses = getCampusList();
         .score-item strong {
             color: #333;
         }
-        .radar-chart {
+        .radar-chart-container {
             width: 100%;
             height: 120px;
             margin: 12px 0;
+        }
+        .radar-chart {
+            width: 100%;
+            height: 100%;
         }
         .empty-state {
             text-align: center;
@@ -313,7 +314,9 @@ $campuses = getCampusList();
                                 <div class="score-item">速度: <strong><?php echo $restaurant['speed_score'] ?? 0; ?></strong></div>
                                 <div class="score-item">健康: <strong><?php echo $restaurant['health_score']; ?></strong></div>
                             </div>
-                            <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
+                            <div class="radar-chart-container">
+                                <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
+                            </div>
                         </div>
                     </a>
                 <?php endforeach; ?>

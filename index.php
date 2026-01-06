@@ -156,8 +156,8 @@ $campusStats = getCampusStats();
             transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
+            height: auto;
+            width: 100%;
         }
         .restaurant-card:hover {
             transform: translateY(-8px);
@@ -172,9 +172,6 @@ $campusStats = getCampusStats();
         }
         .restaurant-content {
             padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
         .restaurant-campus {
             font-size: 12px;
@@ -206,10 +203,14 @@ $campusStats = getCampusStats();
             color: #999;
             font-size: 12px;
         }
-        .radar-chart {
+        .radar-chart-container {
             width: 100%;
             height: 120px;
             margin: 12px 0;
+        }
+        .radar-chart {
+            width: 100%;
+            height: 100%;
         }
         .restaurant-description {
             color: #666;
@@ -326,7 +327,9 @@ $campusStats = getCampusStats();
                                 <span class="score-badge"><?php echo $restaurant['overall_score']; ?></span>
                                 <span class="score-label">综合评分</span>
                             </div>
-                            <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
+                            <div class="radar-chart-container">
+                                <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
+                            </div>
                             <p class="restaurant-description"><?php echo h($restaurant['description'] ?? '暂无介绍'); ?></p>
                         </div>
                     </a>
