@@ -229,9 +229,26 @@ function uploadToDogecloud($filePath, $objectKey, $contentType = 'application/oc
     if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
         throw new Exception("AWS SDK未安装，请运行: composer install");
     }
-    
+
     require_once __DIR__ . '/../vendor/autoload.php';
-    
+
+    // 多吉云底层使用腾讯云 COS，需要使用虚拟主机风格的域名
+    $s3Endpoint = $bucketInfo['s3Endpoint'];
+    $s3Bucket = $bucketInfo['s3Bucket'];
+
+    // 检测是否是腾讯云 COS
+    $isTencentCOS = (strpos($s3Endpoint, 'myqcloud.com') !== false);
+
+    if ($isTencentCOS) {
+        // 腾讯云 COS 需要虚拟主机风格：bucket.endpoint
+        $virtualHostedEndpoint = str_replace('https://', 'https://' . $s3Bucket . '.', $s3Endpoint);
+        $usePathStyle = false;
+    } else {
+        // 其他服务使用路径风格
+        $virtualHostedEndpoint = $s3Endpoint;
+        $usePathStyle = true;
+    }
+
     $s3 = new Aws\S3\S3Client([
         'version' => 'latest',
         'region' => 'auto',
@@ -240,21 +257,27 @@ function uploadToDogecloud($filePath, $objectKey, $contentType = 'application/oc
             'secret' => $credentials['secretAccessKey'],
             'token' => $credentials['sessionToken'],
         ],
-        'endpoint' => $bucketInfo['s3Endpoint'],
-        'use_path_style_endpoint' => true,
+        'endpoint' => $virtualHostedEndpoint,
+        'use_path_style_endpoint' => $usePathStyle,
     ]);
-    
+
     try {
         $result = $s3->putObject([
-            'Bucket' => $bucketInfo['s3Bucket'],
+            'Bucket' => $s3Bucket,
             'Key' => $objectKey,
             'SourceFile' => $filePath,
             'ContentType' => $contentType,
         ]);
-        
+
         // 构建访问 URL
-        $endpoint = rtrim($bucketInfo['s3Endpoint'], '/');
-        return $endpoint . '/' . $bucketInfo['s3Bucket'] . '/' . $objectKey;
+        if ($isTencentCOS) {
+            // 腾讯云 COS 使用虚拟主机风格：bucket.endpoint/key
+            return $virtualHostedEndpoint . '/' . $objectKey;
+        } else {
+            // 其他服务使用路径风格：endpoint/bucket/key
+            $endpoint = rtrim($s3Endpoint, '/');
+            return $endpoint . '/' . $s3Bucket . '/' . $objectKey;
+        }
     } catch (Aws\Exception\AwsException $e) {
         throw new Exception("多吉云上传失败: " . $e->getMessage());
     }
