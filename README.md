@@ -115,6 +115,8 @@ composer install
 3. 创建存储空间
 4. 启用多吉云配置：`DOGE_ENABLED = true`
 
+**自定义域名**：在多吉云控制台绑定域名到存储空间，然后在配置中填写 `S3_CUSTOM_DOMAIN`。
+
 ### MinIO / 其他 S3 兼容服务
 
 配置正确的端点地址即可使用。

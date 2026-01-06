@@ -199,6 +199,9 @@ switch ($step) {
                 
                 $configContent .= "// 自定义域名（可选）\n";
                 $configContent .= "// 如果为对象存储配置了自定义域名（如 CDN 域名），在此填写\n";
+                $configContent .= "// 可用于所有存储服务（AWS S3、Cloudflare R2、多吉云等）的 CDN 加速\n";
+                $configContent .= "// 示例: cdn.example.com\n";
+                $configContent .= "// 注意：多吉云需要在控制台绑定域名到存储空间后，在此填写\n";
                 $configContent .= "define('S3_CUSTOM_DOMAIN', '{$config['s3_custom_domain']}');\n\n";
 
                 $configContent .= "// 多吉云配置（可选）\n";
@@ -775,7 +778,7 @@ switch ($step) {
                     <div class="form-group">
                         <label>自定义域名（可选）</label>
                         <input type="text" name="s3_custom_domain" value="<?php echo h($config['s3_custom_domain'] ?? ''); ?>" placeholder="例如: cdn.example.com">
-                        <p class="hint">如果配置了 CDN 域名可填写</p>
+                        <p class="hint">如果配置了 CDN 域名可填写（多吉云控制台绑定域名后在此填写）</p>
                     </div>
 
                     <hr style="margin: 30px 0; border: none; border-top: 2px solid #e0e0e0;">
@@ -783,6 +786,7 @@ switch ($step) {
                     <h3 style="margin-bottom: 15px;">多吉云配置（可选）</h3>
                     <div class="info-box" style="margin-bottom: 20px;">
                         <p><strong>多吉云优势：</strong>国内 CDN 加速、兼容 S3 API、按需付费、支持 HTTPS 自定义域名</p>
+                        <p style="margin-top: 8px;"><strong>提示：</strong>多吉云也可使用自定义域名，请在多吉云控制台绑定域名后，在上面的"自定义域名"框中填写。</p>
                     </div>
 
                     <div class="form-group">

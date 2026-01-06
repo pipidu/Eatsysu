@@ -25,6 +25,7 @@ define('S3_USE_PATH_STYLE', true);
 // 自定义域名（可选）
 // 如果为对象存储配置了自定义域名（如 CDN 域名），在此填写
 // 示例: cdn.example.com
+// 注意：多吉云也可使用自定义域名，在多吉云控制台配置后在此填写
 define('S3_CUSTOM_DOMAIN', '');
 
 // 多吉云配置（可选）
