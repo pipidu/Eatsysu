@@ -1,4 +1,15 @@
 <?php
+// 检查是否已安装
+$installLockFile = __DIR__ . '/install.lock';
+
+if (!file_exists($installLockFile)) {
+    // 如果访问的是安装页面，则不跳转
+    if (basename($_SERVER['PHP_SELF']) !== 'install.php') {
+        header('Location: /install.php');
+        exit;
+    }
+}
+
 require_once __DIR__ . '/includes/functions.php';
 
 // 获取商家数据

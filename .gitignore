@@ -1,6 +1,9 @@
 # 配置文件（包含敏感信息）
 config.php
 
+# 安装锁文件
+install.lock
+
 # 依赖
 /vendor/
 

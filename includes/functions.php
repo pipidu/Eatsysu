@@ -1,5 +1,16 @@
 <?php
 session_start();
+
+// 安装检查 - 如果未安装，跳转到安装页面
+$installLockFile = __DIR__ . '/../install.lock';
+if (!file_exists($installLockFile)) {
+    $currentPath = $_SERVER['PHP_SELF'] ?? '';
+    if (basename($currentPath) !== 'install.php') {
+        header('Location: /install.php');
+        exit;
+    }
+}
+
 require_once __DIR__ . '/../config.php';
 
 // 数据库连接
@@ -212,7 +223,7 @@ function deleteRestaurant($id) {
 
 // 获取校区列表
 function getCampusList() {
-    return ['南校区', '北校区', '东校区', '珠海校区'];
+    return ['南校区', '北校区', '东校区', '珠海校区', '深圳校区'];
 }
 
 // 获取所有校区及其商家数量

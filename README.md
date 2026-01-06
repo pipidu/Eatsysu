@@ -31,27 +31,91 @@
 
 ## 安装步骤
 
-### 1. 环境要求
+### 🚀 快速安装（推荐）
+
+项目提供了图形化安装向导，可以在浏览器中完成所有配置：
+
+#### 1. 环境要求
 
 - PHP 7.4 或更高版本
 - MySQL/MariaDB 5.7 或更高版本
 - Web服务器（Apache/Nginx）
-- AWS账号（用于S3存储）
+- 文件写入权限（用于生成config.php）
+- AWS账号（用于S3存储，可选）
 
-### 2. 克隆/下载项目
+#### 2. 克隆/下载项目
 
 ```bash
 cd /path/to/your/web/directory
 # 将项目文件放在此目录下
 ```
 
-### 3. 安装依赖
+#### 3. 安装依赖
 
 ```bash
 composer install
 ```
 
-### 4. 配置数据库
+#### 4. 运行安装向导
+
+1. 访问 `http://your-domain.com/install.php`
+2. 按照向导步骤完成安装：
+   - **步骤1**: 环境检查（自动检测PHP版本、扩展等）
+   - **步骤2**: 配置数据库连接
+   - **步骤3**: 创建数据表（自动创建数据库和表结构）
+   - **步骤4**: 设置管理员账户
+   - **步骤5**: 配置AWS S3（可选，可跳过）
+   - **步骤6**: 确认配置并完成安装
+
+3. 安装完成后，访问网站即可使用
+
+#### 5. 配置Web服务器
+
+##### Apache
+
+确保启用了 `mod_rewrite` 模块：
+
+```apache
+LoadModule rewrite_module modules/mod_rewrite.so
+```
+
+项目已包含 `.htaccess` 文件，应该可以直接工作。
+
+##### Nginx
+
+添加以下配置到你的Nginx配置文件：
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.php?q=$uri&$args;
+}
+```
+
+#### 6. 访问网站
+
+- 前台: `http://your-domain.com/` 或 `http://localhost/`
+- 后台: `http://your-domain.com/admin/login.php`
+
+---
+
+### 🔧 手动安装
+
+如果你想手动配置，可以按照以下步骤：
+
+#### 1. 环境要求
+
+- PHP 7.4 或更高版本
+- MySQL/MariaDB 5.7 或更高版本
+- Web服务器（Apache/Nginx）
+- AWS账号（用于S3存储）
+
+#### 2. 安装依赖
+
+```bash
+composer install
+```
+
+#### 3. 配置数据库
 
 创建数据库并导入表结构：
 
@@ -61,7 +125,13 @@ mysql -u root -p < database.sql
 
 或手动执行 `database.sql` 文件中的SQL语句。
 
-### 5. 配置文件
+#### 4. 配置文件
+
+复制 `config.example.php` 为 `config.php`，然后编辑：
+
+```bash
+cp config.example.php config.php
+```
 
 编辑 `config.php`，填写数据库和S3配置：
 
@@ -77,15 +147,11 @@ define('AWS_ACCESS_KEY_ID', 'your_aws_access_key');
 define('AWS_SECRET_ACCESS_KEY', 'your_aws_secret_key');
 define('AWS_REGION', 'ap-guangzhou');  // 或你的S3所在区域
 define('AWS_BUCKET', 'your-bucket-name');
-
-// 管理员凭证
-define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD', 'your_secure_password_here');
 ```
 
-### 6. 设置管理员密码
+#### 5. 设置管理员密码
 
-默认管理员密码需要在 `config.php` 中设置，然后使用以下方式生成密码哈希：
+使用以下方式生成密码哈希：
 
 ```php
 <?php
@@ -93,43 +159,33 @@ echo password_hash('your_password', PASSWORD_DEFAULT);
 ?>
 ```
 
-将生成的哈希值更新到数据库 `admins` 表的 `password` 字段。
+将生成的哈希值插入到数据库 `admins` 表：
 
-### 7. 配置Web服务器
-
-#### Apache
-
-确保启用了 `mod_rewrite` 模块：
-
-```apache
-LoadModule rewrite_module modules/mod_rewrite.so
+```sql
+INSERT INTO admins (username, password) VALUES ('admin', 'your_hashed_password');
 ```
 
-项目已包含 `.htaccess` 文件，应该可以直接工作。
+#### 6. 创建安装锁文件
 
-#### Nginx
-
-添加以下配置到你的Nginx配置文件：
-
-```nginx
-location / {
-    try_files $uri $uri/ /index.php?q=$uri&$args;
-}
-```
-
-### 8. 设置文件权限
-
-确保Web服务器可以写入必要的目录（如果需要）：
+手动安装完成后，创建安装锁文件：
 
 ```bash
-chmod -R 755 .
-chown -R www-data:www-data .  # 根据你的Web服务器用户调整
+touch install.lock
 ```
 
-### 9. 访问网站
+#### 7. 访问网站
 
 - 前台: `http://your-domain.com/` 或 `http://localhost/`
 - 后台: `http://your-domain.com/admin/login.php`
+
+---
+
+### 💡 安装提示
+
+- **自动跳转**: 如果未安装，访问任何页面都会自动跳转到安装向导
+- **重新安装**: 访问 `install.php?force=1` 可以重新运行安装（仅用于开发调试）
+- **安全性**: 生产环境安装完成后，建议删除 `install.php` 文件
+- **S3可选**: AWS S3配置是可选的，不配置也可以使用网站（但不能上传图片）
 
 ## 使用指南
 
