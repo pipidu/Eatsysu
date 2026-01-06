@@ -10,6 +10,11 @@ if (file_exists($installLockFile) && !isset($_GET['force'])) {
 
 session_start();
 
+// HTML转义函数
+function h($string) {
+    return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
+}
+
 $error = '';
 $success = '';
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
