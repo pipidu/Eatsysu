@@ -7,11 +7,11 @@
 ### 管理员后台
 - 🔐 安全的登录系统
 - ➕ 添加/编辑/删除商家
-- 📷 上传商家图片到AWS S3存储
+- 📷 上传商家图片到对象存储（支持 AWS S3、Cloudflare R2 等）
 - 📊 设定多维评分（口味、价格、服务、健康）
 - 📈 自动计算综合评分（加权平均）
 - 📱 设定推荐点单平台（电话、堂食、京东、美团、淘宝）
-- 🏫 支持四大校区分类（南校区、北校区、东校区、珠海校区）
+- 🏫 支持五大校区分类（南校区、北校区、东校区、珠海校区、深圳校区）
 
 ### 前台展示
 - 🏆 评价排行榜（可按校区/评分维度筛选）
@@ -24,7 +24,7 @@
 
 - **后端**: PHP 7.4+
 - **数据库**: MySQL/MariaDB
-- **存储**: AWS S3
+- **存储**: AWS S3 / Cloudflare R2 / MinIO（S3 API 兼容）
 - **前端**: 原生HTML/CSS/JavaScript
 - **图表**: Chart.js（雷达图）
 - **依赖管理**: Composer
@@ -41,7 +41,7 @@
 - MySQL/MariaDB 5.7 或更高版本
 - Web服务器（Apache/Nginx）
 - 文件写入权限（用于生成config.php）
-- AWS账号（用于S3存储，可选）
+- 对象存储服务（AWS S3、Cloudflare R2 等，可选）
 
 #### 2. 克隆/下载项目
 
@@ -64,7 +64,7 @@ composer install
    - **步骤2**: 配置数据库连接
    - **步骤3**: 创建数据表（自动创建数据库和表结构）
    - **步骤4**: 设置管理员账户
-   - **步骤5**: 配置AWS S3（可选，可跳过）
+   - **步骤5**: 配置对象存储（AWS S3、Cloudflare R2 等，可选，可跳过）
    - **步骤6**: 确认配置并完成安装
 
 3. 安装完成后，访问网站即可使用
@@ -107,7 +107,7 @@ location / {
 - PHP 7.4 或更高版本
 - MySQL/MariaDB 5.7 或更高版本
 - Web服务器（Apache/Nginx）
-- AWS账号（用于S3存储）
+- 对象存储服务（AWS S3、Cloudflare R2 等，可选）
 
 #### 2. 安装依赖
 
@@ -133,7 +133,7 @@ mysql -u root -p < database.sql
 cp config.example.php config.php
 ```
 
-编辑 `config.php`，填写数据库和S3配置：
+编辑 `config.php`，填写数据库和对象存储配置：
 
 ```php
 // 数据库配置
@@ -142,11 +142,21 @@ define('DB_USER', 'your_db_user');
 define('DB_PASS', 'your_db_password');
 define('DB_NAME', 'eatsysu');
 
-// AWS S3 配置
-define('AWS_ACCESS_KEY_ID', 'your_aws_access_key');
-define('AWS_SECRET_ACCESS_KEY', 'your_aws_secret_key');
-define('AWS_REGION', 'ap-guangzhou');  // 或你的S3所在区域
+// 对象存储配置（支持 AWS S3、Cloudflare R2、MinIO 等）
+define('AWS_ACCESS_KEY_ID', 'your_access_key');
+define('AWS_SECRET_ACCESS_KEY', 'your_secret_key');
+define('AWS_REGION', 'auto');  // AWS S3 使用实际区域（如 ap-guangzhou），其他服务通常使用 auto
 define('AWS_BUCKET', 'your-bucket-name');
+
+// 自定义对象存储端点（可选）
+// 用于 Cloudflare R2、MinIO、阿里云OSS等 S3 API 兼容服务
+define('S3_ENDPOINT', '');  // Cloudflare R2 示例: https://<account-id>.r2.cloudflarestorage.com
+
+// 是否使用路径风格端点
+define('S3_USE_PATH_STYLE', true);  // Cloudflare R2 需要设置为 true
+
+// 自定义域名（可选）
+define('S3_CUSTOM_DOMAIN', '');  // 如果配置了 CDN 域名可填写
 ```
 
 #### 5. 设置管理员密码
@@ -185,7 +195,7 @@ touch install.lock
 - **自动跳转**: 如果未安装，访问任何页面都会自动跳转到安装向导
 - **重新安装**: 访问 `install.php?force=1` 可以重新运行安装（仅用于开发调试）
 - **安全性**: 生产环境安装完成后，建议删除 `install.php` 文件
-- **S3可选**: AWS S3配置是可选的，不配置也可以使用网站（但不能上传图片）
+- **S3可选**: 对象存储配置是可选的，不配置也可以使用网站（但不能上传图片）
 
 ## 使用指南
 
@@ -245,9 +255,9 @@ touch install.lock
 综合评分 = 口味 × 35% + 价格 × 20% + 服务 × 20% + 健康 × 25%
 ```
 
-## S3 配置说明
+## 对象存储配置说明
 
-### 创建S3存储桶
+### AWS S3 配置
 
 1. 登录AWS控制台
 2. 转到S3服务
@@ -255,7 +265,7 @@ touch install.lock
 4. 设置存储桶为公开访问（或配置CloudFront）
 5. 配置CORS策略（如需要）
 
-### IAM权限
+#### IAM权限
 
 创建一个IAM用户，分配以下权限：
 
@@ -275,14 +285,64 @@ touch install.lock
 }
 ```
 
+### Cloudflare R2 配置
+
+1. 登录 Cloudflare 控制台
+2. 转到 R2 > 创建存储桶
+3. 获取存储桶名称和账户 ID
+4. 创建 API Token（Access Key ID 和 Secret Access Key）
+5. 配置 `config.php`：
+
+```php
+define('AWS_ACCESS_KEY_ID', 'your_r2_access_key');
+define('AWS_SECRET_ACCESS_KEY', 'your_r2_secret_key');
+define('AWS_REGION', 'auto');  // R2 使用 auto
+define('AWS_BUCKET', 'your-bucket-name');
+define('S3_ENDPOINT', 'https://<account-id>.r2.cloudflarestorage.com');
+define('S3_USE_PATH_STYLE', true);
+```
+
+#### 配置自定义域名（可选）
+
+如果需要通过自定义域名访问 R2 上的图片：
+
+1. 在 Cloudflare 中创建 R2 自定义域名
+2. 将域名配置到 `config.php`：
+```php
+define('S3_CUSTOM_DOMAIN', 'cdn.example.com');
+```
+
+### MinIO 配置
+
+对于自建的 MinIO 服务：
+
+```php
+define('AWS_ACCESS_KEY_ID', 'your_minio_access_key');
+define('AWS_SECRET_ACCESS_KEY', 'your_minio_secret_key');
+define('AWS_REGION', 'auto');
+define('AWS_BUCKET', 'your-bucket-name');
+define('S3_ENDPOINT', 'https://minio.example.com');
+define('S3_USE_PATH_STYLE', true);
+```
+
+### 其他 S3 API 兼容服务
+
+任何支持 S3 API 的对象存储服务都可以使用，只需配置正确的端点：
+
+```php
+define('S3_ENDPOINT', 'https://your-storage-endpoint.com');
+define('S3_USE_PATH_STYLE', true);
+```
+
 ## 常见问题
 
 ### 1. 图片上传失败
 
-- 检查S3配置是否正确
-- 检查IAM用户权限
-- 检查存储桶权限设置
+- 检查对象存储配置是否正确（端点、密钥等）
+- 检查用户权限和存储桶访问权限
+- 检查存储桶是否公开访问（如需要）
 - 检查PHP文件上传大小限制
+- 对于 Cloudflare R2，确保使用了路径风格端点（S3_USE_PATH_STYLE = true）
 
 ### 2. 数据库连接失败
 
@@ -362,7 +422,7 @@ $weights = [
 编辑 `includes/functions.php` 中的 `getCampusList()` 函数：
 
 ```php
-return ['南校区', '北校区', '东校区', '珠海校区', '新校区'];
+return ['南校区', '北校区', '东校区', '珠海校区', '深圳校区'];
 ```
 
 ## 许可证

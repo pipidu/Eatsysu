@@ -350,7 +350,7 @@ $campusStats = getCampusStats();
             new Chart(canvas, {
                 type: 'radar',
                 data: {
-                    labels: ['口味', '价格', '服务', '健康'],
+                    labels: ['口味', '价格', '服务', '速度', '健康'],
                     datasets: [{
                         data: scores,
                         backgroundColor: 'rgba(102, 126, 234, 0.2)',

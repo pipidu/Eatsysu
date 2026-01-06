@@ -202,6 +202,11 @@ $campuses = getCampusList();
             gap: 8px;
             margin: 12px 0;
         }
+        .score-details.three-cols {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
         .score-item {
             font-size: 12px;
             color: #666;
@@ -299,6 +304,7 @@ $campuses = getCampusList();
                                 <div class="score-item">口味: <strong><?php echo $restaurant['taste_score']; ?></strong></div>
                                 <div class="score-item">价格: <strong><?php echo $restaurant['price_score']; ?></strong></div>
                                 <div class="score-item">服务: <strong><?php echo $restaurant['service_score']; ?></strong></div>
+                                <div class="score-item">速度: <strong><?php echo $restaurant['speed_score'] ?? 0; ?></strong></div>
                                 <div class="score-item">健康: <strong><?php echo $restaurant['health_score']; ?></strong></div>
                             </div>
                             <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
@@ -322,7 +328,7 @@ $campuses = getCampusList();
             new Chart(canvas, {
                 type: 'radar',
                 data: {
-                    labels: ['口味', '价格', '服务', '健康'],
+                    labels: ['口味', '价格', '服务', '速度', '健康'],
                     datasets: [{
                         data: scores,
                         backgroundColor: 'rgba(102, 126, 234, 0.2)',

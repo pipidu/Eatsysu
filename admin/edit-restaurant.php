@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'taste_score' => floatval($_POST['taste_score']),
             'price_score' => floatval($_POST['price_score']),
             'service_score' => floatval($_POST['service_score']),
+            'speed_score' => floatval($_POST['speed_score']),
             'health_score' => floatval($_POST['health_score'])
         ];
         
@@ -169,6 +170,9 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
+        }
+        .score-inputs.three-cols {
+            grid-template-columns: repeat(3, 1fr);
         }
         .score-input {
             background: #f9fafb;
@@ -332,7 +336,7 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
                 
                 <div class="form-group">
                     <label><span class="required">*</span>多维评分 (0-10分)</label>
-                    <div class="score-inputs">
+                    <div class="score-inputs score-inputs-three-cols">
                         <div class="score-input">
                             <label>口味评分</label>
                             <input type="number" name="taste_score" min="0" max="10" step="0.1" required value="<?php echo h($restaurant['taste_score']); ?>">
@@ -347,6 +351,11 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
                             <label>服务评分</label>
                             <input type="number" name="service_score" min="0" max="10" step="0.1" required value="<?php echo h($restaurant['service_score']); ?>">
                             <div class="hint">服务态度和效率</div>
+                        </div>
+                        <div class="score-input">
+                            <label>速度评分</label>
+                            <input type="number" name="speed_score" min="0" max="10" step="0.1" required value="<?php echo h($restaurant['speed_score'] ?? 0); ?>">
+                            <div class="hint">出餐速度和等待时间</div>
                         </div>
                         <div class="score-input">
                             <label>健康评分</label>

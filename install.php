@@ -84,6 +84,7 @@ switch ($step) {
                         taste_score DECIMAL(3,1) DEFAULT 0 COMMENT '口味评分',
                         price_score DECIMAL(3,1) DEFAULT 0 COMMENT '价格评分',
                         service_score DECIMAL(3,1) DEFAULT 0 COMMENT '服务评分',
+                        speed_score DECIMAL(3,1) DEFAULT 0 COMMENT '速度评分',
                         health_score DECIMAL(3,1) DEFAULT 0 COMMENT '健康评分',
                         overall_score DECIMAL(3,1) DEFAULT 0 COMMENT '综合评分',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -165,17 +166,35 @@ switch ($step) {
             try {
                 // 生成配置文件
                 $configContent = "<?php\n";
+                $configContent .= "/**\n";
+                $configContent .= " * 配置文件\n";
+                $configContent .= " * 如果此文件不存在或格式不正确，请运行安装程序 install.php\n";
+                $configContent .= " */\n\n";
+                
                 $configContent .= "// 数据库配置\n";
                 $configContent .= "define('DB_HOST', '{$config['db_host']}');\n";
                 $configContent .= "define('DB_USER', '{$config['db_user']}');\n";
                 $configContent .= "define('DB_PASS', '{$config['db_pass']}');\n";
                 $configContent .= "define('DB_NAME', '{$config['db_name']}');\n\n";
                 
-                $configContent .= "// AWS S3 配置\n";
+                $configContent .= "// 对象存储配置（支持 AWS S3、Cloudflare R2、MinIO 等 S3 API 兼容服务）\n";
                 $configContent .= "define('AWS_ACCESS_KEY_ID', '{$config['aws_key']}');\n";
                 $configContent .= "define('AWS_SECRET_ACCESS_KEY', '{$config['aws_secret']}');\n";
                 $configContent .= "define('AWS_REGION', '{$config['aws_region']}');\n";
                 $configContent .= "define('AWS_BUCKET', '{$config['aws_bucket']}');\n\n";
+                
+                $configContent .= "// 自定义对象存储端点（可选）\n";
+                $configContent .= "// 用于 Cloudflare R2、MinIO、阿里云OSS等 S3 API 兼容服务\n";
+                $configContent .= "// 留空则使用 AWS S3\n";
+                $configContent .= "define('S3_ENDPOINT', '{$config['s3_endpoint']}');\n\n";
+                
+                $configContent .= "// 是否使用路径风格端点（某些自建 S3 服务需要设置为 true）\n";
+                $configContent .= "// Cloudflare R2 需要设置为 true\n";
+                $configContent .= "define('S3_USE_PATH_STYLE', true);\n\n";
+                
+                $configContent .= "// 自定义域名（可选）\n";
+                $configContent .= "// 如果为对象存储配置了自定义域名（如 CDN 域名），在此填写\n";
+                $configContent .= "define('S3_CUSTOM_DOMAIN', '{$config['s3_custom_domain']}');\n\n";
                 
                 $configContent .= "// 会话配置\n";
                 $configContent .= "define('SESSION_NAME', 'EATSYSU_SESSION');\n\n";
@@ -505,7 +524,7 @@ switch ($step) {
             </div>
             <div class="step-dot <?php echo $step >= 5 ? ($step > 5 ? 'completed' : 'active') : ''; ?>">
                 <span class="step-number">5</span>
-                S3
+                对象存储
             </div>
             <div class="step-dot <?php echo $step >= 6 ? ($step > 6 ? 'completed' : 'active') : ''; ?>">
                 <span class="step-number">6</span>
@@ -700,29 +719,48 @@ switch ($step) {
                 </script>
                 
             <?php elseif ($step == 5): ?>
-                <h2 class="step-title">AWS S3配置</h2>
-                <p class="step-description">配置图片存储（可选，可以跳过使用本地存储）</p>
+                <h2 class="step-title">对象存储配置</h2>
+                <p class="step-description">配置图片存储（支持 AWS S3、Cloudflare R2 等，可选）</p>
                 
                 <div class="info-box">
-                    <p><strong>提示：</strong>如果您暂时没有AWS S3账户，可以先跳过此步骤。之后可以在 config.php 中配置。</p>
+                    <p><strong>支持的服务：</strong></p>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>AWS S3（留空端点）</li>
+                        <li>Cloudflare R2（填写 R2 端点）</li>
+                        <li>MinIO、阿里云OSS等 S3 API 兼容服务</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <p><strong>提示：</strong>如果暂时没有对象存储账户，可以留空跳过此步骤。之后可以在 config.php 中配置。</p>
                 </div>
                 
                 <form method="POST">
                     <div class="form-group">
-                        <label>AWS Access Key ID</label>
+                        <label>Access Key ID</label>
                         <input type="text" name="aws_key" value="<?php echo h($config['aws_key'] ?? ''); ?>" placeholder="留空跳过">
                     </div>
                     <div class="form-group">
-                        <label>AWS Secret Access Key</label>
+                        <label>Secret Access Key</label>
                         <input type="password" name="aws_secret" value="<?php echo h($config['aws_secret'] ?? ''); ?>" placeholder="留空跳过">
                     </div>
                     <div class="form-group">
-                        <label>AWS 区域</label>
-                        <input type="text" name="aws_region" value="<?php echo h($config['aws_region'] ?? 'ap-guangzhou'); ?>" placeholder="例如: ap-guangzhou">
+                        <label>区域</label>
+                        <input type="text" name="aws_region" value="<?php echo h($config['aws_region'] ?? 'auto'); ?>" placeholder="AWS S3 用区域（如 ap-guangzhou），其他用 auto">
                     </div>
                     <div class="form-group">
-                        <label>S3 存储桶名称</label>
+                        <label>存储桶名称</label>
                         <input type="text" name="aws_bucket" value="<?php echo h($config['aws_bucket'] ?? ''); ?>" placeholder="留空跳过">
+                    </div>
+                    <div class="form-group">
+                        <label>自定义端点（可选）</label>
+                        <input type="text" name="s3_endpoint" value="<?php echo h($config['s3_endpoint'] ?? ''); ?>" placeholder="Cloudflare R2: https://xxx.r2.cloudflarestorage.com">
+                        <p class="hint">用于 Cloudflare R2、MinIO 等服务，AWS S3 留空</p>
+                    </div>
+                    <div class="form-group">
+                        <label>自定义域名（可选）</label>
+                        <input type="text" name="s3_custom_domain" value="<?php echo h($config['s3_custom_domain'] ?? ''); ?>" placeholder="例如: cdn.example.com">
+                        <p class="hint">如果配置了 CDN 域名可填写</p>
                     </div>
                     <div class="form-actions">
                         <a href="?step=4" class="btn btn-secondary">上一步</a>

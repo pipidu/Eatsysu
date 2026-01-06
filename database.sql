@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
     taste_score DECIMAL(3,1) DEFAULT 0 COMMENT '口味评分',
     price_score DECIMAL(3,1) DEFAULT 0 COMMENT '价格评分',
     service_score DECIMAL(3,1) DEFAULT 0 COMMENT '服务评分',
+    speed_score DECIMAL(3,1) DEFAULT 0 COMMENT '速度评分',
     health_score DECIMAL(3,1) DEFAULT 0 COMMENT '健康评分',
     overall_score DECIMAL(3,1) DEFAULT 0 COMMENT '综合评分',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

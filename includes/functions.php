@@ -59,49 +59,78 @@ function adminLogout() {
     session_destroy();
 }
 
-// 上传图片到S3
+// 上传图片到对象存储（支持 AWS S3、Cloudflare R2 等 S3 API 兼容服务）
 function uploadToS3($file, $folder = 'restaurants') {
     if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
         throw new Exception("AWS SDK未安装，请运行: composer install");
     }
-    
+
     require_once __DIR__ . '/../vendor/autoload.php';
-    
-    $s3 = new Aws\S3\S3Client([
+
+    // S3 客户端配置
+    $s3Config = [
         'version' => 'latest',
         'region' => AWS_REGION,
         'credentials' => [
             'key' => AWS_ACCESS_KEY_ID,
             'secret' => AWS_SECRET_ACCESS_KEY,
         ],
-    ]);
-    
+    ];
+
+    // 如果配置了自定义端点（如 Cloudflare R2、MinIO 等）
+    if (defined('S3_ENDPOINT') && !empty(S3_ENDPOINT)) {
+        $s3Config['endpoint'] = S3_ENDPOINT;
+        $s3Config['use_path_style_endpoint'] = defined('S3_USE_PATH_STYLE') ? S3_USE_PATH_STYLE : true;
+    }
+
+    $s3 = new Aws\S3\S3Client($s3Config);
+
     $fileName = time() . '_' . bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
     $key = $folder . '/' . $fileName;
-    
+
     try {
-        $result = $s3->putObject([
+        $uploadArgs = [
             'Bucket' => AWS_BUCKET,
             'Key' => $key,
             'SourceFile' => $file['tmp_name'],
             'ContentType' => $file['type'],
-            'ACL' => 'public-read'
-        ]);
-        
-        return $result->get('ObjectURL');
+        ];
+
+        // 仅 AWS S3 支持 ACL，其他服务不需要
+        if (!defined('S3_ENDPOINT') || empty(S3_ENDPOINT)) {
+            $uploadArgs['ACL'] = 'public-read';
+        }
+
+        $result = $s3->putObject($uploadArgs);
+
+        // 如果配置了自定义域名，使用自定义域名
+        if (defined('S3_CUSTOM_DOMAIN') && !empty(S3_CUSTOM_DOMAIN)) {
+            return 'https://' . S3_CUSTOM_DOMAIN . '/' . $key;
+        }
+
+        // Cloudflare R2 等服务可能不返回 ObjectURL
+        $objectUrl = $result->get('ObjectURL');
+        if (empty($objectUrl) && defined('S3_ENDPOINT')) {
+            // 手动构建 URL
+            $endpoint = rtrim(S3_ENDPOINT, '/');
+            return $endpoint . '/' . AWS_BUCKET . '/' . $key;
+        }
+
+        return $objectUrl;
     } catch (Aws\Exception\AwsException $e) {
-        throw new Exception("S3上传失败: " . $e->getMessage());
+        throw new Exception("对象存储上传失败: " . $e->getMessage());
     }
 }
 
 // 计算综合评分（n维图评分）
 function calculateOverallScore($scores) {
     // 使用加权平均计算综合评分
-    // 权重：口味 35%, 价格 20%, 服务 20%, 健康 25%
+    // 权重：口味 30%, 价格 15%, 服务 15%, 速度 15%, 健康 25%
     $weights = [
-        'taste' => 0.35,
-        'price' => 0.20,
-        'service' => 0.20,
+        'taste' => 0.30,
+        'price' => 0.15,
+        'service' => 0.15,
+        'speed' => 0.15,
         'health' => 0.25
     ];
     
@@ -118,7 +147,7 @@ function calculateOverallScore($scores) {
 // 获取所有商家（按综合评分排序）
 function getAllRestaurants($sort = 'overall_score', $order = 'DESC', $limit = null) {
     $pdo = getDB();
-    $allowedSort = ['overall_score', 'taste_score', 'price_score', 'service_score', 'health_score', 'created_at'];
+    $allowedSort = ['overall_score', 'taste_score', 'price_score', 'service_score', 'speed_score', 'health_score', 'created_at'];
     $sort = in_array($sort, $allowedSort) ? $sort : 'overall_score';
     $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
     
@@ -156,12 +185,13 @@ function addRestaurant($data) {
         'taste' => $data['taste_score'],
         'price' => $data['price_score'],
         'service' => $data['service_score'],
+        'speed' => $data['speed_score'],
         'health' => $data['health_score']
     ]);
     
     $sql = "INSERT INTO restaurants (name, campus, location, platforms, description, image_url, 
-            taste_score, price_score, service_score, health_score, overall_score) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            taste_score, price_score, service_score, speed_score, health_score, overall_score) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -174,6 +204,7 @@ function addRestaurant($data) {
         $data['taste_score'],
         $data['price_score'],
         $data['service_score'],
+        $data['speed_score'],
         $data['health_score'],
         $overall
     ]);
@@ -190,12 +221,13 @@ function updateRestaurant($id, $data) {
         'taste' => $data['taste_score'],
         'price' => $data['price_score'],
         'service' => $data['service_score'],
+        'speed' => $data['speed_score'],
         'health' => $data['health_score']
     ]);
     
     $sql = "UPDATE restaurants SET name = ?, campus = ?, location = ?, platforms = ?, 
             description = ?, image_url = ?, taste_score = ?, price_score = ?, 
-            service_score = ?, health_score = ?, overall_score = ? WHERE id = ?";
+            service_score = ?, speed_score = ?, health_score = ?, overall_score = ? WHERE id = ?";
     
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([
@@ -208,6 +240,7 @@ function updateRestaurant($id, $data) {
         $data['taste_score'],
         $data['price_score'],
         $data['service_score'],
+        $data['speed_score'],
         $data['health_score'],
         $overall,
         $id
@@ -261,11 +294,12 @@ function h($string) {
 // 生成n维图数据（用于前端展示）
 function generateRadarChartData($restaurant) {
     return [
-        'labels' => ['口味', '价格', '服务', '健康'],
+        'labels' => ['口味', '价格', '服务', '速度', '健康'],
         'data' => [
             $restaurant['taste_score'],
             $restaurant['price_score'],
             $restaurant['service_score'],
+            $restaurant['speed_score'],
             $restaurant['health_score']
         ]
     ];
