@@ -9,14 +9,10 @@ $randomRestaurants = getRandomRestaurants(12);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>发现美食 - 中山大学美食分享</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+</head>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             background: #f5f7fa;
@@ -229,7 +225,7 @@ $randomRestaurants = getRandomRestaurants(12);
         </div>
     </header>
     
-    <section class="hero">
+    <section class="hero discover">
         <h1>🎲 发现美食</h1>
         <p>随机探索中山大学周边的美食</p>
         <button class="btn" onclick="refreshRestaurants()">
@@ -276,80 +272,26 @@ $randomRestaurants = getRandomRestaurants(12);
         </div>
     </div>
     
+    <footer>
+        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script>
-        let charts = [];
-        
-        function initCharts() {
-            // 销毁旧图表
-            charts.forEach(chart => chart.destroy());
-            charts = [];
-            
-            // 初始化新图表
-            document.querySelectorAll('.radar-chart').forEach(canvas => {
-                const scores = JSON.parse(canvas.dataset.scores);
-                const chart = new Chart(canvas, {
-                    type: 'radar',
-                data: {
-                    labels: ['口味', '价格', '包装', '速度'],
-                    datasets: [{
-                            data: scores,
-                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                            borderColor: 'rgba(102, 126, 234, 1)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(102, 126, 234, 1)'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 10,
-                                ticks: {
-                                    display: false
-                                },
-                                grid: {
-                                    color: 'rgba(0, 0, 0, 0.1)'
-                                },
-                                pointLabels: {
-                                    font: {
-                                        size: 10
-                                    }
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
-                charts.push(chart);
-            });
-        }
-        
         function refreshRestaurants() {
             const grid = document.getElementById('restaurantsGrid');
             const loading = document.getElementById('loading');
-            
+
             // 显示加载状态
             grid.style.display = 'none';
             loading.style.display = 'block';
-            
+
             // 重新加载页面
             setTimeout(() => {
                 location.reload();
             }, 500);
         }
-
-        // 页面加载完成后初始化图表
-        document.addEventListener('DOMContentLoaded', initCharts);
     </script>
-    <footer>
-        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
-    </footer>
 </body>
 </html>

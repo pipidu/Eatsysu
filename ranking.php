@@ -23,9 +23,9 @@ $campuses = getCampusList();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>美食排行榜 - 中山大学美食分享</title>
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -247,7 +247,6 @@ $campuses = getCampusList();
             color: #999;
             font-size: 14px;
         }
-    </style>
 </head>
 <body>
     <header class="header">
@@ -343,54 +342,10 @@ $campuses = getCampusList();
                 <p>没有找到商家</p>
             </div>
         <?php endif; ?>
-    </div>
+            </div>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script>
-        // 初始化雷达图
-        document.querySelectorAll('.radar-chart').forEach(canvas => {
-            const scores = JSON.parse(canvas.dataset.scores);
-            new Chart(canvas, {
-                type: 'radar',
-                data: {
-                    labels: ['口味', '价格', '包装', '速度'],
-                    datasets: [{
-                        data: scores,
-                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                        borderColor: 'rgba(102, 126, 234, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(102, 126, 234, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 10,
-                            ticks: {
-                                display: false
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 10
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="/assets/js/main.js"></script>
     <footer>
         <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
     </footer>

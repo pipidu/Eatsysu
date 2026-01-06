@@ -24,9 +24,9 @@ $radarData = generateRadarChartData($restaurant);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title><?php echo h($restaurant['name']); ?> - 中山大学美食分享</title>
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -119,6 +119,32 @@ $radarData = generateRadarChartData($restaurant);
             border-radius: 16px;
             padding: 32px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .contact-info-icon {
+            font-size: 24px;
+        }
+        .contact-info-text {
+            flex: 1;
+        }
+        .contact-info-label {
+            font-weight: 500;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .contact-info-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
         }
         .campus-badge {
             display: inline-block;
@@ -378,11 +404,18 @@ $radarData = generateRadarChartData($restaurant);
                                 淘宝
                             </span>
                         <?php endif; ?>
-                        <?php if (!empty($platforms['phone'])): ?>
-                            <span class="platform-tag"><?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['phone'] : '📞'; ?> <?php echo h($platforms['phone']); ?></span>
-                        <?php endif; ?>
                     </div>
                 </div>
+
+                <?php if (!empty($platforms['phone'])): ?>
+                    <div class="contact-info">
+                        <div class="contact-info-icon">📞</div>
+                        <div class="contact-info-text">
+                            <div class="contact-info-label">联系电话</div>
+                            <div class="contact-info-value"><?php echo h($platforms['phone']); ?></div>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 
                 <div class="info-group">
                     <div class="info-label">📊 多维评分</div>
@@ -441,64 +474,6 @@ $radarData = generateRadarChartData($restaurant);
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script>
-        // 初始化雷达图
-        const canvas = document.querySelector('.radar-chart');
-        const scores = JSON.parse(canvas.dataset.scores);
-        
-        new Chart(canvas, {
-            type: 'radar',
-                data: {
-                    labels: ['口味', '价格', '包装', '速度'],
-                    datasets: [{
-                    label: '评分',
-                    data: scores,
-                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                    borderColor: 'rgba(102, 126, 234, 1)',
-                    borderWidth: 3,
-                    pointBackgroundColor: 'rgba(102, 126, 234, 1)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 10,
-                        ticks: {
-                            stepSize: 2,
-                            font: {
-                                size: 12
-                            },
-                            color: '#999'
-                        },
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        },
-                        angleLines: {
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        },
-                        pointLabels: {
-                            font: {
-                                size: 14,
-                                weight: '500'
-                            },
-                            color: '#333'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-    </script>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>
