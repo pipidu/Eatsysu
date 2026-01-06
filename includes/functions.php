@@ -122,6 +122,184 @@ function uploadToS3($file, $folder = 'restaurants') {
     }
 }
 
+/**
+ * 调用多吉云 API
+ *
+ * @param string    $apiPath    调用的 API 接口地址，包含 URL 请求参数 QueryString，例如：/auth/tmp_token.json
+ * @param array     $data       POST 的数据，关联数组，例如 array('a' => 1, 'b' => 2)，传递此参数表示不是 GET 请求而是 POST 请求
+ * @param boolean   $jsonMode   数据 data 是否以 JSON 格式请求，默认为 false 则使用表单形式（a=1&b=2）
+ * @return array 返回的数据
+ */
+function dogecloudApi($apiPath, $data = array(), $jsonMode = false) {
+    $accessKey = DOGE_ACCESS_KEY;
+    $secretKey = DOGE_SECRET_KEY;
+
+    $body = $jsonMode ? json_encode($data) : http_build_query($data);
+    $signStr = $apiPath . "\n" . $body;
+    $sign = hash_hmac('sha1', $signStr, $secretKey);
+    $authorization = "TOKEN " . $accessKey . ":" . $sign;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, DOGE_API_URL . $apiPath);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    
+    if(isset($data) && $data){
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    }
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: ' . ($jsonMode ? 'application/json' : 'application/x-www-form-urlencoded'),
+        'Authorization: ' . $authorization
+    ));
+    
+    $ret = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+    
+    if ($error) {
+        throw new Exception("多吉云 API 请求失败: " . $error);
+    }
+    
+    $result = json_decode($ret, true);
+    
+    if (!$result) {
+        throw new Exception("多吉云 API 响应解析失败");
+    }
+    
+    if ($result['code'] != 200) {
+        throw new Exception("多吉云 API 错误: " . ($result['msg'] ?? '未知错误') . " (错误代码: " . ($result['err_code'] ?? '未知') . ")");
+    }
+    
+    return $result;
+}
+
+/**
+ * 获取多吉云临时密钥（用于客户端上传）
+ *
+ * @param string    $type       密钥类型：VOD_UPLOAD(视频云上传), OSS_UPLOAD(云存储上传), OSS_FULL(云存储全功能)
+ * @param array     $scopes     授权范围，例如 ['mybucket:abc/123.jpg'] 或 ['mybucket:abc/def/*']
+ * @param int       $ttl        有效期（秒），默认 7200
+ * @return array    包含临时密钥和 S3 配置信息
+ */
+function getDogecloudTmpToken($type, $scopes = [], $ttl = null) {
+    if ($ttl === null) {
+        $ttl = defined('DOGE_TMP_TOKEN_TTL') ? DOGE_TMP_TOKEN_TTL : 7200;
+    }
+    
+    $data = [
+        'channel' => $type,
+        'ttl' => $ttl,
+    ];
+    
+    if (!empty($scopes)) {
+        $data['scopes'] = $scopes;
+    }
+    
+    return dogecloudApi('/auth/tmp_token.json', $data, true);
+}
+
+/**
+ * 上传文件到多吉云云存储（使用临时密钥）
+ *
+ * @param string    $filePath    本地文件路径
+ * @param string    $objectKey   对象键名，例如 'restaurants/image.jpg'
+ * @param string    $contentType 内容类型，例如 'image/jpeg'
+ * @return string   文件访问 URL
+ */
+function uploadToDogecloud($filePath, $objectKey, $contentType = 'application/octet-stream') {
+    if (!defined('DOGE_ENABLED') || !DOGE_ENABLED) {
+        throw new Exception("多吉云未启用，请在配置文件中设置 DOGE_ENABLED = true");
+    }
+    
+    if (!defined('DOGE_BUCKET')) {
+        throw new Exception("未配置多吉云存储空间名称");
+    }
+    
+    // 获取临时上传密钥
+    $tokenResult = getDogecloudTmpToken('OSS_UPLOAD', [DOGE_BUCKET . ':' . $objectKey]);
+    
+    $credentials = $tokenResult['data']['Credentials'];
+    $bucketInfo = $tokenResult['data']['Buckets'][0];
+    
+    // 使用 AWS S3 SDK 上传文件（多吉云兼容 S3 API）
+    if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+        throw new Exception("AWS SDK未安装，请运行: composer install");
+    }
+    
+    require_once __DIR__ . '/../vendor/autoload.php';
+    
+    $s3 = new Aws\S3\S3Client([
+        'version' => 'latest',
+        'region' => 'auto',
+        'credentials' => [
+            'key' => $credentials['accessKeyId'],
+            'secret' => $credentials['secretAccessKey'],
+            'token' => $credentials['sessionToken'],
+        ],
+        'endpoint' => $bucketInfo['s3Endpoint'],
+        'use_path_style_endpoint' => true,
+    ]);
+    
+    try {
+        $result = $s3->putObject([
+            'Bucket' => $bucketInfo['s3Bucket'],
+            'Key' => $objectKey,
+            'SourceFile' => $filePath,
+            'ContentType' => $contentType,
+        ]);
+        
+        // 构建访问 URL
+        $endpoint = rtrim($bucketInfo['s3Endpoint'], '/');
+        return $endpoint . '/' . $bucketInfo['s3Bucket'] . '/' . $objectKey;
+    } catch (Aws\Exception\AwsException $e) {
+        throw new Exception("多吉云上传失败: " . $e->getMessage());
+    }
+}
+
+/**
+ * 统一的文件上传函数（优先使用多吉云，未启用则使用 S3）
+ *
+ * @param array     $file       $_FILES 数组中的文件项
+ * @param string    $folder     上传文件夹，例如 'restaurants'
+ * @return string   文件访问 URL
+ */
+function uploadFile($file, $folder = 'restaurants') {
+    // 验证文件
+    if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+        throw new Exception("无效的上传文件");
+    }
+    
+    // 验证文件类型
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $fileType = $file['type'];
+    if (!in_array($fileType, $allowedTypes)) {
+        throw new Exception("不支持的文件类型: " . $fileType);
+    }
+    
+    // 验证文件大小（10MB 限制）
+    $maxSize = 10 * 1024 * 1024;
+    if ($file['size'] > $maxSize) {
+        throw new Exception("文件大小超过限制（最大 10MB）");
+    }
+    
+    // 生成文件名
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $fileName = time() . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+    $objectKey = $folder . '/' . $fileName;
+    
+    // 优先使用多吉云
+    if (defined('DOGE_ENABLED') && DOGE_ENABLED) {
+        return uploadToDogecloud($file['tmp_name'], $objectKey, $file['type']);
+    }
+    
+    // 回退到 S3
+    return uploadToS3($file, $folder);
+}
+
 // 计算综合评分（n维图评分）
 function calculateOverallScore($scores) {
     // 使用加权平均计算综合评分

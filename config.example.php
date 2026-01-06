@@ -27,6 +27,16 @@ define('S3_USE_PATH_STYLE', true);
 // 示例: cdn.example.com
 define('S3_CUSTOM_DOMAIN', '');
 
+// 多吉云配置（可选）
+// 多吉云是国内的对象存储服务提供商，提供 CDN 加速
+// 官网: https://www.dogecloud.com/
+define('DOGE_ACCESS_KEY', 'your_doge_access_key'); // 在用户中心-密钥管理中查看
+define('DOGE_SECRET_KEY', 'your_doge_secret_key'); // 请勿在客户端暴露密钥
+define('DOGE_ENABLED', false); // 是否启用多吉云（设置为 true 时会优先使用多吉云上传）
+define('DOGE_BUCKET', 'your_doge_bucket_name'); // 多吉云存储空间名称
+define('DOGE_API_URL', 'https://api.dogecloud.com'); // 多吉云 API 地址
+define('DOGE_TMP_TOKEN_TTL', 7200); // 临时密钥有效期（秒），范围 0-7200
+
 // 会话配置
 define('SESSION_NAME', 'EATSYSU_SESSION');
 

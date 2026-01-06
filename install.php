@@ -200,7 +200,17 @@ switch ($step) {
                 $configContent .= "// 自定义域名（可选）\n";
                 $configContent .= "// 如果为对象存储配置了自定义域名（如 CDN 域名），在此填写\n";
                 $configContent .= "define('S3_CUSTOM_DOMAIN', '{$config['s3_custom_domain']}');\n\n";
-                
+
+                $configContent .= "// 多吉云配置（可选）\n";
+                $configContent .= "// 多吉云是国内的对象存储服务提供商，提供 CDN 加速\n";
+                $configContent .= "// 官网: https://www.dogecloud.com/\n";
+                $configContent .= "define('DOGE_ACCESS_KEY', '{$config['doge_access_key']}');\n";
+                $configContent .= "define('DOGE_SECRET_KEY', '{$config['doge_secret_key']}');\n";
+                $configContent .= "define('DOGE_ENABLED', " . (empty($config['doge_bucket']) ? 'false' : 'true') . "); // 是否启用多吉云\n";
+                $configContent .= "define('DOGE_BUCKET', '{$config['doge_bucket']}');\n";
+                $configContent .= "define('DOGE_API_URL', 'https://api.dogecloud.com');\n";
+                $configContent .= "define('DOGE_TMP_TOKEN_TTL', 7200); // 临时密钥有效期（秒），范围 0-7200\n\n";
+
                 $configContent .= "// 会话配置\n";
                 $configContent .= "define('SESSION_NAME', 'EATSYSU_SESSION');\n\n";
                 
@@ -766,6 +776,27 @@ switch ($step) {
                         <label>自定义域名（可选）</label>
                         <input type="text" name="s3_custom_domain" value="<?php echo h($config['s3_custom_domain'] ?? ''); ?>" placeholder="例如: cdn.example.com">
                         <p class="hint">如果配置了 CDN 域名可填写</p>
+                    </div>
+
+                    <hr style="margin: 30px 0; border: none; border-top: 2px solid #e0e0e0;">
+
+                    <h3 style="margin-bottom: 15px;">多吉云配置（可选）</h3>
+                    <div class="info-box" style="margin-bottom: 20px;">
+                        <p><strong>多吉云优势：</strong>国内 CDN 加速、兼容 S3 API、按需付费、支持 HTTPS 自定义域名</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Access Key（多吉云）</label>
+                        <input type="text" name="doge_access_key" value="<?php echo h($config['doge_access_key'] ?? ''); ?>" placeholder="在用户中心-密钥管理中查看">
+                    </div>
+                    <div class="form-group">
+                        <label>Secret Key（多吉云）</label>
+                        <input type="password" name="doge_secret_key" value="<?php echo h($config['doge_secret_key'] ?? ''); ?>" placeholder="请勿泄露">
+                    </div>
+                    <div class="form-group">
+                        <label>存储空间名称（多吉云）</label>
+                        <input type="text" name="doge_bucket" value="<?php echo h($config['doge_bucket'] ?? ''); ?>" placeholder="例如: my-bucket-name">
+                        <p class="hint">填写后将自动启用多吉云（可手动在配置文件中关闭）</p>
                     </div>
                     <div class="form-actions">
                         <a href="?step=4" class="btn btn-secondary">上一步</a>

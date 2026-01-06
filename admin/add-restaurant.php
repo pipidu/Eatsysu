@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 处理图片上传
         $imageUrl = '';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $imageUrl = uploadToS3($_FILES['image']);
+            $imageUrl = uploadFile($_FILES['image'], 'restaurants');
         }
         
         // 准备平台数据

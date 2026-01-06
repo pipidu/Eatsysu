@@ -7,7 +7,7 @@
 ### 管理员后台
 - 🔐 安全的登录系统
 - ➕ 添加/编辑/删除商家
-- 📷 上传商家图片到对象存储（支持 AWS S3、Cloudflare R2 等）
+- 📷 上传商家图片到对象存储（支持 AWS S3、Cloudflare R2、多吉云等）
 - 📊 设定多维评分（口味、价格、服务、健康）
 - 📈 自动计算综合评分（加权平均）
 - 📱 设定推荐点单平台（电话、堂食、京东、美团、淘宝）
@@ -24,7 +24,7 @@
 
 - **后端**: PHP 7.4+
 - **数据库**: MySQL/MariaDB
-- **存储**: AWS S3 / Cloudflare R2 / MinIO（S3 API 兼容）
+- **存储**: AWS S3 / Cloudflare R2 / 多吉云 / MinIO（S3 API 兼容）
 - **前端**: 原生HTML/CSS/JavaScript
 - **图表**: Chart.js（雷达图）
 - **依赖管理**: Composer
@@ -64,7 +64,7 @@ composer install
    - **步骤2**: 配置数据库连接
    - **步骤3**: 创建数据表（自动创建数据库和表结构）
    - **步骤4**: 设置管理员账户
-   - **步骤5**: 配置对象存储（AWS S3、Cloudflare R2 等，可选，可跳过）
+   - **步骤5**: 配置对象存储（AWS S3、Cloudflare R2、多吉云等，可选，可跳过）
    - **步骤6**: 确认配置并完成安装
 
 3. 安装完成后，访问网站即可使用
@@ -107,7 +107,7 @@ location / {
 - PHP 7.4 或更高版本
 - MySQL/MariaDB 5.7 或更高版本
 - Web服务器（Apache/Nginx）
-- 对象存储服务（AWS S3、Cloudflare R2 等，可选）
+- 对象存储服务（AWS S3、Cloudflare R2、多吉云等，可选）
 
 #### 2. 安装依赖
 
@@ -157,6 +157,16 @@ define('S3_USE_PATH_STYLE', true);  // Cloudflare R2 需要设置为 true
 
 // 自定义域名（可选）
 define('S3_CUSTOM_DOMAIN', '');  // 如果配置了 CDN 域名可填写
+
+// 多吉云配置（可选）
+// 多吉云是国内的对象存储服务提供商，提供 CDN 加速
+// 官网: https://www.dogecloud.com/
+define('DOGE_ACCESS_KEY', 'your_doge_access_key'); // 在用户中心-密钥管理中查看
+define('DOGE_SECRET_KEY', 'your_doge_secret_key'); // 请勿在客户端暴露密钥
+define('DOGE_ENABLED', false); // 是否启用多吉云（设置为 true 时会优先使用多吉云上传）
+define('DOGE_BUCKET', 'your_doge_bucket_name'); // 多吉云存储空间名称
+define('DOGE_API_URL', 'https://api.dogecloud.com'); // 多吉云 API 地址
+define('DOGE_TMP_TOKEN_TTL', 7200); // 临时密钥有效期（秒），范围 0-7200
 ```
 
 #### 5. 设置管理员密码
@@ -325,6 +335,28 @@ define('S3_ENDPOINT', 'https://minio.example.com');
 define('S3_USE_PATH_STYLE', true);
 ```
 
+### 多吉云配置
+
+多吉云是国内的对象存储服务提供商，提供 CDN 加速，非常适合国内使用。
+
+1. 注册并登录 [多吉云控制台](https://www.dogecloud.com/)
+2. 进入「用户中心」->「密钥管理」，获取 AccessKey 和 SecretKey
+3. 创建存储空间（Bucket）
+4. 配置 `config.php`：
+
+```php
+define('DOGE_ACCESS_KEY', 'your_doge_access_key');
+define('DOGE_SECRET_KEY', 'your_doge_secret_key');
+define('DOGE_ENABLED', true); // 启用多吉云
+define('DOGE_BUCKET', 'your_bucket_name');
+```
+
+**优势：**
+- 国内 CDN 加速，访问速度快
+- 兼容 S3 API，无需修改代码
+- 按需付费，成本更低
+- 支持 HTTPS 自定义域名
+
 ### 其他 S3 API 兼容服务
 
 任何支持 S3 API 的对象存储服务都可以使用，只需配置正确的端点：
@@ -333,6 +365,93 @@ define('S3_USE_PATH_STYLE', true);
 define('S3_ENDPOINT', 'https://your-storage-endpoint.com');
 define('S3_USE_PATH_STYLE', true);
 ```
+
+## 多吉云 API 说明
+
+### API 验证机制
+
+多吉云 API 使用 HMAC-SHA1 签名进行身份验证：
+
+1. 将 API 路径和请求体用换行符 `\n` 连接
+2. 使用 SecretKey 对连接后的字符串进行 HMAC-SHA1 加密
+3. 将加密结果转换为十六进制字符串
+4. 将 AccessKey 和签名用冒号连接
+5. 在请求头中添加 `Authorization: TOKEN {accessKey}:{sign}`
+
+### 可用的函数
+
+系统提供以下函数使用多吉云 API：
+
+#### 1. `dogecloudApi($apiPath, $data, $jsonMode)`
+
+通用 API 调用函数。
+
+```php
+$result = dogecloudApi('/oss/bucket/list.json');
+```
+
+#### 2. `getDogecloudTmpToken($type, $scopes, $ttl)`
+
+获取临时上传密钥。
+
+```php
+$token = getDogecloudTmpToken('OSS_UPLOAD', [DOGE_BUCKET . ':test.jpg']);
+echo $token['data']['Credentials']['accessKeyId'];
+```
+
+#### 3. `uploadToDogecloud($filePath, $objectKey, $contentType)`
+
+上传文件到多吉云。
+
+```php
+$url = uploadToDogecloud('/tmp/photo.jpg', 'restaurants/photo.jpg', 'image/jpeg');
+echo $url;
+```
+
+#### 4. `uploadFile($file, $folder)`
+
+**推荐的统一上传函数**
+
+自动选择多吉云（如果启用）或 S3 作为存储后端。
+
+```php
+if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    $imageUrl = uploadFile($_FILES['image'], 'restaurants');
+    echo "上传成功: " . $imageUrl;
+}
+```
+
+### 临时密钥类型
+
+- `OSS_UPLOAD` - 云存储上传权限（适合客户端使用）
+- `OSS_FULL` - 云存储完全权限（仅服务端使用）
+- `VOD_UPLOAD` - 视频云上传权限
+
+### 授权范围格式
+
+- `*` - 所有空间的所有文件（仅 OSS_FULL）
+- `bucket` - 某个存储空间
+- `bucket:prefix/*` - 某个前缀下的所有文件
+- `bucket:path/file.jpg` - 特定文件
+
+### 错误处理
+
+API 错误会返回非 200 的 code，常见错误代码：
+
+- `ERROR_UNAUTHORIZED` - 未授权
+- `ERROR_AUTHORIZATION_FAILED` - 密钥验证失败
+- `ERROR_PERMISSION_DENIED` - 没有权限
+- `ERROR_TOO_FREQUENTLY` - 请求过于频繁
+
+### 安全注意事项
+
+⚠️ **重要：**
+
+1. 永远不要在客户端（浏览器、移动 App）暴露密钥
+2. 所有 API 调用应在服务端进行
+3. 遵循最小权限原则，只授予必要的权限
+4. 定期更换密钥
+5. 限制临时密钥的有效期
 
 ## 常见问题
 
@@ -343,20 +462,34 @@ define('S3_USE_PATH_STYLE', true);
 - 检查存储桶是否公开访问（如需要）
 - 检查PHP文件上传大小限制
 - 对于 Cloudflare R2，确保使用了路径风格端点（S3_USE_PATH_STYLE = true）
+- 对于多吉云，确保存储空间已创建且名称正确
 
-### 2. 数据库连接失败
+### 2. 多吉云配置失败
+
+- 确认 AccessKey 和 SecretKey 正确
+- 检查存储空间是否存在
+- 确保 `DOGE_ENABLED` 设置为 `true`
+- 验证网络连接（需要访问 api.dogecloud.com）
+
+### 3. 如何从 S3 迁移到多吉云？
+
+- 渐进式迁移：保持 S3 配置，启用多吉云，新文件使用多吉云
+- 完整迁移：将所有文件上传到多吉云，更新数据库，禁用 S3
+- 两种方式都可以，系统会自动处理多种存储后端
+
+### 4. 数据库连接失败
 
 - 检查数据库配置信息
 - 确保数据库服务正在运行
 - 检查用户权限
 
-### 3. 重定向问题
+### 5. 重定向问题
 
 - 确保 `.htaccess` 文件存在
 - 检查 `mod_rewrite` 是否启用
 - 检查Apache配置
 
-### 4. 雷达图不显示
+### 6. 雷达图不显示
 
 - 检查网络连接（需要加载Chart.js CDN）
 - 查看浏览器控制台错误信息
@@ -432,6 +565,13 @@ MIT License
 ## 联系方式
 
 如有问题或建议，欢迎提交Issue或Pull Request。
+
+## 相关链接
+
+- 多吉云官网：https://www.dogecloud.com/
+- 多吉云文档：https://www.dogecloud.com/doc
+- PHP 文档：https://www.php.net/docs.php
+- AWS SDK for PHP：https://docs.aws.amazon.com/aws-sdk-php/v3/api/
 
 ---
 
