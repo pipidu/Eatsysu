@@ -243,8 +243,20 @@ function uploadToDogecloud($filePath, $objectKey, $contentType = 'application/oc
     $customDomain = defined('S3_CUSTOM_DOMAIN') && !empty(S3_CUSTOM_DOMAIN) ? S3_CUSTOM_DOMAIN : null;
 
     if ($isTencentCOS) {
-        // 腾讯云 COS：直接使用 endpoint（SDK 会自动处理 bucket）
-        $s3ClientEndpoint = $s3Endpoint;
+        // 腾讯云 COS：endpoint 可能已包含 bucket 前缀，需要提取纯域名
+        // 例如：bucket.cos.region.myqcloud.com -> cos.region.myqcloud.com
+        $parsed = parse_url($s3Endpoint);
+        $host = $parsed['host'];
+        // 去掉可能的 bucket 前缀（第一个点之前的部分）
+        $parts = explode('.', $host);
+        if (count($parts) > 3 && strpos($host, $s3Bucket . '.') === 0) {
+            // 找到 cos.region.myqcloud.com 部分
+            $domainParts = array_slice($parts, 1); // 去掉第一个 bucket 部分
+            $pureDomain = implode('.', $domainParts);
+            $s3ClientEndpoint = ($parsed['scheme'] ?? 'https') . '://' . $pureDomain;
+        } else {
+            $s3ClientEndpoint = $s3Endpoint;
+        }
         $usePathStyle = false;
     } else {
         // 其他服务使用路径风格
@@ -277,12 +289,12 @@ function uploadToDogecloud($filePath, $objectKey, $contentType = 'application/oc
             // 使用自定义 CDN 域名：cdn.domain.com/key
             return 'https://' . rtrim($customDomain, '/') . '/' . $objectKey;
         } elseif ($isTencentCOS) {
-            // 腾讯云 COS：bucket.endpoint/key（SDK 已自动处理）
-            $endpoint = parse_url($s3Endpoint, PHP_URL_HOST);
-            return 'https://' . $s3Bucket . '.' . $endpoint . '/' . $objectKey;
+            // 腾讯云 COS：使用清理后的 endpoint 加上 bucket
+            // endpoint 已经是 cos.region.myqcloud.com 形式了
+            return 'https://' . $s3Bucket . '.' . $s3ClientEndpoint . '/' . $objectKey;
         } else {
             // 其他服务使用路径风格：endpoint/bucket/key
-            $endpoint = rtrim($s3Endpoint, '/');
+            $endpoint = rtrim($s3ClientEndpoint, '/');
             return $endpoint . '/' . $s3Bucket . '/' . $objectKey;
         }
     } catch (Aws\Exception\AwsException $e) {
