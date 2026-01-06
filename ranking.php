@@ -134,6 +134,8 @@ $campuses = getCampusList();
             text-decoration: none;
             color: inherit;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         .restaurant-card:hover {
             transform: translateY(-8px);
@@ -160,11 +162,15 @@ $campuses = getCampusList();
         .restaurant-image {
             width: 100%;
             height: 200px;
+            min-height: 200px;
             object-fit: cover;
             background: #e5e7eb;
         }
         .restaurant-content {
             padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         .restaurant-campus {
             font-size: 12px;

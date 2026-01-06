@@ -120,6 +120,8 @@ $randomRestaurants = getRandomRestaurants(12);
             transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
             color: inherit;
+            display: flex;
+            flex-direction: column;
         }
         .restaurant-card:hover {
             transform: translateY(-8px);
@@ -128,11 +130,15 @@ $randomRestaurants = getRandomRestaurants(12);
         .restaurant-image {
             width: 100%;
             height: 200px;
+            min-height: 200px;
             object-fit: cover;
             background: #e5e7eb;
         }
         .restaurant-content {
             padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         .restaurant-campus {
             font-size: 12px;
