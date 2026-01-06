@@ -278,9 +278,9 @@ $randomRestaurants = getRandomRestaurants(12);
                 const scores = JSON.parse(canvas.dataset.scores);
                 const chart = new Chart(canvas, {
                     type: 'radar',
-                    data: {
-                        labels: ['口味', '价格', '服务', '健康'],
-                        datasets: [{
+                data: {
+                    labels: ['口味', '价格', '包装', '速度'],
+                    datasets: [{
                             data: scores,
                             backgroundColor: 'rgba(102, 126, 234, 0.2)',
                             borderColor: 'rgba(102, 126, 234, 1)',

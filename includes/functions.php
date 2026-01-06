@@ -345,37 +345,36 @@ function uploadFile($file, $folder = 'restaurants') {
 // 计算综合评分（n维图评分）
 function calculateOverallScore($scores) {
     // 使用加权平均计算综合评分
-    // 权重：口味 30%, 价格 15%, 服务 15%, 速度 15%, 健康 25%
+    // 权重：口味 25%, 价格 25%, 包装 25%, 速度 25%
     $weights = [
-        'taste' => 0.30,
-        'price' => 0.15,
-        'service' => 0.15,
-        'speed' => 0.15,
-        'health' => 0.25
+        'taste' => 0.25,
+        'price' => 0.25,
+        'packaging' => 0.25,
+        'speed' => 0.25
     ];
-    
+
     $overall = 0;
     foreach ($scores as $key => $value) {
         if (isset($weights[$key])) {
             $overall += $value * $weights[$key];
         }
     }
-    
+
     return round($overall, 1);
 }
 
 // 获取所有商家（按综合评分排序）
 function getAllRestaurants($sort = 'overall_score', $order = 'DESC', $limit = null) {
     $pdo = getDB();
-    $allowedSort = ['overall_score', 'taste_score', 'price_score', 'service_score', 'speed_score', 'health_score', 'created_at'];
+    $allowedSort = ['overall_score', 'taste_score', 'price_score', 'packaging_score', 'speed_score', 'created_at'];
     $sort = in_array($sort, $allowedSort) ? $sort : 'overall_score';
     $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
-    
+
     $sql = "SELECT * FROM restaurants ORDER BY {$sort} {$order}";
     if ($limit) {
         $sql .= " LIMIT {$limit}";
     }
-    
+
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
 }
@@ -399,20 +398,19 @@ function getRestaurantById($id) {
 // 添加商家
 function addRestaurant($data) {
     $pdo = getDB();
-    
+
     // 计算综合评分
     $overall = calculateOverallScore([
         'taste' => $data['taste_score'],
         'price' => $data['price_score'],
-        'service' => $data['service_score'],
-        'speed' => $data['speed_score'],
-        'health' => $data['health_score']
+        'packaging' => $data['packaging_score'],
+        'speed' => $data['speed_score']
     ]);
-    
-    $sql = "INSERT INTO restaurants (name, campus, location, platforms, description, image_url, 
-            taste_score, price_score, service_score, speed_score, health_score, overall_score) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+
+    $sql = "INSERT INTO restaurants (name, campus, location, platforms, description, image_url,
+            taste_score, price_score, packaging_score, speed_score, overall_score)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $data['name'],
@@ -423,32 +421,30 @@ function addRestaurant($data) {
         $data['image_url'],
         $data['taste_score'],
         $data['price_score'],
-        $data['service_score'],
+        $data['packaging_score'],
         $data['speed_score'],
-        $data['health_score'],
         $overall
     ]);
-    
+
     return $pdo->lastInsertId();
 }
 
 // 更新商家
 function updateRestaurant($id, $data) {
     $pdo = getDB();
-    
+
     // 计算综合评分
     $overall = calculateOverallScore([
         'taste' => $data['taste_score'],
         'price' => $data['price_score'],
-        'service' => $data['service_score'],
-        'speed' => $data['speed_score'],
-        'health' => $data['health_score']
+        'packaging' => $data['packaging_score'],
+        'speed' => $data['speed_score']
     ]);
-    
-    $sql = "UPDATE restaurants SET name = ?, campus = ?, location = ?, platforms = ?, 
-            description = ?, image_url = ?, taste_score = ?, price_score = ?, 
-            service_score = ?, speed_score = ?, health_score = ?, overall_score = ? WHERE id = ?";
-    
+
+    $sql = "UPDATE restaurants SET name = ?, campus = ?, location = ?, platforms = ?,
+            description = ?, image_url = ?, taste_score = ?, price_score = ?,
+            packaging_score = ?, speed_score = ?, overall_score = ? WHERE id = ?";
+
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([
         $data['name'],
@@ -459,9 +455,8 @@ function updateRestaurant($id, $data) {
         $data['image_url'],
         $data['taste_score'],
         $data['price_score'],
-        $data['service_score'],
+        $data['packaging_score'],
         $data['speed_score'],
-        $data['health_score'],
         $overall,
         $id
     ]);
@@ -514,13 +509,12 @@ function h($string) {
 // 生成n维图数据（用于前端展示）
 function generateRadarChartData($restaurant) {
     return [
-        'labels' => ['口味', '价格', '服务', '速度', '健康'],
+        'labels' => ['口味', '价格', '包装', '速度'],
         'data' => [
             $restaurant['taste_score'],
             $restaurant['price_score'],
-            $restaurant['service_score'],
-            $restaurant['speed_score'],
-            $restaurant['health_score']
+            $restaurant['packaging_score'],
+            $restaurant['speed_score']
         ]
     ];
 }

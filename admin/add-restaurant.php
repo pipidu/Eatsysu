@@ -13,7 +13,7 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // 验证必填字段
-        $required = ['name', 'campus', 'taste_score', 'price_score', 'service_score', 'speed_score', 'health_score'];
+        $required = ['name', 'campus', 'taste_score', 'price_score', 'packaging_score', 'speed_score'];
         foreach ($required as $field) {
             if (!isset($_POST[$field]) || $_POST[$field] === '') {
                 throw new Exception('请填写所有必填字段');
@@ -45,9 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'image_url' => $imageUrl,
             'taste_score' => floatval($_POST['taste_score']),
             'price_score' => floatval($_POST['price_score']),
-            'service_score' => floatval($_POST['service_score']),
-            'speed_score' => floatval($_POST['speed_score']),
-            'health_score' => floatval($_POST['health_score'])
+            'packaging_score' => floatval($_POST['packaging_score']),
+            'speed_score' => floatval($_POST['speed_score'])
         ];
         
         // 添加商家
@@ -347,7 +346,7 @@ $campuses = getCampusList();
                 
                 <div class="form-group">
                     <label><span class="required">*</span>多维评分 (0-10分)</label>
-                    <div class="score-inputs score-inputs-three-cols">
+                    <div class="score-inputs">
                         <div class="score-input">
                             <label>口味评分</label>
                             <input type="number" name="taste_score" min="0" max="10" step="0.1" required value="<?php echo h($_POST['taste_score'] ?? ''); ?>">
@@ -359,19 +358,14 @@ $campuses = getCampusList();
                             <div class="hint">价格合理性和性价比</div>
                         </div>
                         <div class="score-input">
-                            <label>服务评分</label>
-                            <input type="number" name="service_score" min="0" max="10" step="0.1" required value="<?php echo h($_POST['service_score'] ?? ''); ?>">
-                            <div class="hint">服务态度和效率</div>
+                            <label>包装评分</label>
+                            <input type="number" name="packaging_score" min="0" max="10" step="0.1" required value="<?php echo h($_POST['packaging_score'] ?? ''); ?>">
+                            <div class="hint">包装美观和完整性</div>
                         </div>
                         <div class="score-input">
                             <label>速度评分</label>
                             <input type="number" name="speed_score" min="0" max="10" step="0.1" required value="<?php echo h($_POST['speed_score'] ?? ''); ?>">
                             <div class="hint">出餐速度和等待时间</div>
-                        </div>
-                        <div class="score-input">
-                            <label>健康评分</label>
-                            <input type="number" name="health_score" min="0" max="10" step="0.1" required value="<?php echo h($_POST['health_score'] ?? ''); ?>">
-                            <div class="hint">食材新鲜和健康程度</div>
                         </div>
                     </div>
                 </div>

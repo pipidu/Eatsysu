@@ -326,7 +326,7 @@ $radarData = generateRadarChartData($restaurant);
                     <div class="score-display"><?php echo $restaurant['overall_score']; ?></div>
                     <div class="score-label">
                         <h3>综合评分</h3>
-                        <p>基于口味、价格、服务、速度、健康的综合评价</p>
+                        <p>基于口味、价格、包装、速度的综合评价</p>
                     </div>
                 </div>
                 
@@ -387,24 +387,17 @@ $radarData = generateRadarChartData($restaurant);
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-item-name">⭐ 服务</div>
-                            <div class="score-item-value"><?php echo $restaurant['service_score']; ?></div>
+                            <div class="score-item-name">📦 包装</div>
+                            <div class="score-item-value"><?php echo $restaurant['packaging_score']; ?></div>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: <?php echo $restaurant['service_score'] * 10; ?>%"></div>
+                                <div class="progress-fill" style="width: <?php echo $restaurant['packaging_score'] * 10; ?>%"></div>
                             </div>
                         </div>
                         <div class="score-item">
                             <div class="score-item-name">🚀 速度</div>
-                            <div class="score-item-value"><?php echo $restaurant['speed_score'] ?? 0; ?></div>
+                            <div class="score-item-value"><?php echo $restaurant['speed_score']; ?></div>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: <?php echo ($restaurant['speed_score'] ?? 0) * 10; ?>%"></div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-item-name">🥗 健康</div>
-                            <div class="score-item-value"><?php echo $restaurant['health_score']; ?></div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: <?php echo $restaurant['health_score'] * 10; ?>%"></div>
+                                <div class="progress-fill" style="width: <?php echo $restaurant['speed_score'] * 10; ?>%"></div>
                             </div>
                         </div>
                     </div>
@@ -433,9 +426,9 @@ $radarData = generateRadarChartData($restaurant);
         
         new Chart(canvas, {
             type: 'radar',
-            data: {
-                labels: ['口味', '价格', '服务', '速度', '健康'],
-                datasets: [{
+                data: {
+                    labels: ['口味', '价格', '包装', '速度'],
+                    datasets: [{
                     label: '评分',
                     data: scores,
                     backgroundColor: 'rgba(102, 126, 234, 0.2)',
