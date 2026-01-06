@@ -23,6 +23,7 @@ $campuses = getCampusList();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>美食排行榜 - 中山大学美食分享</title>
     <style>
         * {
@@ -235,6 +236,17 @@ $campuses = getCampusList();
             font-size: 64px;
             margin-bottom: 16px;
         }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+        footer p {
+            color: #999;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -379,5 +391,8 @@ $campuses = getCampusList();
             });
         });
     </script>
+    <footer>
+        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
+    </footer>
 </body>
 </html>

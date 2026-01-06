@@ -38,6 +38,19 @@ define('DOGE_BUCKET', 'your_doge_bucket_name'); // 多吉云存储空间名称
 define('DOGE_API_URL', 'https://api.dogecloud.com'); // 多吉云 API 地址
 define('DOGE_TMP_TOKEN_TTL', 7200); // 临时密钥有效期（秒），范围 0-7200
 
+// 网站配置
+define('SITE_ICON', 'https://doges3.img.shygo.cn/2026/01/06/42ac7f56a69e3b866e19c6ecb6dc62f8.jpg/720x1080'); // 网站图标
+define('SITE_ICP_NUMBER', ''); // 备案号，如需要填写
+
+// 平台图标配置
+define('PLATFORM_ICONS', [
+    'phone' => '📞',
+    'dine_in' => '🏢',
+    'jd' => 'https://doges3.img.shygo.cn/2026/01/06/d2d2439d19cbb03207b53ace32279b01.jpg/720x1080',
+    'meituan' => 'https://doges3.img.shygo.cn/2026/01/06/71b72d9229c9f9d0a843fe527d20540b.png/720x1080',
+    'taobao' => 'https://doges3.img.shygo.cn/2026/01/06/ad8095ff1dfa687f275fbc0459dbdf22.jpg/720x1080'
+]);
+
 // 会话配置
 define('SESSION_NAME', 'EATSYSU_SESSION');
 

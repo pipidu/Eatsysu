@@ -88,9 +88,8 @@ switch ($step) {
                         image_url VARCHAR(500),
                         taste_score DECIMAL(3,1) DEFAULT 0 COMMENT '口味评分',
                         price_score DECIMAL(3,1) DEFAULT 0 COMMENT '价格评分',
-                        service_score DECIMAL(3,1) DEFAULT 0 COMMENT '服务评分',
+                        packaging_score DECIMAL(3,1) DEFAULT 0 COMMENT '包装评分',
                         speed_score DECIMAL(3,1) DEFAULT 0 COMMENT '速度评分',
-                        health_score DECIMAL(3,1) DEFAULT 0 COMMENT '健康评分',
                         overall_score DECIMAL(3,1) DEFAULT 0 COMMENT '综合评分',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -216,7 +215,20 @@ switch ($step) {
 
                 $configContent .= "// 会话配置\n";
                 $configContent .= "define('SESSION_NAME', 'EATSYSU_SESSION');\n\n";
-                
+
+                $configContent .= "// 网站配置\n";
+                $configContent .= "define('SITE_ICON', 'https://doges3.img.shygo.cn/2026/01/06/42ac7f56a69e3b866e19c6ecb6dc62f8.jpg/720x1080'); // 网站图标\n";
+                $configContent .= "define('SITE_ICP_NUMBER', '" . (isset($config['site_icp_number']) ? addslashes($config['site_icp_number']) : '') . "'); // 备案号\n\n";
+
+                $configContent .= "// 平台图标配置\n";
+                $configContent .= "define('PLATFORM_ICONS', [\n";
+                $configContent .= "    'phone' => '📞',\n";
+                $configContent .= "    'dine_in' => '🏢',\n";
+                $configContent .= "    'jd' => 'https://doges3.img.shygo.cn/2026/01/06/d2d2439d19cbb03207b53ace32279b01.jpg/720x1080',\n";
+                $configContent .= "    'meituan' => 'https://doges3.img.shygo.cn/2026/01/06/71b72d9229c9f9d0a843fe527d20540b.png/720x1080',\n";
+                $configContent .= "    'taobao' => 'https://doges3.img.shygo.cn/2026/01/06/ad8095ff1dfa687f275fbc0459dbdf22.jpg/720x1080'\n";
+                $configContent .= "]);\n\n";
+
                 $configContent .= "// 时区设置\n";
                 $configContent .= "date_default_timezone_set('Asia/Shanghai');\n";
                 
@@ -801,6 +813,11 @@ switch ($step) {
                         <label>存储空间名称（多吉云）</label>
                         <input type="text" name="doge_bucket" value="<?php echo h($config['doge_bucket'] ?? ''); ?>" placeholder="例如: my-bucket-name">
                         <p class="hint">填写后将自动启用多吉云（可手动在配置文件中关闭）</p>
+                    </div>
+                    <div class="form-group">
+                        <label>备案号（可选）</label>
+                        <input type="text" name="site_icp_number" value="<?php echo h($config['site_icp_number'] ?? ''); ?>" placeholder="例如：粤ICP备XXXXXXXX号">
+                        <p class="hint">如需备案可在此填写，将显示在网站底部</p>
                     </div>
                     <div class="form-actions">
                         <a href="?step=4" class="btn btn-secondary">上一步</a>

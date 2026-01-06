@@ -24,6 +24,7 @@ $radarData = generateRadarChartData($restaurant);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title><?php echo h($restaurant['name']); ?> - 中山大学美食分享</title>
     <style>
         * {
@@ -345,19 +346,40 @@ $radarData = generateRadarChartData($restaurant);
                     <div class="info-label">📱 推荐点单方式</div>
                     <div class="platform-tags">
                         <?php if ($platforms['dine_in'] ?? false): ?>
-                            <span class="platform-tag">🏢 堂食</span>
+                            <span class="platform-tag"><?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['dine_in'] : '🏢'; ?> 堂食</span>
                         <?php endif; ?>
                         <?php if ($platforms['jd'] ?? false): ?>
-                            <span class="platform-tag">📦 京东</span>
+                            <span class="platform-tag">
+                                <?php if (defined('PLATFORM_ICONS') && !empty(PLATFORM_ICONS['jd'])): ?>
+                                    <img src="<?php echo PLATFORM_ICONS['jd']; ?>" alt="京东" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                                <?php else: ?>
+                                    <?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['jd'] : '📦'; ?>
+                                <?php endif; ?>
+                                京东
+                            </span>
                         <?php endif; ?>
                         <?php if ($platforms['meituan'] ?? false): ?>
-                            <span class="platform-tag">🦐 美团</span>
+                            <span class="platform-tag">
+                                <?php if (defined('PLATFORM_ICONS') && !empty(PLATFORM_ICONS['meituan'])): ?>
+                                    <img src="<?php echo PLATFORM_ICONS['meituan']; ?>" alt="美团" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                                <?php else: ?>
+                                    <?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['meituan'] : '🦐'; ?>
+                                <?php endif; ?>
+                                美团
+                            </span>
                         <?php endif; ?>
                         <?php if ($platforms['taobao'] ?? false): ?>
-                            <span class="platform-tag">🛒 淘宝</span>
+                            <span class="platform-tag">
+                                <?php if (defined('PLATFORM_ICONS') && !empty(PLATFORM_ICONS['taobao'])): ?>
+                                    <img src="<?php echo PLATFORM_ICONS['taobao']; ?>" alt="淘宝" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                                <?php else: ?>
+                                    <?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['taobao'] : '🛒'; ?>
+                                <?php endif; ?>
+                                淘宝
+                            </span>
                         <?php endif; ?>
                         <?php if (!empty($platforms['phone'])): ?>
-                            <span class="platform-tag">📞 <?php echo h($platforms['phone']); ?></span>
+                            <span class="platform-tag"><?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['phone'] : '📞'; ?> <?php echo h($platforms['phone']); ?></span>
                         <?php endif; ?>
                     </div>
                 </div>

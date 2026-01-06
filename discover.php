@@ -9,6 +9,7 @@ $randomRestaurants = getRandomRestaurants(12);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>发现美食 - 中山大学美食分享</title>
     <style>
         * {
@@ -200,6 +201,17 @@ $randomRestaurants = getRandomRestaurants(12);
             color: #666;
             display: none;
         }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+        footer p {
+            color: #999;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -332,9 +344,12 @@ $randomRestaurants = getRandomRestaurants(12);
                 location.reload();
             }, 500);
         }
-        
+
         // 页面加载完成后初始化图表
         document.addEventListener('DOMContentLoaded', initCharts);
     </script>
+    <footer>
+        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
+    </footer>
 </body>
 </html>

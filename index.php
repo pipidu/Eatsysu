@@ -22,6 +22,7 @@ $campusStats = getCampusStats();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>中山大学美食分享</title>
     <style>
         * {
@@ -348,7 +349,7 @@ $campusStats = getCampusStats();
     </div>
     
     <footer>
-        <p>© 2024 中山大学美食分享 | 用心分享每一道美食</p>
+        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
