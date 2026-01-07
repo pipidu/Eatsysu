@@ -21,7 +21,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理控制台 - 中山大学美食分享</title>
+    <title>管理控制台 - 双鸭山大学美食分享</title>
     <style>
         * {
             margin: 0;
@@ -210,7 +210,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
 </head>
 <body>
     <div class="header">
-        <h1>🍜 中山大学美食管理</h1>
+        <h1>🍜 双鸭山大学美食管理</h1>
         <div class="user-info">
             <span>欢迎, <?php echo h($_SESSION['admin_username']); ?></span>
             <a href="/admin/logout.php" class="btn-logout">退出登录</a>
@@ -237,6 +237,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
         <div class="actions">
             <a href="/admin/add-restaurant.php" class="btn btn-primary">+ 添加商家</a>
             <a href="/admin/restaurants.php" class="btn btn-secondary">管理所有商家</a>
+            <a href="/admin/users.php" class="btn btn-secondary">管理用户</a>
             <a href="/" class="btn btn-secondary" target="_blank">查看网站</a>
         </div>
         

@@ -109,6 +109,18 @@ switch ($step) {
                         FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 ");
+
+                // 创建用户表
+                $pdo->exec("
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        username VARCHAR(50) NOT NULL UNIQUE,
+                        password VARCHAR(255) NOT NULL,
+                        created_by INT COMMENT '创建该用户的管理员ID',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (created_by) REFERENCES admins(id) ON DELETE SET NULL
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+                ");
                 
                 header('Location: install.php?step=4');
                 exit;
@@ -218,7 +230,8 @@ switch ($step) {
 
                 $configContent .= "// 网站配置\n";
                 $configContent .= "define('SITE_ICON', 'https://doges3.img.shygo.cn/2026/01/06/42ac7f56a69e3b866e19c6ecb6dc62f8.jpg/720x1080'); // 网站图标\n";
-                $configContent .= "define('SITE_ICP_NUMBER', '" . (isset($config['site_icp_number']) ? addslashes($config['site_icp_number']) : '') . "'); // 备案号\n\n";
+                $configContent .= "define('SITE_ICP_NUMBER', '" . (isset($config['site_icp_number']) ? addslashes($config['site_icp_number']) : '') . "'); // ICP备案号\n";
+                $configContent .= "define('SITE_PSB_NUMBER', '" . (isset($config['site_psb_number']) ? addslashes($config['site_psb_number']) : '') . "'); // 公安备案号\n\n";
 
                 $configContent .= "// 平台图标配置\n";
                 $configContent .= "define('PLATFORM_ICONS', [\n";
@@ -257,7 +270,7 @@ switch ($step) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安装向导 - 中山大学美食分享</title>
+    <title>安装向导 - 双鸭山大学美食分享</title>
     <style>
         * {
             margin: 0;
@@ -531,7 +544,7 @@ switch ($step) {
 <body>
     <div class="install-container">
         <div class="header">
-            <h1>🍜 中山大学美食分享</h1>
+            <h1>🍜 双鸭山大学美食分享</h1>
             <p>安装向导</p>
         </div>
         
@@ -700,6 +713,7 @@ switch ($step) {
                         <li><strong>admins</strong> - 管理员账户表</li>
                         <li><strong>restaurants</strong> - 商家信息表</li>
                         <li><strong>views</strong> - 浏览记录表</li>
+                        <li><strong>users</strong> - 用户账户表</li>
                     </ul>
                 </div>
                 
@@ -815,9 +829,14 @@ switch ($step) {
                         <p class="hint">填写后将自动启用多吉云（可手动在配置文件中关闭）</p>
                     </div>
                     <div class="form-group">
-                        <label>备案号（可选）</label>
+                        <label>ICP备案号（可选）</label>
                         <input type="text" name="site_icp_number" value="<?php echo h($config['site_icp_number'] ?? ''); ?>" placeholder="例如：粤ICP备XXXXXXXX号">
-                        <p class="hint">如需备案可在此填写，将显示在网站底部</p>
+                        <p class="hint">工信部ICP备案号，将显示在网站底部</p>
+                    </div>
+                    <div class="form-group">
+                        <label>公安备案号（可选）</label>
+                        <input type="text" name="site_psb_number" value="<?php echo h($config['site_psb_number'] ?? ''); ?>" placeholder="例如：京公网安备XXXXXXXX号">
+                        <p class="hint">公安部备案号，将显示在网站底部</p>
                     </div>
                     <div class="form-actions">
                         <a href="?step=4" class="btn btn-secondary">上一步</a>
@@ -848,12 +867,13 @@ switch ($step) {
                 <div class="success-animation">
                     <div class="success-icon">🎉</div>
                     <h2 class="success-title">安装成功！</h2>
-                    <p class="success-message">中山大学美食分享网站已成功安装！</p>
+                    <p class="success-message">双鸭山大学美食分享网站已成功安装！</p>
                     
                     <div class="next-steps">
                         <h4>接下来的步骤：</h4>
                         <ul>
                             <li>访问 <a href="/admin/login.php" style="color: #667eea;">/admin/login.php</a> 登录后台管理系统</li>
+                            <li>在后台管理用户，用户可以上传商家信息</li>
                             <li>开始添加您喜爱的美食商家</li>
                             <li>如果需要使用图片上传功能，请配置AWS S3</li>
                             <li>查看 <a href="/README.md" style="color: #667eea;" target="_blank">README.md</a> 了解更多功能</li>

@@ -59,6 +59,67 @@ function adminLogout() {
     session_destroy();
 }
 
+// 检查用户登录状态
+function isUserLoggedIn() {
+    return isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true;
+}
+
+// 用户登录
+function userLogin($username, $password) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_logged_in'] = true;
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_username'] = $user['username'];
+        return true;
+    }
+    return false;
+}
+
+// 用户登出
+function userLogout() {
+    unset($_SESSION['user_logged_in']);
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_username']);
+}
+
+// 获取当前登录用户
+function getCurrentUser() {
+    if (!isUserLoggedIn()) {
+        return null;
+    }
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    return $stmt->fetch();
+}
+
+// 获取所有用户
+function getAllUsers() {
+    $pdo = getDB();
+    $stmt = $pdo->query("SELECT users.*, admins.username as created_by_admin FROM users LEFT JOIN admins ON users.created_by = admins.id ORDER BY users.created_at DESC");
+    return $stmt->fetchAll();
+}
+
+// 添加用户
+function addUser($username, $password, $createdBy = null) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, created_by) VALUES (?, ?, ?)");
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    return $stmt->execute([$username, $hashedPassword, $createdBy]);
+}
+
+// 删除用户
+function deleteUser($id) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+    return $stmt->execute([$id]);
+}
+
 // 上传图片到对象存储（支持 AWS S3、Cloudflare R2 等 S3 API 兼容服务）
 function uploadToS3($file, $folder = 'restaurants') {
     if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {

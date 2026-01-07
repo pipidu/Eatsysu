@@ -25,14 +25,14 @@ $campuses = getCampusList();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
-    <title>美食排行榜 - 中山大学美食分享</title>
+    <title>美食排行榜 - 双鸭山大学美食分享</title>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 28px;">🍜</span>
-                <h1>中山大学美食</h1>
+                <h1>双鸭山大学美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -44,7 +44,7 @@ $campuses = getCampusList();
     
     <section class="hero">
         <h1>🏆 美食排行榜</h1>
-        <p>探索中大校园周边的最佳餐厅</p>
+        <p>探索双鸭山大学校园周边的最佳餐厅</p>
     </section>
     
     <div class="container">
@@ -124,7 +124,17 @@ $campuses = getCampusList();
     </div>
     
     <footer>
-        <p>© 2024 中山大学美食分享 | 用心分享每一道美食<?php echo defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER ? ' | ' . SITE_ICP_NUMBER : ''; ?></p>
+        <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">
+                <?php echo h(SITE_ICP_NUMBER); ?>
+            </a>
+        <?php endif; ?>
+        <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">
+                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                <?php echo h(SITE_PSB_NUMBER); ?>
+            </a>
+        <?php endif; ?>
     </footer>
 
     <script src="https://doges3bucket2.img.shygo.cn/Chart.js/4.4.0/chart.umd.min.js"></script>
