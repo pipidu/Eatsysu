@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/functions.php';
 
 // 检查用户登录状态
 if (!isUserLoggedIn()) {
-    header('Location: /user-login.php');
+    header('Location: /login.php');
     exit;
 }
 

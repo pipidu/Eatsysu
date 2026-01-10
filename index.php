@@ -42,7 +42,7 @@ $currentUser = getCurrentUser();
                     <a href="/submit.php">上传商家</a>
                     <a href="/user-logout.php">退出</a>
                 <?php else: ?>
-                    <a href="/user-login.php" style="color: #667eea;">登录</a>
+                    <a href="/login.php" style="color: #005826;">登录</a>
                 <?php endif; ?>
             </nav>
         </div>
