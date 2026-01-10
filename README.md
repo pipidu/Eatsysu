@@ -1,14 +1,23 @@
-# 中山大学美食分享网站 🍜
+# 双鸭山大学美食分享网站 🍜
 
-一个用于分享中山大学校园周边美食的PHP网站，支持商家评分、排行榜和随机发现功能。
+一个用于分享双鸭山大学校园周边美食的PHP网站，支持用户自主管理商家、评分、排行榜和随机发现功能。
 
 ## 功能特性
 
+### 用户系统
+- 👤 用户注册/登录
+- 🏪 用户自主添加商家
+- ✏️ 用户编辑自己创建的商家
+- 🗑️ 用户删除自己创建的商家
+- 📋 用户查看自己管理的商家列表
+- 🔒 权限验证：用户只能操作自己创建的商家
+
 ### 管理员后台
-- 🔐 安全的登录系统
-- ➕ 添加/编辑/删除商家
+- 🔐 独立的管理员登录系统
+- 👥 管理普通用户账户
+- ➕ 管理员添加/编辑/删除所有商家
 - 📷 上传商家图片到对象存储（支持 AWS S3、Cloudflare R2、多吉云等）
-- 📊 设定多维评分（口味、价格、服务、健康）
+- 📊 设定多维评分（口味、价格、包装、速度）
 - 📈 自动计算综合评分（加权平均）
 - 📱 设定推荐点单平台（电话、堂食、京东、美团、淘宝）
 - 🏫 支持五大校区分类（南校区、北校区、东校区、珠海校区、深圳校区）
@@ -19,6 +28,7 @@
 - 📊 n维雷达图展示各项评分
 - 🏰 按校区浏览商家
 - 📱 响应式设计，支持手机访问
+- 👤 商家详情页显示创建者信息
 
 ## 技术栈
 
@@ -80,19 +90,28 @@ composer install
 
 ## 使用指南
 
-### 管理员使用
+### 用户使用
 
-1. 访问 `/admin/login.php` 登录后台
-2. 点击"添加商家"，填写商家信息
+1. 访问 `/user/login.php` 登录（需管理员先创建账户）
+2. 点击"上传商家"，填写商家信息
 3. 上传商家图片（需要配置对象存储）
 4. 填写多维评分（0-10分），系统自动计算综合评分
-5. 可随时编辑或删除商家
+5. 在"我的商家"页面查看、编辑或删除自己创建的商家
+6. 商家详情页会显示"编辑"和"删除"按钮（仅限创建者）
+
+### 管理员使用
+
+1. 访问 `/user/login.php`，切换到"管理员登录"标签
+2. 点击"管理用户"，可以创建普通用户账户
+3. 在后台管理所有商家（不受用户权限限制）
+4. 可随时编辑或删除任何商家
 
 ### 前台使用
 
 - **排行榜**: 访问首页或 `/ranking.php`，可按校区、评分维度筛选
 - **随机发现**: 访问 `/discover.php`，点击"换一批"随机显示商家
 - **商家详情**: 点击商家名称查看详细信息和雷达图
+- **用户管理**: 用户登录后可查看自己创建的商家列表
 
 ## 对象存储配置
 
@@ -161,21 +180,39 @@ composer install
 ```
 eatsysu/
 ├── admin/                  # 后台管理目录
-│   ├── login.php
-│   ├── dashboard.php
-│   ├── add-restaurant.php
-│   ├── edit-restaurant.php
-│   └── restaurants.php
+│   ├── login.php           # 管理员登录（重定向到用户登录页）
+│   ├── dashboard.php       # 管理员仪表板
+│   ├── add-restaurant.php  # 添加商家
+│   ├── edit-restaurant.php  # 编辑商家
+│   ├── delete-restaurant.php # 删除商家
+│   ├── restaurants.php      # 商家列表
+│   ├── users.php           # 用户管理
+│   └── logout.php          # 管理员登出
+├── user/                   # 用户系统目录
+│   ├── login.php           # 用户/管理员登录页面
+│   ├── my-restaurants.php   # 我的商家列表
+│   ├── edit-my-restaurant.php # 编辑我的商家
+│   ├── delete-my-restaurant.php # 删除我的商家
+│   └── user-logout.php     # 用户登出
 ├── includes/
-│   └── functions.php      # 核心函数库
-├── config.php             # 配置文件
-├── database.sql           # 数据库结构
-├── composer.json
-├── .htaccess
-├── index.php
-├── ranking.php
-├── discover.php
-└── restaurant.php
+│   ├── functions.php       # 核心函数库
+│   └── install-check.php   # 安装检查
+├── assets/
+│   ├── css/
+│   │   └── style.css       # 样式文件
+│   └── js/
+│       └── main.js         # JavaScript文件
+├── config.php              # 配置文件（安装后生成）
+├── config.example.php      # 配置文件示例
+├── database.sql            # 数据库结构
+├── composer.json           # Composer依赖配置
+├── install.php             # 安装向导
+├── .htaccess               # Apache配置
+├── index.php              # 首页
+├── ranking.php            # 排行榜
+├── discover.php           # 发现美食
+├── submit.php             # 上传商家
+└── restaurant.php          # 商家详情
 ```
 
 ## 自定义开发
@@ -187,6 +224,17 @@ eatsysu/
 ### 添加新校区
 
 编辑 `includes/functions.php` 中的 `getCampusList()` 函数。
+
+### 数据库表结构
+
+- `admins` - 管理员账户表
+- `users` - 普通用户账户表（由管理员创建）
+- `restaurants` - 商家信息表（包含 `user_id` 字段关联用户）
+- `views` - 浏览记录表
+
+**权限说明**:
+- 用户只能查看、编辑、删除自己创建的商家（通过 `user_id` 字段关联）
+- 管理员可以管理所有商家和所有用户
 
 ## 许可证
 
