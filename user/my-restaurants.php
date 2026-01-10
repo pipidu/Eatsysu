@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // 检查用户登录状态
 if (!isUserLoggedIn()) {
-    header('Location: /login.php');
+    header('Location: /user/login.php');
     exit;
 }
 
@@ -140,8 +140,8 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
                 <a href="/ranking.php">排行榜</a>
                 <a href="/discover.php">发现</a>
                 <a href="/submit.php">上传商家</a>
-                <a href="/my-restaurants.php" class="active">我的商家</a>
-                <a href="/user-logout.php">退出</a>
+                <a href="/user/my-restaurants.php" class="active">我的商家</a>
+                <a href="/user/user-logout.php">退出</a>
             </nav>
         </div>
     </header>
@@ -197,8 +197,8 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
                                     <td>
                                         <div class="actions-cell">
                                             <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit" target="_blank">查看</a>
-                                            <a href="/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
-                                            <a href="/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>"
+                                            <a href="/user/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
+                                            <a href="/user/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>"
                                                class="btn-sm btn-delete"
                                                onclick="return confirm('确定要删除这个商家吗？');">删除</a>
                                         </div>

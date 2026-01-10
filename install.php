@@ -76,6 +76,18 @@ switch ($step) {
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 ");
                 
+                // 创建用户表
+                $pdo->exec("
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        username VARCHAR(50) NOT NULL UNIQUE,
+                        password VARCHAR(255) NOT NULL,
+                        created_by INT COMMENT '创建该用户的管理员ID',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (created_by) REFERENCES admins(id) ON DELETE SET NULL
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+                ");
+                
                 // 创建商家表
                 $pdo->exec("
                     CREATE TABLE IF NOT EXISTS restaurants (
@@ -110,18 +122,6 @@ switch ($step) {
                         user_agent VARCHAR(500),
                         viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-                ");
-
-                // 创建用户表
-                $pdo->exec("
-                    CREATE TABLE IF NOT EXISTS users (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        username VARCHAR(50) NOT NULL UNIQUE,
-                        password VARCHAR(255) NOT NULL,
-                        created_by INT COMMENT '创建该用户的管理员ID',
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        FOREIGN KEY (created_by) REFERENCES admins(id) ON DELETE SET NULL
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 ");
                 

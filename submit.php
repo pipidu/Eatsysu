@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/functions.php';
 
 // 检查用户登录状态
 if (!isUserLoggedIn()) {
-    header('Location: /login.php');
+    header('Location: /user/login.php');
     exit;
 }
 
@@ -110,7 +110,7 @@ $currentUser = getCurrentUser();
                 <a href="/ranking.php">排行榜</a>
                 <a href="/discover.php">发现</a>
                 <a href="/submit.php" class="active">上传商家</a>
-                <a href="/user-logout.php">退出</a>
+                <a href="/user/user-logout.php">退出</a>
             </nav>
         </div>
     </header>

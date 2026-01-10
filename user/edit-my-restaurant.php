@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // 检查用户登录状态
 if (!isUserLoggedIn()) {
-    header('Location: /login.php');
+    header('Location: /user/login.php');
     exit;
 }
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
-    header('Location: /my-restaurants.php');
+    header('Location: /user/my-restaurants.php');
     exit;
 }
 
@@ -17,13 +17,13 @@ $currentUser = getCurrentUser();
 
 // 验证用户是否拥有该商家
 if (!isRestaurantOwnedByUser($id, $currentUser['id'])) {
-    header('Location: /my-restaurants.php');
+    header('Location: /user/my-restaurants.php');
     exit;
 }
 
 $restaurant = getRestaurantById($id);
 if (!$restaurant) {
-    header('Location: /my-restaurants.php');
+    header('Location: /user/my-restaurants.php');
     exit;
 }
 
@@ -147,8 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="/ranking.php">排行榜</a>
                 <a href="/discover.php">发现</a>
                 <a href="/submit.php">上传商家</a>
-                <a href="/my-restaurants.php" class="active">我的商家</a>
-                <a href="/user-logout.php">退出</a>
+                <a href="/user/my-restaurants.php" class="active">我的商家</a>
+                <a href="/user/user-logout.php">退出</a>
             </nav>
         </div>
     </header>
