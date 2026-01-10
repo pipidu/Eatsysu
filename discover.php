@@ -12,12 +12,37 @@ $randomRestaurants = getRandomRestaurants(12);
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>发现美食 - 双鸭山大学美食分享</title>
+    <style>
+        body {
+            background: #fff;
+        }
+        .hero.discover {
+            background: #005826;
+            padding: 40px 20px;
+        }
+        .hero.discover h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .hero.discover p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .hero.discover .btn {
+            background: #fff;
+            color: #005826;
+            border: none;
+        }
+        .hero.discover .btn:hover {
+            background: #f5f5f5;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span style="font-size: 28px;">🍜</span>
+                <span style="font-size: 24px;">🍜</span>
                 <h1>双鸭山大学美食</h1>
             </a>
             <nav class="nav-links">
@@ -27,7 +52,7 @@ $randomRestaurants = getRandomRestaurants(12);
             </nav>
         </div>
     </header>
-    
+
     <section class="hero discover">
         <h1>🎲 发现美食</h1>
         <p>随机探索双鸭山大学周边的美食</p>
@@ -35,13 +60,13 @@ $randomRestaurants = getRandomRestaurants(12);
             <span class="btn-icon">🔄</span>换一批
         </button>
     </section>
-    
+
     <div class="container">
         <div id="loading" class="loading">
-            <div style="font-size: 32px; margin-bottom: 16px;">⏳</div>
+            <div style="font-size: 28px; margin-bottom: 12px;">⏳</div>
             <p>正在为你发现美食...</p>
         </div>
-        
+
         <div id="restaurantsGrid" class="restaurant-grid">
             <?php if (count($randomRestaurants) > 0): ?>
                 <?php foreach ($randomRestaurants as $restaurant): ?>
@@ -50,7 +75,7 @@ $randomRestaurants = getRandomRestaurants(12);
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #e5e7eb; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -74,7 +99,7 @@ $randomRestaurants = getRandomRestaurants(12);
             <?php endif; ?>
         </div>
     </div>
-    
+
     <footer>
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">

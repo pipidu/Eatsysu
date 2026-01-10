@@ -26,12 +26,30 @@ $campuses = getCampusList();
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>美食排行榜 - 双鸭山大学美食分享</title>
+    <style>
+        body {
+            background: #fff;
+        }
+        .hero {
+            background: #005826;
+        }
+        .filters select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+        .filters select:focus {
+            outline: none;
+            border-color: #005826;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span style="font-size: 28px;">🍜</span>
+                <span style="font-size: 24px;">🍜</span>
                 <h1>双鸭山大学美食</h1>
             </a>
             <nav class="nav-links">
@@ -41,12 +59,12 @@ $campuses = getCampusList();
             </nav>
         </div>
     </header>
-    
+
     <section class="hero">
         <h1>🏆 美食排行榜</h1>
         <p>探索双鸭山大学校园周边的最佳餐厅</p>
     </section>
-    
+
     <div class="container">
         <div class="filters">
             <label>筛选:</label>
@@ -58,17 +76,17 @@ $campuses = getCampusList();
                     </option>
                 <?php endforeach; ?>
             </select>
-            
+
             <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=overall_score&order='+this.value">
                 <option value="DESC" <?php echo $orderBy === 'DESC' ? 'selected' : ''; ?>>综合评分从高到低</option>
                 <option value="ASC" <?php echo $orderBy === 'ASC' ? 'selected' : ''; ?>>综合评分从低到高</option>
             </select>
-            
+
             <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=taste_score&order=DESC'">
                 <option value="" disabled selected>按口味排序</option>
                 <option value="taste_score" <?php echo $sortBy === 'taste_score' ? 'selected' : ''; ?>>口味评分</option>
             </select>
-            
+
             <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=price_score&order=DESC'">
                 <option value="" disabled selected>按价格排序</option>
                 <option value="price_score" <?php echo $sortBy === 'price_score' ? 'selected' : ''; ?>>价格评分</option>
@@ -79,11 +97,11 @@ $campuses = getCampusList();
                 <option value="packaging_score" <?php echo $sortBy === 'packaging_score' ? 'selected' : ''; ?>>包装评分</option>
             </select>
         </div>
-        
+
         <?php if (count($restaurants) > 0): ?>
             <div class="restaurant-grid">
                 <?php foreach (array_values($restaurants) as $index => $restaurant): ?>
-                    <?php 
+                    <?php
                         $rankClass = $index < 3 ? 'rank-' . ($index + 1) : 'rank-other';
                         $radarData = generateRadarChartData($restaurant);
                         $platforms = json_decode($restaurant['platforms'], true) ?: [];
@@ -93,7 +111,7 @@ $campuses = getCampusList();
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #e5e7eb; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -122,7 +140,7 @@ $campuses = getCampusList();
             </div>
         <?php endif; ?>
     </div>
-    
+
     <footer>
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">

@@ -27,12 +27,115 @@ $radarData = generateRadarChartData($restaurant);
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title><?php echo h($restaurant['name']); ?> - 双鸭山大学美食分享</title>
+    <style>
+        body {
+            background: #fff;
+        }
+        .restaurant-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        @media (max-width: 768px) {
+            .restaurant-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+        .image-section {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .image-section .restaurant-image {
+            height: 350px;
+        }
+        .info-section {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 28px;
+        }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 14px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .campus-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #005826;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .restaurant-detail .restaurant-name {
+            font-size: 28px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .overall-score {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .score-display {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #005826;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 500;
+            color: white;
+        }
+        .radar-container {
+            margin: 20px 0;
+        }
+        .radar-container .radar-chart {
+            height: 260px;
+        }
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .score-breakdown .score-item {
+            background: #f5f5f5;
+            padding: 14px;
+            border-radius: 4px;
+        }
+        .description-box {
+            background: #f5f5f5;
+            padding: 18px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span style="font-size: 28px;">🍜</span>
+                <span style="font-size: 24px;">🍜</span>
                 <h1>双鸭山大学美食</h1>
             </a>
             <nav class="nav-links">
@@ -42,23 +145,23 @@ $radarData = generateRadarChartData($restaurant);
             </nav>
         </div>
     </header>
-    
+
     <div class="container">
         <a href="javascript:history.back()" class="back-link">← 返回</a>
-        
+
         <div class="restaurant-detail">
             <div class="image-section">
                 <?php if ($restaurant['image_url']): ?>
                     <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                 <?php else: ?>
-                    <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 80px; background: #e5e7eb; color: #999;">🍜</div>
+                    <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 80px; background: #f5f5f5; color: #999;">🍜</div>
                 <?php endif; ?>
             </div>
-            
+
             <div class="info-section">
                 <span class="campus-badge"><?php echo h($restaurant['campus']); ?></span>
                 <h1 class="restaurant-name"><?php echo h($restaurant['name']); ?></h1>
-                
+
                 <div class="overall-score">
                     <div class="score-display"><?php echo $restaurant['overall_score']; ?></div>
                     <div class="score-label">
@@ -66,7 +169,7 @@ $radarData = generateRadarChartData($restaurant);
                         <p>基于口味、价格、包装、速度的综合评价</p>
                     </div>
                 </div>
-                
+
                 <?php if ($restaurant['location']): ?>
                     <div class="info-group">
                         <div class="info-label">📍 位置</div>
@@ -77,7 +180,7 @@ $radarData = generateRadarChartData($restaurant);
                         </div>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="info-group">
                     <div class="info-label">📱 推荐点单方式</div>
                     <div class="platform-tags">
@@ -126,14 +229,14 @@ $radarData = generateRadarChartData($restaurant);
                         </div>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="info-group">
                     <div class="info-label">📊 多维评分</div>
                     <div class="radar-container">
                         <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
                     </div>
                 </div>
-                
+
                 <div class="info-group">
                     <div class="info-label">📈 评分详情</div>
                     <div class="score-breakdown">
@@ -167,14 +270,14 @@ $radarData = generateRadarChartData($restaurant);
                         </div>
                     </div>
                 </div>
-                
+
                 <?php if ($restaurant['description']): ?>
                     <div class="description-box">
                         <div class="info-label">📝 介绍</div>
                         <p><?php echo nl2br(h($restaurant['description'])); ?></p>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="actions">
                     <a href="/discover.php" class="btn btn-primary">🎲 发现更多美食</a>
                     <a href="/ranking.php?campus=<?php echo urlencode($restaurant['campus']); ?>" class="btn btn-secondary">🏆 查看该校区排行</a>
