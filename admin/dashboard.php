@@ -14,7 +14,7 @@ $totalViews = $pdo->query("SELECT COUNT(*) as count FROM views")->fetch()['count
 $avgScore = $pdo->query("SELECT AVG(overall_score) as avg FROM restaurants")->fetch()['avg'];
 
 // 最近添加的商家
-$recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at DESC LIMIT 5")->fetchAll();
+$recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM restaurants r LEFT JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC LIMIT 5")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -263,6 +263,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                             <th>商家名称</th>
                             <th>校区</th>
                             <th>综合评分</th>
+                            <th>创建者</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -281,6 +282,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                                         <?php echo $restaurant['overall_score']; ?>
                                     </span>
                                 </td>
+                                <td><?php echo h($restaurant['created_by_user'] ?? '管理员'); ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
                                 <td>
                                     <div class="actions-cell">

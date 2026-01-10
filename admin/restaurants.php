@@ -11,7 +11,7 @@ $sort = $_GET['sort'] ?? 'overall_score';
 $order = $_GET['order'] ?? 'DESC';
 $campusFilter = $_GET['campus'] ?? '';
 
-$restaurants = getAllRestaurants($sort, $order);
+$restaurants = getAllRestaurantsWithUser($sort, $order);
 $campuses = getCampusList();
 
 // 校区过滤
@@ -253,6 +253,7 @@ if ($campusFilter) {
                             <th>校区</th>
                             <th>点单平台</th>
                             <th>评分</th>
+                            <th>创建者</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -290,6 +291,7 @@ if ($campusFilter) {
                                         <?php echo $restaurant['overall_score']; ?>
                                     </span>
                                 </td>
+                                <td><?php echo h($restaurant['created_by_user'] ?? '管理员'); ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
                                 <td>
                                     <div class="actions-cell">

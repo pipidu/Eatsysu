@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="success">
                     ✅ <?php echo h($success); ?>
                     <br><br>
-                    <a href="/my-restaurants.php" style="color: #005826;">返回我的商家</a>
+                    <a href="/user/my-restaurants.php" style="color: #005826;">返回我的商家</a>
                 </div>
             <?php endif; ?>
 
@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">保存修改</button>
-                        <a href="/my-restaurants.php" class="btn btn-secondary">取消</a>
+                        <a href="/user/my-restaurants.php" class="btn btn-secondary">取消</a>
                     </div>
                 </form>
             <?php endif; ?>

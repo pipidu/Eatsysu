@@ -110,6 +110,7 @@ $currentUser = getCurrentUser();
                 <a href="/ranking.php">排行榜</a>
                 <a href="/discover.php">发现</a>
                 <a href="/submit.php" class="active">上传商家</a>
+                <a href="/user/my-restaurants.php">我的商家</a>
                 <a href="/user/user-logout.php">退出</a>
             </nav>
         </div>
@@ -124,7 +125,7 @@ $currentUser = getCurrentUser();
 
             <?php if ($success): ?>
                 <div class="success">
-                    ✅ 商家上传成功！等待管理员审核后将在网站上显示。
+                    ✅ 商家上传成功！
                     <br><br>
                     <a href="/" style="color: #005826;">返回首页</a>
                 </div>

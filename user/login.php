@@ -4,27 +4,68 @@ require_once __DIR__ . '/../includes/functions.php';
 $error = '';
 $success = '';
 
+// 启动 Session
+session_start();
+
+// 生成验证码
+function generateCaptcha() {
+    $code = '';
+    for ($i = 0; $i < 4; $i++) {
+        $code .= rand(0, 9);
+    }
+    $_SESSION['captcha_code'] = $code;
+    $_SESSION['captcha_time'] = time();
+    return $code;
+}
+
+// 验证验证码
+function verifyCaptcha($inputCode) {
+    if (!isset($_SESSION['captcha_code']) || !isset($_SESSION['captcha_time'])) {
+        return false;
+    }
+    // 验证码5分钟内有效
+    if (time() - $_SESSION['captcha_time'] > 300) {
+        unset($_SESSION['captcha_code']);
+        unset($_SESSION['captcha_time']);
+        return false;
+    }
+    return $inputCode === $_SESSION['captcha_code'];
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
+    $captcha = $_POST['captcha'] ?? '';
     $loginType = $_POST['login_type'] ?? 'user';
 
-    if ($loginType === 'admin') {
-        if (adminLogin($username, $password)) {
-            header('Location: /admin/dashboard.php');
-            exit;
-        } else {
-            $error = '管理员用户名或密码错误';
-        }
+    // 验证验证码
+    if (!verifyCaptcha($captcha)) {
+        $error = '验证码错误或已过期';
     } else {
-        if (userLogin($username, $password)) {
-            header('Location: /');
-            exit;
+        // 验证成功后清除验证码
+        unset($_SESSION['captcha_code']);
+        unset($_SESSION['captcha_time']);
+
+        if ($loginType === 'admin') {
+            if (adminLogin($username, $password)) {
+                header('Location: /admin/dashboard.php');
+                exit;
+            } else {
+                $error = '管理员用户名或密码错误';
+            }
         } else {
-            $error = '用户名或密码错误';
+            if (userLogin($username, $password)) {
+                header('Location: /');
+                exit;
+            } else {
+                $error = '用户名或密码错误';
+            }
         }
     }
 }
+
+// 生成新的验证码（每次刷新页面）
+$captchaCode = generateCaptcha();
 
 // 如果已登录，直接跳转
 if (isAdminLoggedIn()) {
@@ -198,6 +239,20 @@ if (isUserLoggedIn()) {
             <div class="form-group">
                 <label for="password">密码</label>
                 <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <div class="form-group">
+                <label for="captcha">验证码</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" id="captcha" name="captcha" required placeholder="请输入验证码" style="width: 120px;">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4d2x4IiB4bWxucz0iaHR0cDovL3d3dy53My5vZy8yMDAwL3N2ZyIj48dGV4dCB4d2x4IiB4bWxucz0iaHR0cDovL3d3dy53My5vZy8yMDAwL3N2ZyIiB0eGg9IjAgMTAwIDEwMCIgd2VydG9yPSJyZyIgZmlsbD0iI2ZmZmZmZiIHN0cm9rZS13aWR0aD0iMS4xIiBzdHJva2Utb3BhY2l0eT0ibWl0dGVybWl0IiBzdHJva2Utb3Zhc2l0eT0i3Ij48dGV4dCB4c2x4IjE0IE1EMCIgZmlsbD0iI2ZmZmZmZiIHN0cm9rZS13aWR0aD0iMS4xIiBzdHJva2Utb3BhY2l0eT0ibWl0dGVybWl0IiBzdHJva2Utb3Zhc2l0eT0iMyI+PC90ZXh0Pjwvc3ZnPg==" 
+                         style="width: 80px; height: 32px; cursor: pointer; border-radius: 4px;" 
+                         onclick="location.reload()" 
+                         alt="验证码：<?php echo $captchaCode; ?>" 
+                         title="点击刷新验证码">
+                    <span style="font-size: 18px; font-weight: bold; letter-spacing: 4px; color: #005826;">
+                        <?php echo $captchaCode; ?>
+                    </span>
+                </div>
             </div>
             <button type="submit" class="btn" id="submitBtn">登录</button>
         </form>

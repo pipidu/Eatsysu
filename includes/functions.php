@@ -600,3 +600,22 @@ function isRestaurantOwnedByUser($restaurantId, $userId) {
     
     return $restaurant['user_id'] === $userId;
 }
+
+// 管理员获取所有商家（包含创建用户信息）
+function getAllRestaurantsWithUser($sort = 'overall_score', $order = 'DESC', $limit = null) {
+    $pdo = getDB();
+    $allowedSort = ['overall_score', 'taste_score', 'price_score', 'packaging_score', 'speed_score', 'created_at'];
+    $sort = in_array($sort, $allowedSort) ? $sort : 'overall_score';
+    $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+
+    $sql = "SELECT r.*, u.username as created_by_user
+            FROM restaurants r
+            LEFT JOIN users u ON r.user_id = u.id
+            ORDER BY r.{$sort} {$order}";
+    if ($limit) {
+        $sql .= " LIMIT {$limit}";
+    }
+
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
