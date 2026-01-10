@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 // 检查登录状态
 if (!isAdminLoggedIn()) {
-    header('Location: /admin/login.php');
+    header('Location: /login.php');
     exit;
 }
 
@@ -26,7 +26,7 @@ if ($campusFilter) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商家管理 - 中山大学美食分享</title>
+    <title>商家管理 - 双鸭山大学美食分享</title>
     <style>
         * {
             margin: 0;
@@ -35,161 +35,172 @@ if ($campusFilter) {
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            background: #fff;
             min-height: 100vh;
         }
         .header {
             background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
+            border-bottom: 1px solid #eee;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
             color: #333;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 500;
         }
         .header .back-link {
-            color: #667eea;
+            color: #005826;
             text-decoration: none;
+            font-size: 13px;
+        }
+        .header .back-link:hover {
+            text-decoration: underline;
         }
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
         .filters {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             align-items: center;
         }
         .filters select {
-            padding: 10px 16px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
             cursor: pointer;
         }
         .filters .btn-add {
-            padding: 10px 20px;
-            background: #667eea;
+            padding: 8px 16px;
+            background: #005826;
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 13px;
             font-weight: 500;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
         .filters .btn-add:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .table-container {
             background: white;
-            border-radius: 12px;
+            border: 1px solid #eee;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th, td {
-            padding: 16px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #eee;
         }
         th {
-            background: #f9fafb;
+            background: #f5f5f5;
             color: #666;
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 500;
+            font-size: 12px;
             text-transform: uppercase;
         }
         td {
             color: #333;
-            font-size: 14px;
+            font-size: 13px;
         }
         tr:hover {
-            background: #f9fafb;
+            background: #f9f9f9;
         }
         .restaurant-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .restaurant-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
             object-fit: cover;
-            background: #f0f0f0;
+            background: #f5f5f5;
         }
         .restaurant-name {
             font-weight: 500;
+            font-size: 13px;
         }
         .score-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 12px;
         }
         .score-high {
-            background: #d1fae5;
-            color: #059669;
+            background: #f0f9f0;
+            color: #005826;
         }
         .score-medium {
             background: #fef3c7;
             color: #d97706;
         }
         .score-low {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
         }
         .actions-cell {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .btn-sm {
-            padding: 6px 12px;
+            padding: 4px 10px;
             font-size: 12px;
             text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.3s;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
         .btn-edit {
-            background: #dbeafe;
-            color: #2563eb;
+            background: #e8f5e9;
+            color: #005826;
+            border: 1px solid #d4e8e3;
         }
         .btn-edit:hover {
-            background: #bfdbfe;
+            background: #d4e8e3;
         }
         .btn-delete {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
+            border: 1px solid #fee2e2;
         }
         .btn-delete:hover {
             background: #fecaca;
+            border-color: #fecaca;
         }
         .btn-view {
             background: #e0e7ff;
             color: #4f46e5;
+            border: 1px solid #bae6fd;
         }
         .btn-view:hover {
             background: #c7d2fe;
         }
         .empty-state {
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
             color: #999;
         }
         .sort-link {
-            color: #667eea;
+            color: #005826;
             text-decoration: none;
             font-weight: 500;
+            font-size: 13px;
         }
         .sort-link:hover {
             text-decoration: underline;
@@ -202,7 +213,7 @@ if ($campusFilter) {
         .platform-tag {
             font-size: 11px;
             padding: 2px 8px;
-            background: #f3f4f6;
+            background: #f5f5f5;
             border-radius: 4px;
             color: #666;
         }
@@ -213,7 +224,7 @@ if ($campusFilter) {
         <h1>商家管理</h1>
         <a href="/admin/dashboard.php" class="back-link">← 返回控制台</a>
     </div>
-    
+
     <div class="container">
         <div class="filters">
             <select onchange="location.href='?campus='+this.value+'&sort=<?php echo h($sort); ?>&order=<?php echo h($order); ?>'" style="margin-right: auto;">
@@ -224,15 +235,15 @@ if ($campusFilter) {
                     </option>
                 <?php endforeach; ?>
             </select>
-            
+
             <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=overall_score&order='+this.value">
                 <option value="DESC" <?php echo $order === 'DESC' ? 'selected' : ''; ?>>评分从高到低</option>
                 <option value="ASC" <?php echo $order === 'ASC' ? 'selected' : ''; ?>>评分从低到高</option>
             </select>
-            
+
             <a href="/admin/add-restaurant.php" class="btn-add">+ 添加商家</a>
         </div>
-        
+
         <div class="table-container">
             <?php if (count($restaurants) > 0): ?>
                 <table>
@@ -248,9 +259,9 @@ if ($campusFilter) {
                     </thead>
                     <tbody>
                         <?php foreach ($restaurants as $restaurant): ?>
-                            <?php 
+                            <?php
                                 $platforms = json_decode($restaurant['platforms'], true) ?: [];
-                                $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' : 
+                                $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' :
                                              ($restaurant['overall_score'] >= 6 ? 'score-medium' : 'score-low');
                             ?>
                             <tr>
@@ -259,7 +270,7 @@ if ($campusFilter) {
                                         <?php if ($restaurant['image_url']): ?>
                                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                                         <?php else: ?>
-                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #e5e7eb; color: #999;">🍜</div>
+                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #999;">🍜</div>
                                         <?php endif; ?>
                                         <span class="restaurant-name"><?php echo h($restaurant['name']); ?></span>
                                     </div>
@@ -284,8 +295,8 @@ if ($campusFilter) {
                                     <div class="actions-cell">
                                         <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-view" target="_blank">查看</a>
                                         <a href="/admin/edit-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
-                                        <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>" 
-                                           class="btn-sm btn-delete" 
+                                        <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>"
+                                           class="btn-sm btn-delete"
                                            onclick="return confirm('确定要删除这个商家吗？');">删除</a>
                                     </div>
                                 </td>
@@ -295,7 +306,7 @@ if ($campusFilter) {
                 </table>
             <?php else: ?>
                 <div class="empty-state">
-                    <div style="font-size: 48px;">🍽️</div>
+                    <div style="font-size: 40px;">🍽️</div>
                     <p>没有找到商家</p>
                     <a href="/admin/add-restaurant.php" class="btn-add" style="margin-top: 16px; display: inline-block;">添加第一个商家</a>
                 </div>

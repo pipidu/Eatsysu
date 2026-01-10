@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 // 检查登录状态
 if (!isAdminLoggedIn()) {
-    header('Location: /admin/login.php');
+    header('Location: /login.php');
     exit;
 }
 
@@ -30,181 +30,187 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            background: #fff;
             min-height: 100vh;
         }
         .header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
             color: #333;
-            font-size: 24px;
+            font-size: 18px;
+            font-weight: 500;
         }
         .header .user-info {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         .header .user-info span {
             color: #666;
+            font-size: 13px;
         }
         .header .btn-logout {
-            padding: 8px 16px;
-            background: #667eea;
+            padding: 6px 14px;
+            background: #005826;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background 0.3s;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: background 0.2s;
         }
         .header .btn-logout:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
         }
         .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
         }
         .stat-card .label {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 8px;
         }
         .stat-card .value {
             color: #333;
-            font-size: 36px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 500;
         }
         .section-title {
             color: #333;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
         }
         .actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
         }
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         .btn-primary {
-            background: #667eea;
+            background: #005826;
             color: white;
         }
         .btn-primary:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .btn-secondary {
-            background: white;
+            background: #fff;
             color: #333;
-            border: 1px solid #e1e1e1;
+            border: 1px solid #ddd;
         }
         .btn-secondary:hover {
-            background: #f9f9f9;
+            background: #f5f5f5;
         }
         .table-container {
-            background: white;
-            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th, td {
-            padding: 16px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #eee;
         }
         th {
-            background: #f9fafb;
+            background: #f5f5f5;
             color: #666;
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 500;
+            font-size: 12px;
             text-transform: uppercase;
         }
         td {
             color: #333;
-            font-size: 14px;
+            font-size: 13px;
         }
         tr:hover {
-            background: #f9fafb;
+            background: #f9f9f9;
         }
         .score-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 12px;
         }
         .score-high {
-            background: #d1fae5;
-            color: #059669;
+            background: #f0f9f0;
+            color: #005826;
         }
         .score-medium {
             background: #fef3c7;
             color: #d97706;
         }
         .score-low {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
         }
         .actions-cell {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .btn-sm {
-            padding: 6px 12px;
+            padding: 4px 10px;
             font-size: 12px;
         }
         .btn-edit {
-            background: #dbeafe;
-            color: #2563eb;
+            background: #e8f5e9;
+            color: #005826;
+            border: 1px solid #d4e8e3;
         }
         .btn-edit:hover {
-            background: #bfdbfe;
+            background: #d4e8e3;
         }
         .btn-delete {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
+            border: 1px solid #fee2e2;
         }
         .btn-delete:hover {
             background: #fecaca;
+            border-color: #fecaca;
         }
         .empty-state {
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
             color: #999;
         }
         .empty-state p {
-            margin-top: 12px;
+            margin-top: 10px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -216,7 +222,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
             <a href="/admin/logout.php" class="btn-logout">退出登录</a>
         </div>
     </div>
-    
+
     <div class="container">
         <div class="stats">
             <div class="stat-card">
@@ -232,7 +238,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                 <div class="value"><?php echo $avgScore ? round($avgScore, 1) : '0.0'; ?></div>
             </div>
         </div>
-        
+
         <h2 class="section-title">快速操作</h2>
         <div class="actions">
             <a href="/admin/add-restaurant.php" class="btn btn-primary">+ 添加商家</a>
@@ -240,7 +246,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
             <a href="/admin/users.php" class="btn btn-secondary">管理用户</a>
             <a href="/" class="btn btn-secondary" target="_blank">查看网站</a>
         </div>
-        
+
         <h2 class="section-title">最近添加</h2>
         <div class="table-container">
             <?php if (count($recentRestaurants) > 0): ?>
@@ -261,7 +267,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                                 <td><?php echo h($restaurant['campus']); ?></td>
                                 <td>
                                     <?php
-                                        $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' : 
+                                        $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' :
                                                      ($restaurant['overall_score'] >= 6 ? 'score-medium' : 'score-low');
                                     ?>
                                     <span class="score-badge <?php echo $scoreClass; ?>">
@@ -271,10 +277,10 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                                 <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
                                 <td>
                                     <div class="actions-cell">
-                                        <a href="/admin/edit-restaurant.php?id=<?php echo $restaurant['id']; ?>" 
+                                        <a href="/admin/edit-restaurant.php?id=<?php echo $restaurant['id']; ?>"
                                            class="btn btn-sm btn-edit">编辑</a>
-                                        <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>" 
-                                           class="btn btn-sm btn-delete" 
+                                        <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>"
+                                           class="btn btn-sm btn-delete"
                                            onclick="return confirm('确定要删除这个商家吗？');">删除</a>
                                     </div>
                                 </td>
@@ -284,7 +290,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
                 </table>
             <?php else: ?>
                 <div class="empty-state">
-                    <div style="font-size: 48px;">🍽️</div>
+                    <div style="font-size: 40px;">🍽️</div>
                     <p>还没有添加任何商家</p>
                     <a href="/admin/add-restaurant.php" class="btn btn-primary">添加第一个商家</a>
                 </div>

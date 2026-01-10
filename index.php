@@ -26,12 +26,20 @@ $currentUser = getCurrentUser();
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>双鸭山大学美食分享</title>
+    <style>
+        body {
+            background: #fff;
+        }
+        .hero {
+            background: #005826;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span style="font-size: 28px;">🍜</span>
+                <span style="font-size: 24px;">🍜</span>
                 <h1>双鸭山大学美食</h1>
             </a>
             <nav class="nav-links">
@@ -65,7 +73,7 @@ $currentUser = getCurrentUser();
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #e5e7eb; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>

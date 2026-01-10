@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 // 检查登录状态
 if (!isAdminLoggedIn()) {
-    header('Location: /admin/login.php');
+    header('Location: /login.php');
     exit;
 }
 
@@ -60,179 +60,184 @@ $users = getAllUsers();
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            background: #fff;
             min-height: 100vh;
         }
         .header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
             color: #333;
-            font-size: 24px;
+            font-size: 18px;
+            font-weight: 500;
         }
         .header .user-info {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         .header .user-info span {
             color: #666;
+            font-size: 13px;
         }
         .header .btn-logout {
-            padding: 8px 16px;
-            background: #667eea;
+            padding: 6px 14px;
+            background: #005826;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background 0.3s;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: background 0.2s;
         }
         .header .btn-logout:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
         .section-title {
             color: #333;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
         }
         .alert {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 13px;
         }
         .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #059669;
+            background: #f0f9f0;
+            color: #005826;
+            border-left: 3px solid #005826;
         }
         .alert-error {
-            background: #fee2e2;
-            color: #dc2626;
-            border-left: 4px solid #dc2626;
+            background: #fef2f2;
+            color: #c00;
+            border-left: 3px solid #c00;
         }
         .form-container {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 32px;
         }
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr auto;
-            gap: 16px;
+            gap: 12px;
             align-items: end;
         }
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #333;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
         }
         .form-group input {
             width: 100%;
-            padding: 10px 16px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: border-color 0.2s;
         }
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #005826;
         }
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         .btn-primary {
-            background: #667eea;
+            background: #005826;
             color: white;
         }
         .btn-primary:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .btn-secondary {
-            background: white;
+            background: #fff;
             color: #333;
-            border: 1px solid #e1e1e1;
+            border: 1px solid #ddd;
         }
         .btn-secondary:hover {
-            background: #f9f9f9;
+            background: #f5f5f5;
         }
         .table-container {
-            background: white;
-            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th, td {
-            padding: 16px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #eee;
         }
         th {
-            background: #f9fafb;
+            background: #f5f5f5;
             color: #666;
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 500;
+            font-size: 12px;
             text-transform: uppercase;
         }
         td {
             color: #333;
-            font-size: 14px;
+            font-size: 13px;
         }
         tr:hover {
-            background: #f9fafb;
+            background: #f9f9f9;
         }
         .actions-cell {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .btn-sm {
-            padding: 6px 12px;
+            padding: 4px 10px;
             font-size: 12px;
         }
         .btn-delete {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
+            border: 1px solid #fee2e2;
         }
         .btn-delete:hover {
             background: #fecaca;
+            border-color: #fecaca;
         }
         .empty-state {
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
             color: #999;
         }
         .empty-state p {
-            margin-top: 12px;
+            margin-top: 10px;
+            font-size: 13px;
         }
         @media (max-width: 768px) {
             .form-row {
@@ -319,7 +324,7 @@ $users = getAllUsers();
                 </table>
             <?php else: ?>
                 <div class="empty-state">
-                    <div style="font-size: 48px;">👥</div>
+                    <div style="font-size: 40px;">👥</div>
                     <p>还没有添加任何用户</p>
                 </div>
             <?php endif; ?>
