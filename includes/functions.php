@@ -457,7 +457,7 @@ function getRestaurantById($id) {
 }
 
 // 添加商家
-function addRestaurant($data) {
+function addRestaurant($data, $userId = null) {
     $pdo = getDB();
 
     // 计算综合评分
@@ -469,8 +469,8 @@ function addRestaurant($data) {
     ]);
 
     $sql = "INSERT INTO restaurants (name, campus, location, platforms, description, image_url,
-            taste_score, price_score, packaging_score, speed_score, overall_score)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            taste_score, price_score, packaging_score, speed_score, overall_score, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -484,7 +484,8 @@ function addRestaurant($data) {
         $data['price_score'],
         $data['packaging_score'],
         $data['speed_score'],
-        $overall
+        $overall,
+        $userId
     ]);
 
     return $pdo->lastInsertId();
@@ -578,4 +579,24 @@ function generateRadarChartData($restaurant) {
             $restaurant['speed_score']
         ]
     ];
+}
+
+// 获取用户创建的商家列表
+function getRestaurantsByUser($userId) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT * FROM restaurants WHERE user_id = ? ORDER BY created_at DESC");
+    $stmt->execute([$userId]);
+    return $stmt->fetchAll();
+}
+
+// 验证用户是否拥有某个商家
+function isRestaurantOwnedByUser($restaurantId, $userId) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT user_id FROM restaurants WHERE id = ?");
+    $stmt->execute([$restaurantId]);
+    $restaurant = $stmt->fetch();
+    
+    if (!$restaurant) return false;
+    
+    return $restaurant['user_id'] === $userId;
 }

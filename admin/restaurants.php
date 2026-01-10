@@ -78,18 +78,9 @@ if ($campusFilter) {
             font-size: 13px;
             cursor: pointer;
         }
-        .filters .btn-add {
-            padding: 8px 16px;
-            background: #005826;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .filters .btn-add:hover {
-            background: #00441e;
+        .filters select:focus {
+            outline: none;
+            border-color: #005826;
         }
         .table-container {
             background: white;
@@ -111,7 +102,6 @@ if ($campusFilter) {
             color: #666;
             font-weight: 500;
             font-size: 12px;
-            text-transform: uppercase;
         }
         td {
             color: #333;
@@ -165,14 +155,25 @@ if ($campusFilter) {
             text-decoration: none;
             border-radius: 4px;
             transition: all 0.2s;
+            display: inline-block;
         }
         .btn-edit {
-            background: #e8f5e9;
+            background: #f5f5f5;
             color: #005826;
-            border: 1px solid #d4e8e3;
+            border: 1px solid #005826;
         }
         .btn-edit:hover {
-            background: #d4e8e3;
+            background: #e8f5e9;
+            border-color: #005826;
+        }
+        .btn-view {
+            background: #f5f5f5;
+            color: #005826;
+            border: 1px solid #005826;
+        }
+        .btn-view:hover {
+            background: #e8f5e9;
+            border-color: #005826;
         }
         .btn-delete {
             background: #fef2f2;
@@ -183,27 +184,26 @@ if ($campusFilter) {
             background: #fecaca;
             border-color: #fecaca;
         }
-        .btn-view {
-            background: #e0e7ff;
-            color: #4f46e5;
-            border: 1px solid #bae6fd;
+        .btn-add {
+            padding: 6px 14px;
+            background: #005826;
+            color: white;
+            text-decoration: none;
+            border: 1px solid #005826;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-block;
         }
-        .btn-view:hover {
-            background: #c7d2fe;
+        .btn-add:hover {
+            background: #00441e;
+            border-color: #00441e;
         }
         .empty-state {
             padding: 50px 20px;
             text-align: center;
             color: #999;
-        }
-        .sort-link {
-            color: #005826;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 13px;
-        }
-        .sort-link:hover {
-            text-decoration: underline;
         }
         .platforms-display {
             display: flex;
@@ -227,7 +227,7 @@ if ($campusFilter) {
 
     <div class="container">
         <div class="filters">
-            <select onchange="location.href='?campus='+this.value+'&sort=<?php echo h($sort); ?>&order=<?php echo h($order); ?>'" style="margin-right: auto;">
+            <select onchange="location.href='?campus='+this.value+'&sort=<?php echo h($sort); ?>&order=<?php echo h($order); ?>'">
                 <option value="">全部校区</option>
                 <?php foreach ($campuses as $campus): ?>
                     <option value="<?php echo h($campus); ?>" <?php echo $campusFilter === $campus ? 'selected' : ''; ?>>
@@ -308,7 +308,7 @@ if ($campusFilter) {
                 <div class="empty-state">
                     <div style="font-size: 40px;">🍽️</div>
                     <p>没有找到商家</p>
-                    <a href="/admin/add-restaurant.php" class="btn-add" style="margin-top: 16px; display: inline-block;">添加第一个商家</a>
+                    <a href="/admin/add-restaurant.php" class="btn-add" style="margin-top: 16px;">添加第一个商家</a>
                 </div>
             <?php endif; ?>
         </div>

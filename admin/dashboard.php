@@ -60,12 +60,14 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
             background: #005826;
             color: white;
             text-decoration: none;
+            border: 1px solid #005826;
             border-radius: 4px;
             font-size: 13px;
             transition: background 0.2s;
         }
         .header .btn-logout:hover {
             background: #00441e;
+            border-color: #00441e;
         }
         .container {
             max-width: 1200px;
@@ -104,6 +106,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .btn {
             padding: 8px 16px;
@@ -118,9 +121,11 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
         .btn-primary {
             background: #005826;
             color: white;
+            border: 1px solid #005826;
         }
         .btn-primary:hover {
             background: #00441e;
+            border-color: #00441e;
         }
         .btn-secondary {
             background: #fff;
@@ -129,6 +134,7 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
         }
         .btn-secondary:hover {
             background: #f5f5f5;
+            border-color: #bbb;
         }
         .table-container {
             background: #fff;
@@ -185,14 +191,15 @@ $recentRestaurants = $pdo->query("SELECT * FROM restaurants ORDER BY created_at 
         .btn-sm {
             padding: 4px 10px;
             font-size: 12px;
+            text-decoration: none;
         }
         .btn-edit {
-            background: #e8f5e9;
+            background: #f5f5f5;
             color: #005826;
-            border: 1px solid #d4e8e3;
+            border: 1px solid #005826;
         }
         .btn-edit:hover {
-            background: #d4e8e3;
+            background: #e8f5e9;
         }
         .btn-delete {
             background: #fef2f2;

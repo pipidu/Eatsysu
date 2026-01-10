@@ -105,7 +105,7 @@ body {
 .hero.discover .btn {
     background: #fff;
     color: #005826;
-    border: none;
+    border: 1px solid #005826;
 }
 
 .hero.discover .btn:hover {
@@ -299,23 +299,36 @@ body {
     color: #999;
 }
 
-/* 按钮样式 */
+/* 按钮样式 - 统一简约绿色主题 */
 .btn {
     display: inline-block;
     padding: 10px 24px;
     background: #005826;
     color: white;
     text-decoration: none;
+    border: 1px solid #005826;
     border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
-    transition: background 0.2s;
-    border: none;
+    transition: all 0.2s;
     cursor: pointer;
+    line-height: 1.4;
 }
 
 .btn:hover {
     background: #00441e;
+    border-color: #00441e;
+}
+
+.btn-primary {
+    background: #005826;
+    color: white;
+    border-color: #005826;
+}
+
+.btn-primary:hover {
+    background: #00441e;
+    border-color: #00441e;
 }
 
 .btn-secondary {
@@ -326,11 +339,85 @@ body {
 
 .btn-secondary:hover {
     background: #f5f5f5;
+    border-color: #bbb;
 }
 
 .discover-btn {
     text-align: center;
     margin-bottom: 50px;
+}
+
+/* 表单按钮组 */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-group .btn {
+    flex: 1;
+}
+
+/* 小按钮 */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-edit {
+    background: #f5f5f5;
+    color: #005826;
+    border: 1px solid #005826;
+}
+
+.btn-edit:hover {
+    background: #e8f5e9;
+    border-color: #005826;
+}
+
+.btn-view {
+    background: #f5f5f5;
+    color: #005826;
+    border: 1px solid #005826;
+}
+
+.btn-view:hover {
+    background: #e8f5e9;
+    border-color: #005826;
+}
+
+.btn-delete {
+    background: #fef2f2;
+    color: #c00;
+    border: 1px solid #fee2e2;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+    border-color: #fecaca;
+}
+
+.btn-add {
+    background: #005826;
+    color: white;
+    border-color: #005826;
+}
+
+.btn-add:hover {
+    background: #00441e;
+    border-color: #00441e;
+}
+
+/* 危险按钮 */
+.btn-danger {
+    background: #c00;
+    color: white;
+    border: 1px solid #c00;
+}
+
+.btn-danger:hover {
+    background: #a00;
+    border-color: #a00;
 }
 
 /* 空状态 */
@@ -465,7 +552,7 @@ footer a:hover {
     margin-bottom: 28px;
     padding: 16px;
     background: #f5f5f5;
-    border-radius: 4px;
+    border-radius:  4px;
 }
 
 .score-display {
@@ -632,7 +719,7 @@ footer a:hover {
 }
 
 .filters select, .filters label {
-    padding: 8px 12px;
+    padding: 6px 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 13px;
@@ -696,4 +783,317 @@ footer a:hover {
     padding: 40px;
     color: #666;
     display: none;
+}
+
+/* 表单样式 */
+.form-container {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 28px;
+}
+
+.form-header {
+    margin-bottom: 24px;
+}
+
+.form-header h1 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.form-header p {
+    color: #999;
+    font-size: 13px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.form-group label span.required {
+    color: #c00;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #005826;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.alert {
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.alert-success {
+    background: #f0f9f0;
+    color: #005826;
+    border-left: 3px solid #005826;
+}
+
+.alert-error {
+    background: #fef2f2;
+    color: #c00;
+    border-left: 3px solid #c00;
+}
+
+/* 上传区域 */
+.upload-area {
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.upload-area:hover {
+    border-color: #005826;
+}
+
+.upload-area input[type="file"] {
+    display: none;
+}
+
+.upload-area-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.upload-area-text {
+    color: #666;
+    font-size: 13px;
+}
+
+.upload-area-hint {
+    color: #999;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+/* 表格样式 */
+.table-container {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f5f5f5;
+    color: #666;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+td {
+    color: #333;
+    font-size: 13px;
+}
+
+tr:hover {
+    background: #f9f9f9;
+}
+
+.restaurant-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 6px;
+}
+
+.sort-link {
+    color: #005826;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.sort-link:hover {
+    text-decoration: underline;
+}
+
+.platforms-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.platform-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    color: #666;
+}
+
+/* 登录页面 */
+.login-wrapper {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-header .logo {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.login-header h1 {
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.login-header p {
+    color: #999;
+    font-size: 13px;
+}
+
+.login-tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 24px;
+}
+
+.login-tab {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+}
+
+.login-tab:hover {
+    color: #005826;
+}
+
+.login-tab.active {
+    color: #005826;
+    border-bottom-color: #005826;
+}
+
+.success {
+    background: #f0f9f0;
+    color: #005826;
+    border-left: 3px solid #005826;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+
+/* Admin 样式 */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.stat-card .label {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.stat-card .value {
+    color: #333;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.stat-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }

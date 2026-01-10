@@ -18,6 +18,12 @@ recordView($id);
 
 $platforms = json_decode($restaurant['platforms'], true) ?: [];
 $radarData = generateRadarChartData($restaurant);
+
+$currentUser = getCurrentUser();
+$isOwner = false;
+if ($currentUser) {
+    $isOwner = ($restaurant['user_id'] === $currentUser['id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -128,6 +134,16 @@ $radarData = generateRadarChartData($restaurant);
             margin-top: 28px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-delete {
+            background: #fef2f2;
+            color: #c00;
+            border: 1px solid #fee2e2;
+        }
+        .btn-delete:hover {
+            background: #fecaca;
+            border-color: #fecaca;
         }
     </style>
 </head>
@@ -281,6 +297,10 @@ $radarData = generateRadarChartData($restaurant);
                 <div class="actions">
                     <a href="/discover.php" class="btn btn-primary">🎲 发现更多美食</a>
                     <a href="/ranking.php?campus=<?php echo urlencode($restaurant['campus']); ?>" class="btn btn-secondary">🏆 查看该校区排行</a>
+                    <?php if ($isOwner): ?>
+                        <a href="/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-secondary">✏️ 编辑</a>
+                        <a href="/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-delete" onclick="return confirm('确定要删除这个商家吗？');">🗑️ 删除</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

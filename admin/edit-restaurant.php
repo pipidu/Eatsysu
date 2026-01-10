@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 // 检查登录状态
 if (!isAdminLoggedIn()) {
-    header('Location: /admin/login.php');
+    header('Location: /login.php');
     exit;
 }
 
@@ -72,7 +72,7 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>编辑商家 - 中山大学美食分享</title>
+    <title>编辑商家 - 双鸭山大学美食分享</title>
     <style>
         * {
             margin: 0;
@@ -81,53 +81,59 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #f5f7fa;
+            background: #fff;
             min-height: 100vh;
         }
         .header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
             color: #333;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 500;
         }
         .header .back-link {
-            color: #667eea;
+            color: #005826;
             text-decoration: none;
+            font-size: 13px;
+        }
+        .header .back-link:hover {
+            text-decoration: underline;
         }
         .container {
             max-width: 800px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 20px;
         }
         .form-card {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 28px;
         }
         .form-title {
             color: #333;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
         }
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
         .form-group label {
             display: block;
             color: #333;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
         .form-group label span.required {
-            color: #dc2626;
+            color: #c00;
         }
         .form-group input[type="text"],
         .form-group input[type="tel"],
@@ -135,117 +141,120 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: border-color 0.2s;
         }
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #005826;
         }
         .form-group textarea {
             resize: vertical;
-            min-height: 120px;
+            min-height: 100px;
         }
         .checkbox-group {
             display: flex;
-            flex-wrap: wrap;
             gap: 12px;
+            flex-wrap: wrap;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
             gap: 6px;
+            font-size: 13px;
         }
         .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
         .score-inputs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .score-inputs.three-cols {
-            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
         .score-input {
-            background: #f9fafb;
-            padding: 16px;
-            border-radius: 8px;
+            background: #f5f5f5;
+            padding: 14px;
+            border-radius: 4px;
         }
         .score-input label {
             display: block;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
         .score-input input {
             width: 100%;
         }
         .score-input .hint {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
             margin-top: 4px;
         }
         .form-actions {
             display: flex;
-            gap: 12px;
-            margin-top: 32px;
+            gap: 10px;
+            margin-top: 24px;
         }
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         .btn-primary {
-            background: #667eea;
+            background: #005826;
             color: white;
             flex: 1;
         }
         .btn-primary:hover {
-            background: #5568d3;
+            background: #00441e;
         }
         .btn-secondary {
-            background: white;
+            background: #fff;
             color: #333;
-            border: 1px solid #e1e1e1;
+            border: 1px solid #ddd;
         }
         .btn-secondary:hover {
-            background: #f9f9f9;
+            background: #f5f5f5;
         }
         .alert {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 13px;
         }
         .alert-success {
-            background: #d1fae5;
-            color: #059669;
+            background: #f0f9f0;
+            color: #005826;
+            border-left: 3px solid #005826;
         }
         .alert-error {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #fef2f2;
+            color: #c00;
+            border-left: 3px solid #c00;
         }
         .current-image {
             margin-top: 12px;
         }
         .current-image img {
             max-width: 200px;
-            border-radius: 8px;
+            border-radius: 4px;
+            border: 1px solid #eee;
         }
         .current-image p {
             font-size: 12px;
-            color: #666;
+            color: #999;
             margin-top: 4px;
         }
     </style>

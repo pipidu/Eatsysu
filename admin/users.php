@@ -64,7 +64,7 @@ $users = getAllUsers();
             min-height: 100vh;
         }
         .header {
-            background: #fff;
+            background: white;
             border-bottom: 1px solid #eee;
             padding: 16px 40px;
             display: flex;
@@ -177,7 +177,7 @@ $users = getAllUsers();
             background: #00441e;
         }
         .btn-secondary {
-            background: #fff;
+            background: white;
             color: #333;
             border: 1px solid #ddd;
         }
@@ -204,7 +204,6 @@ $users = getAllUsers();
             color: #666;
             font-weight: 500;
             font-size: 12px;
-            text-transform: uppercase;
         }
         td {
             color: #333;
@@ -315,7 +314,7 @@ $users = getAllUsers();
                                     <div class="actions-cell">
                                         <a href="/admin/users.php?delete=<?php echo $user['id']; ?>"
                                            class="btn btn-sm btn-delete"
-                                           onclick="return confirm('确定要删除这个用户吗？')">删除</a>
+                                           onclick="return confirm('确定要删除这个用户吗？');">删除</a>
                                     </div>
                                 </td>
                             </tr>

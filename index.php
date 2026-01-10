@@ -48,6 +48,7 @@ $currentUser = getCurrentUser();
                 <a href="/discover.php">发现</a>
                 <?php if ($currentUser): ?>
                     <a href="/submit.php">上传商家</a>
+                    <a href="/my-restaurants.php">我的商家</a>
                     <a href="/user-logout.php">退出</a>
                 <?php else: ?>
                     <a href="/login.php" style="color: #005826;">登录</a>

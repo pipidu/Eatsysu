@@ -24,10 +24,13 @@ CREATE TABLE IF NOT EXISTS restaurants (
     packaging_score DECIMAL(3,1) DEFAULT 0 COMMENT '包装评分',
     speed_score DECIMAL(3,1) DEFAULT 0 COMMENT '速度评分',
     overall_score DECIMAL(3,1) DEFAULT 0 COMMENT '综合评分',
+    user_id INT NULL COMMENT '创建商家的用户ID',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_campus (campus),
-    INDEX idx_overall_score (overall_score DESC)
+    INDEX idx_overall_score (overall_score DESC),
+    INDEX idx_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- 用户浏览记录表（可选，用于统计）

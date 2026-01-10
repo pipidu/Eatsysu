@@ -33,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 准备数据
+        $currentUser = getCurrentUser();
+        
         $data = [
             'name' => $_POST['name'],
             'campus' => $_POST['campus'],
@@ -60,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 添加商家
-        addRestaurant($data);
+        addRestaurant($data, $currentUser['id']);
         $success = true;
 
     } catch (Exception $e) {
@@ -79,19 +81,11 @@ $currentUser = getCurrentUser();
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
     <title>上传商家 - 双鸭山大学美食分享</title>
     <style>
-        body {
-            background: #fff;
-        }
         .form-container {
             background: #fff;
             border: 1px solid #eee;
             border-radius: 4px;
-            padding: 32px;
-            box-shadow: none;
-            margin-bottom: 50px;
-        }
-        .form-header {
-            margin-bottom: 24px;
+            padding: 28px;
         }
         .form-header h1 {
             font-size: 20px;
@@ -101,114 +95,6 @@ $currentUser = getCurrentUser();
         .form-header p {
             color: #999;
             font-size: 13px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: #333;
-            font-weight: 500;
-            font-size: 13px;
-        }
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 13px;
-            transition: border-color 0.2s;
-        }
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #005826;
-        }
-        .checkbox-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .checkbox-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        .checkbox-item label {
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .success {
-            background: #f0f9f0;
-            color: #005826;
-            padding: 10px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            border-left: 3px solid #005826;
-        }
-        .error {
-            background: #fef2f2;
-            color: #c00;
-            padding: 10px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            border-left: 3px solid #c00;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: #005826;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #00441e;
-        }
-        .btn-secondary {
-            background: #fff;
-            color: #333;
-            border: 1px solid #ddd;
-        }
-        .btn-secondary:hover {
-            background: #f5f5f5;
-        }
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>

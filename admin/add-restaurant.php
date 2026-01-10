@@ -167,14 +167,12 @@ $campuses = getCampusList();
         .checkbox-item input[type="checkbox"] {
             width: 16px;
             height: 16px;
+            cursor: pointer;
         }
         .score-inputs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-        }
-        .score-inputs.three-cols {
-            grid-template-columns: repeat(3, 1fr);
         }
         .score-input {
             background: #f5f5f5;
