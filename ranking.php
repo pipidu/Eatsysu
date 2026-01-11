@@ -50,7 +50,7 @@ $campuses = getCampusList();
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -61,8 +61,8 @@ $campuses = getCampusList();
     </header>
 
     <section class="hero">
-        <h1>🏆 美食排行榜</h1>
-        <p>探索双鸭山大学校园周边的最佳餐厅</p>
+        <h1>美食排行榜</h1>
+        <p>探索校园周边的最佳餐厅</p>
     </section>
 
     <div class="container">
@@ -111,7 +111,7 @@ $campuses = getCampusList();
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #ddd;">+</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -135,7 +135,7 @@ $campuses = getCampusList();
             </div>
         <?php else: ?>
             <div class="empty-state">
-                <div class="emoji">🍽️</div>
+                <div class="icon">+</div>
                 <p>没有找到商家</p>
             </div>
         <?php endif; ?>

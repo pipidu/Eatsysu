@@ -152,7 +152,7 @@ if ($currentUser) {
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -170,7 +170,7 @@ if ($currentUser) {
                 <?php if ($restaurant['image_url']): ?>
                     <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                 <?php else: ?>
-                    <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 80px; background: #f5f5f5; color: #999;">🍜</div>
+                    <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 80px; background: #f5f5f5; color: #ddd;">+</div>
                 <?php endif; ?>
             </div>
 
@@ -188,7 +188,7 @@ if ($currentUser) {
 
                 <?php if ($restaurant['location']): ?>
                     <div class="info-group">
-                        <div class="info-label">📍 位置</div>
+                        <div class="info-label">位置</div>
                         <div class="info-value">
                             <div class="location-info">
                                 <?php echo h($restaurant['location']); ?>
@@ -198,7 +198,7 @@ if ($currentUser) {
                 <?php endif; ?>
 
                 <div class="info-group">
-                    <div class="info-label">📱 推荐点单方式</div>
+                    <div class="info-label">推荐点单方式</div>
                     <div class="platform-tags">
                         <?php if ($platforms['dine_in'] ?? false): ?>
                             <span class="platform-tag"><?php echo defined('PLATFORM_ICONS') ? PLATFORM_ICONS['dine_in'] : '🏢'; ?> 堂食</span>
@@ -247,38 +247,38 @@ if ($currentUser) {
                 <?php endif; ?>
 
                 <div class="info-group">
-                    <div class="info-label">📊 多维评分</div>
+                    <div class="info-label">多维评分</div>
                     <div class="radar-container">
                         <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
                     </div>
                 </div>
 
                 <div class="info-group">
-                    <div class="info-label">📈 评分详情</div>
+                    <div class="info-label">评分详情</div>
                     <div class="score-breakdown">
                         <div class="score-item">
-                            <div class="score-item-name">😋 口味</div>
+                            <div class="score-item-name">口味</div>
                             <div class="score-item-value"><?php echo $restaurant['taste_score']; ?></div>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: <?php echo $restaurant['taste_score'] * 10; ?>%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-item-name">💰 价格</div>
+                            <div class="score-item-name">价格</div>
                             <div class="score-item-value"><?php echo $restaurant['price_score']; ?></div>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: <?php echo $restaurant['price_score'] * 10; ?>%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-item-name">📦 包装</div>
+                            <div class="score-item-name">包装</div>
                             <div class="score-item-value"><?php echo $restaurant['packaging_score']; ?></div>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: <?php echo $restaurant['packaging_score'] * 10; ?>%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-item-name">🚀 速度</div>
+                            <div class="score-item-name">速度</div>
                             <div class="score-item-value"><?php echo $restaurant['speed_score']; ?></div>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: <?php echo $restaurant['speed_score'] * 10; ?>%"></div>
@@ -295,11 +295,11 @@ if ($currentUser) {
                 <?php endif; ?>
 
                 <div class="actions">
-                    <a href="/discover.php" class="btn btn-primary">🎲 发现更多美食</a>
-                    <a href="/ranking.php?campus=<?php echo urlencode($restaurant['campus']); ?>" class="btn btn-secondary">🏆 查看该校区排行</a>
+                    <a href="/discover.php" class="btn btn-primary">发现更多美食</a>
+                    <a href="/ranking.php?campus=<?php echo urlencode($restaurant['campus']); ?>" class="btn btn-secondary">查看该校区排行</a>
                     <?php if ($isOwner): ?>
-                        <a href="/user/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-secondary">✏️ 编辑</a>
-                        <a href="/user/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-delete" onclick="return confirm('确定要删除这个商家吗？');">🗑️ 删除</a>
+                        <a href="/user/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-secondary">编辑</a>
+                        <a href="/user/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-delete" onclick="return confirm('确定要删除这个商家吗？');">删除</a>
                     <?php endif; ?>
                 </div>
             </div>

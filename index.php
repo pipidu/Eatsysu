@@ -40,7 +40,7 @@ $currentUser = getCurrentUser();
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="#" class="active">首页</a>
@@ -58,12 +58,12 @@ $currentUser = getCurrentUser();
     </header>
 
     <section class="hero">
-        <h1>双鸭山大学美食地图</h1>
-        <p>分享双鸭山大学校园周边的美食，帮你找到最好吃的餐厅</p>
+        <h1>双鸭山美食地图</h1>
+        <p>分享校园周边美食，发现好吃餐厅</p>
     </section>
 
     <div class="container">
-        <h2 class="section-title">🏆 推荐排行榜</h2>
+        <h2 class="section-title">推荐商家</h2>
         <p class="section-subtitle">综合评分最高的餐厅</p>
 
         <?php if (count($topRestaurants) > 0): ?>
@@ -74,7 +74,7 @@ $currentUser = getCurrentUser();
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #ddd;">+</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -93,22 +93,22 @@ $currentUser = getCurrentUser();
             </div>
         <?php else: ?>
             <div class="empty-state">
-                <div class="emoji">🍽️</div>
+                <div class="icon">+</div>
                 <p>还没有添加任何商家</p>
             </div>
         <?php endif; ?>
 
         <div class="discover-btn">
-            <a href="/discover.php" class="btn">🎲 随机发现美食</a>
+            <a href="/discover.php" class="btn">发现美食</a>
         </div>
 
-        <h2 class="section-title">🏫 按校区探索</h2>
-        <p class="section-subtitle">选择你想探索的校区</p>
+        <h2 class="section-title">按校区探索</h2>
+        <p class="section-subtitle">选择想探索的校区</p>
 
         <div class="campus-grid">
             <?php foreach (getCampusList() as $campus): ?>
                 <a href="/ranking.php?campus=<?php echo urlencode($campus); ?>" class="campus-card">
-                    <div class="emoji">🏫</div>
+                    <div class="icon">📍</div>
                     <h3><?php echo h($campus); ?></h3>
                     <div class="count"><?php echo $campusStats[$campus] ?? 0; ?> 家商家</div>
                 </a>

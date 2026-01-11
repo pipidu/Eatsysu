@@ -271,7 +271,7 @@ if ($campusFilter) {
                                         <?php if ($restaurant['image_url']): ?>
                                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                                         <?php else: ?>
-                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #999;">🍜</div>
+                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #ddd;">+</div>
                                         <?php endif; ?>
                                         <span class="restaurant-name"><?php echo h($restaurant['name']); ?></span>
                                     </div>

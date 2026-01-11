@@ -133,7 +133,7 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -149,8 +149,8 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
     <div class="container">
         <div class="form-container">
             <div class="form-header">
-                <h1>📋 我的商家</h1>
-                <p>欢迎，<?php echo h($currentUser['username']); ?>！您共创建了 <?php echo count($myRestaurants); ?> 个商家</p>
+                <h1>我的商家</h1>
+                <p>共创建了 <?php echo count($myRestaurants); ?> 个商家</p>
             </div>
 
             <div class="btn-group" style="margin-bottom: 20px;">
@@ -182,7 +182,7 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
                                             <?php if ($restaurant['image_url']): ?>
                                                 <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                                             <?php else: ?>
-                                                <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #999;">🍜</div>
+                                                <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #ddd;">+</div>
                                             <?php endif; ?>
                                             <span class="restaurant-name"><?php echo h($restaurant['name']); ?></span>
                                         </div>

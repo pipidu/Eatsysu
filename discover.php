@@ -43,7 +43,7 @@ $randomRestaurants = getRandomRestaurants(12);
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -54,17 +54,16 @@ $randomRestaurants = getRandomRestaurants(12);
     </header>
 
     <section class="hero discover">
-        <h1>🎲 发现美食</h1>
-        <p>随机探索双鸭山大学周边的美食</p>
+        <h1>发现美食</h1>
+        <p>随机探索校园周边美食</p>
         <button class="btn" onclick="refreshRestaurants()">
-            <span class="btn-icon">🔄</span>换一批
+            换一批
         </button>
     </section>
 
     <div class="container">
         <div id="loading" class="loading">
-            <div style="font-size: 28px; margin-bottom: 12px;">⏳</div>
-            <p>正在为你发现美食...</p>
+            <p>正在加载...</p>
         </div>
 
         <div id="restaurantsGrid" class="restaurant-grid">
@@ -75,7 +74,7 @@ $randomRestaurants = getRandomRestaurants(12);
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #999;">🍜</div>
+                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #ddd;">+</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -93,7 +92,7 @@ $randomRestaurants = getRandomRestaurants(12);
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-state" style="grid-column: 1 / -1;">
-                    <div class="emoji">🍽️</div>
+                    <div class="icon">+</div>
                     <p>还没有添加任何商家</p>
                 </div>
             <?php endif; ?>

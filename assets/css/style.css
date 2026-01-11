@@ -152,9 +152,10 @@ body {
     border-color: #005826;
 }
 
-.campus-card .emoji {
+.campus-card .icon {
     font-size: 40px;
     margin-bottom: 12px;
+    color: #005826;
 }
 
 .campus-card h3 {
@@ -427,9 +428,10 @@ body {
     color: #999;
 }
 
-.empty-state .emoji {
-    font-size: 56px;
-    margin-bottom: 12px;
+.empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #ddd;
 }
 
 /* 底部页脚 */
@@ -774,10 +776,6 @@ footer a:hover {
 }
 
 /* Discover页面特殊样式 */
-.btn-icon {
-    margin-right: 6px;
-}
-
 .loading {
     text-align: center;
     padding: 40px;
@@ -918,6 +916,7 @@ footer a:hover {
 .upload-area-icon {
     font-size: 36px;
     margin-bottom: 8px;
+    color: #005826;
 }
 
 .upload-area-text {
@@ -1014,8 +1013,9 @@ tr:hover {
 }
 
 .login-header .logo {
-    font-size: 36px;
+    font-size: 32px;
     margin-bottom: 12px;
+    color: #005826;
 }
 
 .login-header h1 {

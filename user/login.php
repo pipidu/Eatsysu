@@ -217,7 +217,7 @@ if (isUserLoggedIn()) {
     <div class="login-wrapper">
         <div class="login-header">
             <div class="logo">🍜</div>
-            <h1>双鸭山大学美食分享</h1>
+            <h1>双鸭山美食</h1>
             <p>登录</p>
         </div>
 

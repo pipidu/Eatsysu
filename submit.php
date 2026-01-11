@@ -103,7 +103,7 @@ $currentUser = getCurrentUser();
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -119,13 +119,13 @@ $currentUser = getCurrentUser();
     <div class="container">
         <div class="form-container">
             <div class="form-header">
-                <h1>📝 上传商家</h1>
-                <p>欢迎，<?php echo h($currentUser['username']); ?>！请填写商家信息</p>
+                <h1>上传商家</h1>
+                <p>欢迎，<?php echo h($currentUser['username']); ?></p>
             </div>
 
             <?php if ($success): ?>
                 <div class="success">
-                    ✅ 商家上传成功！
+                    商家上传成功
                     <br><br>
                     <a href="/" style="color: #005826;">返回首页</a>
                 </div>
@@ -133,7 +133,7 @@ $currentUser = getCurrentUser();
 
             <?php if ($error): ?>
                 <div class="error">
-                    ❌ <?php echo h($error); ?>
+                    <?php echo h($error); ?>
                 </div>
             <?php endif; ?>
 

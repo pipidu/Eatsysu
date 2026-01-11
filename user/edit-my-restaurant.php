@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="nav-container">
             <a href="/" class="logo">
                 <span style="font-size: 24px;">🍜</span>
-                <h1>双鸭山大学美食</h1>
+                <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
                 <a href="/">首页</a>
@@ -156,19 +156,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="form-container">
             <div class="form-header">
-                <h1>✏️ 编辑商家</h1>
-                <p>欢迎，<?php echo h($currentUser['username']); ?>！请修改商家信息</p>
+                <h1>编辑商家</h1>
+                <p>修改商家信息</p>
             </div>
 
             <?php if ($error): ?>
                 <div class="error">
-                    ❌ <?php echo h($error); ?>
+                    <?php echo h($error); ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($success): ?>
                 <div class="success">
-                    ✅ <?php echo h($success); ?>
+                    <?php echo h($success); ?>
                     <br><br>
                     <a href="/user/my-restaurants.php" style="color: #005826;">返回我的商家</a>
                 </div>

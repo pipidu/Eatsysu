@@ -247,7 +247,7 @@ $users = getAllUsers();
 </head>
 <body>
     <div class="header">
-        <h1>🍜 双鸭山大学美食管理</h1>
+        <h1>双鸭山美食管理</h1>
         <div class="user-info">
             <span>欢迎, <?php echo h($_SESSION['admin_username']); ?></span>
             <a href="/admin/logout.php" class="btn-logout">退出登录</a>
@@ -257,13 +257,13 @@ $users = getAllUsers();
     <div class="container">
         <?php if ($success): ?>
             <div class="alert alert-success">
-                ✅ <?php echo h($success); ?>
+                <?php echo h($success); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($error): ?>
             <div class="alert alert-error">
-                ❌ <?php echo h($error); ?>
+                <?php echo h($error); ?>
             </div>
         <?php endif; ?>
 

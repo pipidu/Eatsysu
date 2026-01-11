@@ -223,7 +223,7 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
 </head>
 <body>
     <div class="header">
-        <h1>🍜 双鸭山大学美食管理</h1>
+        <h1>双鸭山美食管理</h1>
         <div class="user-info">
             <span>欢迎, <?php echo h($_SESSION['admin_username']); ?></span>
             <a href="/admin/logout.php" class="btn-logout">退出登录</a>
