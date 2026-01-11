@@ -4,10 +4,8 @@ require_once __DIR__ . '/../includes/functions.php';
 $error = '';
 $success = '';
 
-// 启动 Session
 session_start();
 
-// 生成验证码
 function generateCaptcha() {
     $code = '';
     for ($i = 0; $i < 4; $i++) {
@@ -18,12 +16,10 @@ function generateCaptcha() {
     return $code;
 }
 
-// 验证验证码
 function verifyCaptcha($inputCode) {
     if (!isset($_SESSION['captcha_code']) || !isset($_SESSION['captcha_time'])) {
         return false;
     }
-    // 验证码5分钟内有效
     if (time() - $_SESSION['captcha_time'] > 300) {
         unset($_SESSION['captcha_code']);
         unset($_SESSION['captcha_time']);
@@ -38,11 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $captcha = $_POST['captcha'] ?? '';
     $loginType = $_POST['login_type'] ?? 'user';
 
-    // 验证验证码
     if (!verifyCaptcha($captcha)) {
         $error = '验证码错误或已过期';
     } else {
-        // 验证成功后清除验证码
         unset($_SESSION['captcha_code']);
         unset($_SESSION['captcha_time']);
 
@@ -64,10 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// 生成新的验证码（每次刷新页面）
 $captchaCode = generateCaptcha();
 
-// 如果已登录，直接跳转
 if (isAdminLoggedIn()) {
     header('Location: /admin/dashboard.php');
     exit;
@@ -83,7 +75,7 @@ if (isUserLoggedIn()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - 双鸭山大学美食分享</title>
+    <title>登录 - 双鸭山美食</title>
     <style>
         * {
             margin: 0;
@@ -101,122 +93,145 @@ if (isUserLoggedIn()) {
         }
         .login-wrapper {
             width: 100%;
-            max-width: 360px;
+            max-width: 400px;
         }
         .login-header {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 40px;
         }
-        .logo {
-            font-size: 36px;
-            margin-bottom: 12px;
+        .login-header .logo {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: var(--primary-color);
         }
         .login-header h1 {
-            font-size: 18px;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 4px;
+            font-size: 24px;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-bottom: 8px;
         }
         .login-header p {
-            color: #999;
-            font-size: 13px;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
         .login-tabs {
             display: flex;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 32px;
         }
         .login-tab {
             flex: 1;
-            padding: 12px 0;
+            padding: 16px 0;
             text-align: center;
             cursor: pointer;
-            color: #999;
+            color: var(--text-secondary);
             font-size: 14px;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
             transition: all 0.2s;
+            font-weight: 500;
         }
         .login-tab:hover {
-            color: #005826;
+            color: var(--primary-color);
         }
         .login-tab.active {
-            color: #005826;
-            border-bottom-color: #005826;
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
         }
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            color: #333;
-            font-size: 13px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
         }
         .form-group input {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 14px;
             transition: border-color 0.2s;
         }
         .form-group input:focus {
             outline: none;
-            border-color: #005826;
+            border-color: var(--primary-color);
+        }
+        .captcha-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .captcha-input {
+            flex: 1;
+        }
+        .captcha-display {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 8px;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
         }
         .btn {
             width: 100%;
-            padding: 10px;
-            background: #005826;
+            padding: 12px;
+            background: var(--primary-color);
             color: white;
             border: none;
             border-radius: 4px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
         }
         .btn:hover {
             background: #00441e;
         }
-        .error {
+        .alert {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #c00;
+        }
+        .alert-error {
             background: #fef2f2;
             color: #c00;
-            padding: 10px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            border-left: 3px solid #c00;
-        }
-        .success {
-            background: #f0f9f0;
-            color: #005826;
-            padding: 10px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            border-left: 3px solid #005826;
+            border-left-color: #c00;
         }
         .back-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
         }
         .back-link a {
-            color: #999;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
         }
         .back-link a:hover {
-            color: #005826;
+            color: var(--primary-color);
+        }
+        :root {
+            --primary-color: #005826;
+            --primary-light: #e8f5e9;
+            --text-main: #333;
+            --text-secondary: #666;
+            --border-color: #e5e5e5;
+            --bg-light: #fafafa;
         }
     </style>
 </head>
 <body>
     <div class="login-wrapper">
         <div class="login-header">
-            <div class="logo">🍜</div>
+            <div class="logo">■</div>
             <h1>双鸭山美食</h1>
             <p>登录</p>
         </div>
@@ -227,7 +242,7 @@ if (isUserLoggedIn()) {
         </div>
 
         <?php if ($error): ?>
-            <div class="error"><?php echo h($error); ?></div>
+            <div class="alert alert-error"><?php echo h($error); ?></div>
         <?php endif; ?>
 
         <form method="POST" action="" id="loginForm">
@@ -242,37 +257,27 @@ if (isUserLoggedIn()) {
             </div>
             <div class="form-group">
                 <label for="captcha">验证码</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <input type="text" id="captcha" name="captcha" required placeholder="请输入验证码" style="width: 120px;">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4d2x4IiB4bWxucz0iaHR0cDovL3d3dy53My5vZy8yMDAwL3N2ZyIj48dGV4dCB4d2x4IiB4bWxucz0iaHR0cDovL3d3dy53My5vZy8yMDAwL3N2ZyIiB0eGg9IjAgMTAwIDEwMCIgd2VydG9yPSJyZyIgZmlsbD0iI2ZmZmZmZiIHN0cm9rZS13aWR0aD0iMS4xIiBzdHJva2Utb3BhY2l0eT0ibWl0dGVybWl0IiBzdHJva2Utb3Zhc2l0eT0i3Ij48dGV4dCB4c2x4IjE0IE1EMCIgZmlsbD0iI2ZmZmZmZiIHN0cm9rZS13aWR0aD0iMS4xIiBzdHJva2Utb3BhY2l0eT0ibWl0dGVybWl0IiBzdHJva2Utb3Zhc2l0eT0iMyI+PC90ZXh0Pjwvc3ZnPg==" 
-                         style="width: 80px; height: 32px; cursor: pointer; border-radius: 4px;" 
-                         onclick="location.reload()" 
-                         alt="验证码：<?php echo $captchaCode; ?>" 
-                         title="点击刷新验证码">
-                    <span style="font-size: 18px; font-weight: bold; letter-spacing: 4px; color: #005826;">
+                <div class="captcha-group">
+                    <input type="text" id="captcha" name="captcha" required placeholder="请输入验证码" class="captcha-input">
+                    <div class="captcha-display" onclick="location.reload()" title="点击刷新">
                         <?php echo $captchaCode; ?>
-                    </span>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="btn" id="submitBtn">登录</button>
+            <button type="submit" class="btn">登录</button>
         </form>
 
         <div class="back-link">
-            <a href="/">← 返回首页</a>
+            <a href="/">返回首页</a>
         </div>
     </div>
 
     <script>
         function switchTab(type) {
+            document.getElementById('loginType').value = type;
             const tabs = document.querySelectorAll('.login-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
-
             event.target.classList.add('active');
-            document.getElementById('loginType').value = type;
-            document.getElementById('submitBtn').textContent = type === 'admin' ? '管理员登录' : '登录';
-
-            // 聚焦到用户名输入框
-            document.getElementById('username').focus();
         }
     </script>
 </body>

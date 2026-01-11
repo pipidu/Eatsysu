@@ -3,7 +3,6 @@
 $installLockFile = __DIR__ . '/install.lock';
 
 if (!file_exists($installLockFile)) {
-    // 如果访问的是安装页面，则不跳转
     if (basename($_SERVER['PHP_SELF']) !== 'install.php') {
         header('Location: /install.php');
         exit;
@@ -12,7 +11,6 @@ if (!file_exists($installLockFile)) {
 
 require_once __DIR__ . '/includes/functions.php';
 
-// 获取商家数据
 $topRestaurants = getAllRestaurants('overall_score', 'DESC', 10);
 $randomRestaurants = getRandomRestaurants(8);
 $campusStats = getCampusStats();
@@ -25,33 +23,25 @@ $currentUser = getCurrentUser();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/jpeg" href="<?php echo defined('SITE_ICON') ? SITE_ICON : '/favicon.ico'; ?>">
-    <title>双鸭山大学美食分享</title>
-    <style>
-        body {
-            background: #fff;
-        }
-        .hero {
-            background: #005826;
-        }
-    </style>
+    <title>双鸭山美食</title>
 </head>
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span style="font-size: 24px;">🍜</span>
+                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
-                <a href="#" class="active">首页</a>
+                <a href="/" class="active">首页</a>
                 <a href="/ranking.php">排行榜</a>
                 <a href="/discover.php">发现</a>
                 <?php if ($currentUser): ?>
-                    <a href="/submit.php">上传商家</a>
+                    <a href="/submit.php">上传</a>
                     <a href="/user/my-restaurants.php">我的商家</a>
                     <a href="/user/user-logout.php">退出</a>
                 <?php else: ?>
-                    <a href="/user/login.php" style="color: #005826;">登录</a>
+                    <a href="/user/login.php" style="color: var(--primary-color);">登录</a>
                 <?php endif; ?>
             </nav>
         </div>
@@ -74,7 +64,7 @@ $currentUser = getCurrentUser();
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
-                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f5f5f5; color: #ddd;">+</div>
+                            <div class="restaurant-image-placeholder">+</div>
                         <?php endif; ?>
                         <div class="restaurant-content">
                             <div class="restaurant-campus"><?php echo h($restaurant['campus']); ?></div>
@@ -108,7 +98,7 @@ $currentUser = getCurrentUser();
         <div class="campus-grid">
             <?php foreach (getCampusList() as $campus): ?>
                 <a href="/ranking.php?campus=<?php echo urlencode($campus); ?>" class="campus-card">
-                    <div class="icon">📍</div>
+                    <div class="icon">●</div>
                     <h3><?php echo h($campus); ?></h3>
                     <div class="count"><?php echo $campusStats[$campus] ?? 0; ?> 家商家</div>
                 </a>
@@ -118,12 +108,12 @@ $currentUser = getCurrentUser();
 
     <footer>
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
             </a>
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
-            <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener" style="color: #999; text-decoration: none; margin: 0 10px;">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
                 <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
