@@ -79,7 +79,7 @@ $randomRestaurants = getRandomRestaurants(12);
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 4px; font-size: 14px;">
-                <img src="https://doges3.img.shygo.cn/2025/12/30/d0289dc0a46fc5b15b3363ffa78cf6c7.png/720x1080" alt="" style="width: 20px; height: 20px;">
+                <img src="https://doges3.img.shygo.cn/2025/12/30/d0289dc0a46fc5b15b3363ffa78cf6c7.png/720x1080" alt="" style="width: 14px; height: 14px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>
