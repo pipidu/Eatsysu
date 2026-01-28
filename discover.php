@@ -91,22 +91,40 @@ $randomRestaurants = getRandomRestaurants(12);
         function refreshRestaurants() {
             const loading = document.getElementById('loading');
             const grid = document.getElementById('restaurantsGrid');
-            
+
             loading.style.display = 'block';
             grid.style.opacity = '0.5';
-            
+
             fetch('/api/random-restaurants.php')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应异常: ' + response.status);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    grid.innerHTML = data.html;
-                    loading.style.display = 'none';
-                    grid.style.opacity = '1';
-                    initRadarCharts();
+                    if (data.success) {
+                        grid.innerHTML = data.html;
+                        loading.style.display = 'none';
+                        grid.style.opacity = '1';
+                        // 使用 setTimeout 确保 DOM 更新后再初始化图表
+                        setTimeout(function() {
+                            try {
+                                if (typeof initRadarCharts === 'function') {
+                                    initRadarCharts();
+                                }
+                            } catch (e) {
+                                console.error('初始化雷达图失败:', e);
+                            }
+                        }, 100);
+                    } else {
+                        throw new Error(data.error || '未知错误');
+                    }
                 })
                 .catch(error => {
                     loading.style.display = 'none';
                     grid.style.opacity = '1';
-                    alert('加载失败，请刷新页面重试');
+                    console.error('刷新失败:', error);
                 });
         }
     </script>

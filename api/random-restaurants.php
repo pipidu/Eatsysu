@@ -1,4 +1,15 @@
 <?php
+// 检查安装锁
+$installLockFile = __DIR__ . '/../install.lock';
+if (!file_exists($installLockFile)) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => false,
+        'error' => '系统未安装'
+    ]);
+    exit;
+}
+
 require_once __DIR__ . '/../includes/functions.php';
 
 header('Content-Type: application/json');
