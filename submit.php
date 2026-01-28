@@ -80,6 +80,7 @@ $currentUser = getCurrentUser();
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
+                <img src="https://doges3.img.shygo.cn/2026/01/06/42ac7f56a69e3b866e19c6ecb6dc62f8.jpg/720x1080" alt="" style="width: 40px; height: 40px; object-fit: contain; margin-right: 8px;">
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -207,7 +208,8 @@ $currentUser = getCurrentUser();
             </a>
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
-            <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 4px;">
+                <img src="https://doges3.img.shygo.cn/2025/12/30/d0289dc0a46fc5b15b3363ffa78cf6c7.png/720x1080" alt="" style="width: 20px; height: 20px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>
