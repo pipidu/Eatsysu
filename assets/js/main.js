@@ -61,8 +61,8 @@ function initCardRadarCharts() {
     canvases.forEach(canvas => {
         if (canvas.dataset.scores) {
             try {
-                // Base64 解码 JSON 数据
-                const scores = JSON.parse(atob(canvas.dataset.scores));
+                // 浏览器会自动解码 HTML 实体，直接解析即可
+                const scores = JSON.parse(canvas.dataset.scores);
                 if (Array.isArray(scores) && scores.length === 4) {
                     initRadarChart(canvas, ['口味', '价格', '包装', '速度'], scores);
                 }

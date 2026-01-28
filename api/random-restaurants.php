@@ -24,9 +24,9 @@ try {
     if (count($randomRestaurants) > 0) {
         foreach ($randomRestaurants as $restaurant) {
             $radarData = generateRadarChartData($restaurant);
-            $radarDataJson = json_encode($radarData['data']);
-            // 使用 Base64 编码 JSON 数据，避免特殊字符问题
-            $radarDataBase64 = base64_encode($radarDataJson);
+            $radarDataJson = json_encode($radarData['data'], JSON_UNESCAPED_UNICODE);
+            // 对 JSON 数据进行 HTML 实体编码
+            $radarDataJsonEncoded = htmlspecialchars($radarDataJson, ENT_QUOTES, 'UTF-8');
 
             $html .= '<a href="/restaurant.php?id=' . h($restaurant['id']) . '" class="restaurant-card">';
 
@@ -44,7 +44,7 @@ try {
             $html .= '<span class="score-label">综合评分</span>';
             $html .= '</div>';
             $html .= '<div class="radar-chart-container">';
-            $html .= '<canvas class="radar-chart" data-scores="' . $radarDataBase64 . '"></canvas>';
+            $html .= '<canvas class="radar-chart" data-scores="' . $radarDataJsonEncoded . '" style="display: block; box-sizing: border-box; height: 100%; width: 100%;"></canvas>';
             $html .= '</div>';
             $html .= '<p class="restaurant-description">' . h($restaurant['description'] ?? '暂无介绍') . '</p>';
             $html .= '</div>';
