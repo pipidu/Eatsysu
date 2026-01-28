@@ -60,8 +60,15 @@ function initCardRadarCharts() {
     const canvases = document.querySelectorAll('.restaurant-card .radar-chart');
     canvases.forEach(canvas => {
         if (canvas.dataset.scores) {
-            const scores = JSON.parse(canvas.dataset.scores);
-            initRadarChart(canvas, ['口味', '价格', '包装', '速度'], scores);
+            try {
+                // Base64 解码 JSON 数据
+                const scores = JSON.parse(atob(canvas.dataset.scores));
+                if (Array.isArray(scores) && scores.length === 4) {
+                    initRadarChart(canvas, ['口味', '价格', '包装', '速度'], scores);
+                }
+            } catch (e) {
+                console.error('解析雷达图数据失败:', canvas.dataset.scores, e);
+            }
         }
     });
 }

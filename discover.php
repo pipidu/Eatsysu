@@ -42,6 +42,8 @@ $randomRestaurants = getRandomRestaurants(12);
             <?php if (count($randomRestaurants) > 0): ?>
                 <?php foreach ($randomRestaurants as $restaurant): ?>
                     <?php $radarData = generateRadarChartData($restaurant); ?>
+                    <?php $radarDataJson = json_encode($radarData['data']); ?>
+                    <?php $radarDataBase64 = base64_encode($radarDataJson); ?>
                     <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="restaurant-card">
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
@@ -56,7 +58,7 @@ $randomRestaurants = getRandomRestaurants(12);
                                 <span class="score-label">综合评分</span>
                             </div>
                             <div class="radar-chart-container">
-                                <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
+                                <canvas class="radar-chart" data-scores="<?php echo $radarDataBase64; ?>"></canvas>
                             </div>
                             <p class="restaurant-description"><?php echo h($restaurant['description'] ?? '暂无介绍'); ?></p>
                         </div>
