@@ -23,11 +23,6 @@ try {
 
     if (count($randomRestaurants) > 0) {
         foreach ($randomRestaurants as $restaurant) {
-            $radarData = generateRadarChartData($restaurant);
-            $radarDataJson = json_encode($radarData['data'], JSON_UNESCAPED_UNICODE);
-            // 对 JSON 数据进行 HTML 实体编码
-            $radarDataJsonEncoded = htmlspecialchars($radarDataJson, ENT_QUOTES, 'UTF-8');
-
             $html .= '<a href="/restaurant.php?id=' . h($restaurant['id']) . '" class="restaurant-card">';
 
             if ($restaurant['image_url']) {
@@ -43,8 +38,11 @@ try {
             $html .= '<span class="score-badge">' . $restaurant['overall_score'] . '</span>';
             $html .= '<span class="score-label">综合评分</span>';
             $html .= '</div>';
-            $html .= '<div class="radar-chart-container">';
-            $html .= '<canvas class="radar-chart" data-scores="' . $radarDataJsonEncoded . '" style="display: block; box-sizing: border-box; height: 100%; width: 100%;"></canvas>';
+            $html .= '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 13px; color: #666;">';
+            $html .= '<div>口味: <strong style="color: #005826;">' . $restaurant['taste_score'] . '</strong></div>';
+            $html .= '<div>价格: <strong style="color: #005826;">' . $restaurant['price_score'] . '</strong></div>';
+            $html .= '<div>包装: <strong style="color: #005826;">' . $restaurant['packaging_score'] . '</strong></div>';
+            $html .= '<div>速度: <strong style="color: #005826;">' . $restaurant['speed_score'] . '</strong></div>';
             $html .= '</div>';
             $html .= '<p class="restaurant-description">' . h($restaurant['description'] ?? '暂无介绍') . '</p>';
             $html .= '</div>';

@@ -41,9 +41,6 @@ $randomRestaurants = getRandomRestaurants(12);
         <div id="restaurantsGrid" class="restaurant-grid">
             <?php if (count($randomRestaurants) > 0): ?>
                 <?php foreach ($randomRestaurants as $restaurant): ?>
-                    <?php $radarData = generateRadarChartData($restaurant); ?>
-                    <?php $radarDataJson = json_encode($radarData['data'], JSON_UNESCAPED_UNICODE); ?>
-                    <?php $radarDataJsonEncoded = htmlspecialchars($radarDataJson, ENT_QUOTES, 'UTF-8'); ?>
                     <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="restaurant-card">
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
@@ -57,8 +54,11 @@ $randomRestaurants = getRandomRestaurants(12);
                                 <span class="score-badge"><?php echo $restaurant['overall_score']; ?></span>
                                 <span class="score-label">综合评分</span>
                             </div>
-                            <div class="radar-chart-container">
-                                <canvas class="radar-chart" data-scores="<?php echo $radarDataJsonEncoded; ?>" style="display: block; box-sizing: border-box; height: 100%; width: 100%;"></canvas>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 13px; color: #666;">
+                                <div>口味: <strong style="color: #005826;"><?php echo $restaurant['taste_score']; ?></strong></div>
+                                <div>价格: <strong style="color: #005826;"><?php echo $restaurant['price_score']; ?></strong></div>
+                                <div>包装: <strong style="color: #005826;"><?php echo $restaurant['packaging_score']; ?></strong></div>
+                                <div>速度: <strong style="color: #005826;"><?php echo $restaurant['speed_score']; ?></strong></div>
                             </div>
                             <p class="restaurant-description"><?php echo h($restaurant['description'] ?? '暂无介绍'); ?></p>
                         </div>
