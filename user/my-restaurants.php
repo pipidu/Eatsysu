@@ -25,7 +25,6 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -40,18 +39,15 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
     </header>
 
     <div class="container">
-        <div class="form-container">
-            <div class="form-header">
-                <h1>我的商家</h1>
-                <p>共创建了 <?php echo count($myRestaurants); ?> 个商家</p>
-            </div>
+        <h2 class="section-title">我的商家</h2>
+        <p class="section-subtitle">共创建了 <?php echo count($myRestaurants); ?> 个商家</p>
 
-            <div class="btn-group" style="margin-bottom: 24px;">
-                <a href="/submit.php" class="btn btn-primary">添加商家</a>
-                <a href="/" class="btn btn-secondary">返回首页</a>
-            </div>
+        <div style="margin-bottom: 24px; display: flex; gap: 12px;">
+            <a href="/submit.php" class="btn">添加商家</a>
+            <a href="/" class="btn btn-secondary">返回首页</a>
+        </div>
 
-            <div class="table-container">
+        <div class="table-container">
                 <?php if (count($myRestaurants) > 0): ?>
                     <table>
                         <thead>
@@ -71,27 +67,27 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
                                 ?>
                                 <tr>
                                     <td>
-                                        <div class="restaurant-info">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
                                             <?php if ($restaurant['image_url']): ?>
-                                                <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
+                                                <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" style="width: 48px; height: 48px; object-fit: cover; border-radius: 3px;">
                                             <?php else: ?>
-                                                <div class="restaurant-image-placeholder" style="width: 48px; height: 48px; font-size: 24px;">+</div>
+                                                <div style="width: 48px; height: 48px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #ccc; border-radius: 3px;">+</div>
                                             <?php endif; ?>
-                                            <span class="restaurant-name"><?php echo h($restaurant['name']); ?></span>
+                                            <span style="font-size: 14px; color: #333;"><?php echo h($restaurant['name']); ?></span>
                                         </div>
                                     </td>
                                     <td><?php echo h($restaurant['campus']); ?></td>
                                     <td>
-                                        <span class="score-badge <?php echo $scoreClass; ?>">
+                                        <span style="background: #005826; color: #fff; padding: 4px 10px; border-radius: 3px; font-size: 14px; font-weight: 600;">
                                             <?php echo $restaurant['overall_score']; ?>
                                         </span>
                                     </td>
                                     <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
                                     <td>
-                                        <div class="actions-cell">
-                                            <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-view" target="_blank">查看</a>
-                                            <a href="/user/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
-                                            <a href="/user/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-delete" onclick="return confirm('确定要删除这个商家吗？');">删除</a>
+                                        <div style="display: flex; gap: 8px;">
+                                            <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" style="color: #005826; font-size: 13px;" target="_blank">查看</a>
+                                            <a href="/user/edit-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" style="color: #005826; font-size: 13px;">编辑</a>
+                                            <a href="/user/delete-my-restaurant.php?id=<?php echo $restaurant['id']; ?>" style="color: #dc3545; font-size: 13px;" onclick="return confirm('确定要删除这个商家吗？');">删除</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -103,12 +99,12 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
                         <div class="icon">+</div>
                         <p>还没有添加任何商家</p>
                     </div>
-                <?php endif; ?>
             </div>
         </div>
     </div>
-
-    <footer>
+                <?php endif; ?>
+            </div>
+    <footer class="footer">
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
@@ -116,7 +112,6 @@ $myRestaurants = getRestaurantsByUser($currentUser['id']);
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
-                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>

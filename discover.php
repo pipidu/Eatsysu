@@ -16,7 +16,6 @@ $randomRestaurants = getRandomRestaurants(12);
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -30,13 +29,11 @@ $randomRestaurants = getRandomRestaurants(12);
     <section class="hero">
         <h1>发现美食</h1>
         <p>随机探索校园周边美食</p>
-        <button class="btn" onclick="refreshRestaurants()" style="background: #fff; color: var(--primary-color); border: 1px solid var(--primary-color);">
-            换一批
-        </button>
+        <button class="btn btn-secondary" onclick="refreshRestaurants()">换一批</button>
     </section>
 
     <div class="container">
-        <div id="loading" class="loading">
+        <div id="loading" class="loading" style="display: none; text-align: center; padding: 40px;">
             <p>正在加载...</p>
         </div>
 
@@ -73,7 +70,7 @@ $randomRestaurants = getRandomRestaurants(12);
         </div>
     </div>
 
-    <footer>
+    <footer class="footer">
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
@@ -81,7 +78,6 @@ $randomRestaurants = getRandomRestaurants(12);
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
-                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>
@@ -89,5 +85,28 @@ $randomRestaurants = getRandomRestaurants(12);
 
     <script src="https://doges3bucket2.img.shygo.cn/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script>
+        function refreshRestaurants() {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('restaurantsGrid');
+            
+            loading.style.display = 'block';
+            grid.style.opacity = '0.5';
+            
+            fetch('/api/random-restaurants.php')
+                .then(response => response.json())
+                .then(data => {
+                    grid.innerHTML = data.html;
+                    loading.style.display = 'none';
+                    grid.style.opacity = '1';
+                    initRadarCharts();
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    grid.style.opacity = '1';
+                    alert('加载失败，请刷新页面重试');
+                });
+        }
+    </script>
 </body>
 </html>

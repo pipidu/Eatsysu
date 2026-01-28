@@ -92,7 +92,6 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -107,13 +106,10 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
     </header>
 
     <div class="container">
-        <a href="/user/my-restaurants.php" class="back-link">返回</a>
+        <a href="/user/my-restaurants.php" style="display: inline-block; margin-bottom: 16px; color: #005826; font-size: 14px;">返回</a>
 
-        <div class="form-container">
-            <div class="form-header">
-                <h1>编辑商家</h1>
-                <p>修改商家信息</p>
-            </div>
+        <h2 class="section-title">编辑商家</h2>
+        <p class="section-subtitle">修改商家信息</p>
 
             <?php if ($error): ?>
                 <div class="alert alert-error"><?php echo h($error); ?></div>
@@ -153,20 +149,20 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
 
                 <div class="form-group">
                     <label>推荐点单平台</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
                             <input type="checkbox" name="dine_in" id="dine_in" <?php echo ($platforms['dine_in'] ?? false) ? 'checked' : ''; ?>>
                             <span>堂食</span>
                         </label>
-                        <label class="checkbox-item">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
                             <input type="checkbox" name="platform_jd" id="platform_jd" <?php echo ($platforms['jd'] ?? false) ? 'checked' : ''; ?>>
                             <span>京东</span>
                         </label>
-                        <label class="checkbox-item">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
                             <input type="checkbox" name="platform_meituan" id="platform_meituan" <?php echo ($platforms['meituan'] ?? false) ? 'checked' : ''; ?>>
                             <span>美团</span>
                         </label>
-                        <label class="checkbox-item">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
                             <input type="checkbox" name="platform_taobao" id="platform_taobao" <?php echo ($platforms['taobao'] ?? false) ? 'checked' : ''; ?>>
                             <span>淘宝</span>
                         </label>
@@ -211,15 +207,15 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
                     <textarea id="description" name="description"><?php echo h($restaurant['description'] ?? ''); ?></textarea>
                 </div>
 
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">保存</button>
+                <div style="display: flex; gap: 12px;">
+                    <button type="submit" class="btn">保存</button>
                     <a href="/user/my-restaurants.php" class="btn btn-secondary">取消</a>
                 </div>
             </form>
         </div>
     </div>
 
-    <footer>
+    <footer class="footer">
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
@@ -227,7 +223,6 @@ $platforms = json_decode($restaurant['platforms'], true) ?: [];
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
-                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>

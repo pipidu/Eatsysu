@@ -51,7 +51,7 @@ $users = getAllUsers();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户管理 - 双鸭山大学美食管理</title>
+    <title>用户管理 - 双鸭山美食</title>
     <style>
         * {
             margin: 0;
@@ -64,17 +64,16 @@ $users = getAllUsers();
             min-height: 100vh;
         }
         .header {
-            background: white;
-            border-bottom: 1px solid #eee;
-            padding: 16px 40px;
+            background: #005826;
+            color: #fff;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
-            color: #333;
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
         }
         .header .user-info {
             display: flex;
@@ -82,52 +81,51 @@ $users = getAllUsers();
             gap: 16px;
         }
         .header .user-info span {
-            color: #666;
-            font-size: 13px;
+            font-size: 14px;
+            opacity: 0.9;
         }
         .header .btn-logout {
-            padding: 6px 14px;
-            background: #005826;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             text-decoration: none;
-            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
             font-size: 13px;
-            transition: background 0.2s;
         }
         .header .btn-logout:hover {
-            background: #00441e;
+            background: rgba(255, 255, 255, 0.3);
         }
         .container {
             max-width: 1200px;
             margin: 32px auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
         .section-title {
             color: #333;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 600;
             margin-bottom: 16px;
         }
         .alert {
-            padding: 10px 12px;
-            border-radius: 4px;
+            padding: 12px 16px;
+            border-radius: 3px;
             margin-bottom: 16px;
-            font-size: 13px;
+            font-size: 14px;
         }
         .alert-success {
-            background: #f0f9f0;
+            background: #e8f5e9;
             color: #005826;
             border-left: 3px solid #005826;
         }
         .alert-error {
             background: #fef2f2;
-            color: #c00;
-            border-left: 3px solid #c00;
+            color: #dc3545;
+            border-left: 3px solid #dc3545;
         }
         .form-container {
             background: #fff;
-            border: 1px solid #eee;
-            border-radius: 4px;
+            border: 1px solid #e5e5e5;
             padding: 20px;
             margin-bottom: 32px;
         }
@@ -150,10 +148,9 @@ $users = getAllUsers();
         .form-group input {
             width: 100%;
             padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
             font-size: 13px;
-            transition: border-color 0.2s;
         }
         .form-group input:focus {
             outline: none;
@@ -162,32 +159,30 @@ $users = getAllUsers();
         .btn {
             padding: 8px 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s;
         }
         .btn-primary {
             background: #005826;
             color: white;
         }
         .btn-primary:hover {
-            background: #00441e;
+            background: #00441c;
         }
         .btn-secondary {
-            background: white;
+            background: #fff;
             color: #333;
-            border: 1px solid #ddd;
+            border: 1px solid #e5e5e5;
         }
         .btn-secondary:hover {
-            background: #f5f5f5;
+            background: #fafafa;
         }
         .table-container {
             background: #fff;
-            border: 1px solid #eee;
-            border-radius: 4px;
+            border: 1px solid #e5e5e5;
             overflow: hidden;
         }
         table {
@@ -195,48 +190,48 @@ $users = getAllUsers();
             border-collapse: collapse;
         }
         th, td {
-            padding: 12px 14px;
+            padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e5e5e5;
         }
         th {
-            background: #f5f5f5;
+            background: #f8f8f8;
             color: #666;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 13px;
         }
         td {
             color: #333;
-            font-size: 13px;
+            font-size: 14px;
         }
         tr:hover {
-            background: #f9f9f9;
+            background: #fafafa;
         }
         .actions-cell {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         .btn-sm {
-            padding: 4px 10px;
+            padding: 4px 12px;
             font-size: 12px;
         }
         .btn-delete {
-            background: #fef2f2;
-            color: #c00;
-            border: 1px solid #fee2e2;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #e5e5e5;
         }
         .btn-delete:hover {
-            background: #fecaca;
-            border-color: #fecaca;
+            background: #fef2f2;
+            border-color: #dc3545;
         }
         .empty-state {
-            padding: 50px 20px;
+            padding: 60px 20px;
             text-align: center;
             color: #999;
         }
         .empty-state p {
             margin-top: 10px;
-            font-size: 13px;
+            font-size: 14px;
         }
         @media (max-width: 768px) {
             .form-row {
@@ -249,7 +244,7 @@ $users = getAllUsers();
     <div class="header">
         <h1>双鸭山美食管理</h1>
         <div class="user-info">
-            <span>欢迎, <?php echo h($_SESSION['admin_username']); ?></span>
+            <span>欢迎，<?php echo h($_SESSION['admin_username']); ?></span>
             <a href="/admin/logout.php" class="btn-logout">退出登录</a>
         </div>
     </div>
@@ -323,7 +318,6 @@ $users = getAllUsers();
                 </table>
             <?php else: ?>
                 <div class="empty-state">
-                    <div style="font-size: 40px;">👥</div>
                     <p>还没有添加任何用户</p>
                 </div>
             <?php endif; ?>

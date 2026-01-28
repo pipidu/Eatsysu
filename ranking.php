@@ -28,7 +28,6 @@ $campuses = getCampusList();
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -45,49 +44,47 @@ $campuses = getCampusList();
     </section>
 
     <div class="container">
-        <div class="filters">
-            <label>校区</label>
-            <select onchange="location.href='?campus='+this.value+'&sort=<?php echo h($sortBy); ?>&order=<?php echo h($orderBy); ?>'">
-                <option value="">全部</option>
-                <?php foreach ($campuses as $campus): ?>
-                    <option value="<?php echo h($campus); ?>" <?php echo $campusFilter === $campus ? 'selected' : ''; ?>>
-                        <?php echo h($campus); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <div class="filters" style="margin-bottom: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label style="margin-bottom: 4px;">校区</label>
+                <select class="form-control" onchange="location.href='?campus='+this.value+'&sort=<?php echo h($sortBy); ?>&order=<?php echo h($orderBy); ?>'">
+                    <option value="">全部</option>
+                    <?php foreach ($campuses as $campus): ?>
+                        <option value="<?php echo h($campus); ?>" <?php echo $campusFilter === $campus ? 'selected' : ''; ?>>
+                            <?php echo h($campus); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-            <label>排序</label>
-            <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=overall_score&order='+this.value">
-                <option value="DESC" <?php echo $orderBy === 'DESC' ? 'selected' : ''; ?>>从高到低</option>
-                <option value="ASC" <?php echo $orderBy === 'ASC' ? 'selected' : ''; ?>>从低到高</option>
-            </select>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label style="margin-bottom: 4px;">排序方式</label>
+                <select class="form-control" onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort='+this.value+'&order=<?php echo h($orderBy); ?>'">
+                    <option value="overall_score" <?php echo $sortBy === 'overall_score' ? 'selected' : ''; ?>>综合评分</option>
+                    <option value="taste_score" <?php echo $sortBy === 'taste_score' ? 'selected' : ''; ?>>口味</option>
+                    <option value="price_score" <?php echo $sortBy === 'price_score' ? 'selected' : ''; ?>>价格</option>
+                    <option value="packaging_score" <?php echo $sortBy === 'packaging_score' ? 'selected' : ''; ?>>包装</option>
+                    <option value="speed_score" <?php echo $sortBy === 'speed_score' ? 'selected' : ''; ?>>速度</option>
+                </select>
+            </div>
 
-            <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=taste_score&order=DESC'">
-                <option value="" disabled selected>口味</option>
-                <option value="taste_score" <?php echo $sortBy === 'taste_score' ? 'selected' : ''; ?>>按口味</option>
-            </select>
-
-            <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=price_score&order=DESC'">
-                <option value="" disabled selected>价格</option>
-                <option value="price_score" <?php echo $sortBy === 'price_score' ? 'selected' : ''; ?>>按价格</option>
-            </select>
-
-            <select onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=packaging_score&order=DESC'">
-                <option value="" disabled selected>包装</option>
-                <option value="packaging_score" <?php echo $sortBy === 'packaging_score' ? 'selected' : ''; ?>>按包装</option>
-            </select>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label style="margin-bottom: 4px;">顺序</label>
+                <select class="form-control" onchange="location.href='?campus=<?php echo h($campusFilter); ?>&sort=<?php echo h($sortBy); ?>&order='+this.value">
+                    <option value="DESC" <?php echo $orderBy === 'DESC' ? 'selected' : ''; ?>>从高到低</option>
+                    <option value="ASC" <?php echo $orderBy === 'ASC' ? 'selected' : ''; ?>>从低到高</option>
+                </select>
+            </div>
         </div>
 
         <?php if (count($restaurants) > 0): ?>
             <div class="restaurant-grid">
                 <?php foreach (array_values($restaurants) as $index => $restaurant): ?>
                     <?php
-                        $rankClass = $index < 3 ? 'rank-' . ($index + 1) : 'rank-other';
                         $radarData = generateRadarChartData($restaurant);
                         $platforms = json_decode($restaurant['platforms'], true) ?: [];
                     ?>
                     <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="restaurant-card">
-                        <span class="rank-badge <?php echo $rankClass; ?>"><?php echo $index + 1; ?></span>
                         <?php if ($restaurant['image_url']): ?>
                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                         <?php else: ?>
@@ -100,11 +97,11 @@ $campuses = getCampusList();
                                 <span class="score-badge"><?php echo $restaurant['overall_score']; ?></span>
                                 <span class="score-label">综合评分</span>
                             </div>
-                            <div class="score-details">
-                                <div class="score-item">口味 <strong><?php echo $restaurant['taste_score']; ?></strong></div>
-                                <div class="score-item">价格 <strong><?php echo $restaurant['price_score']; ?></strong></div>
-                                <div class="score-item">包装 <strong><?php echo $restaurant['packaging_score']; ?></strong></div>
-                                <div class="score-item">速度 <strong><?php echo $restaurant['speed_score']; ?></strong></div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 12px; color: #666;">
+                                <div>口味: <strong style="color: #005826;"><?php echo $restaurant['taste_score']; ?></strong></div>
+                                <div>价格: <strong style="color: #005826;"><?php echo $restaurant['price_score']; ?></strong></div>
+                                <div>包装: <strong style="color: #005826;"><?php echo $restaurant['packaging_score']; ?></strong></div>
+                                <div>速度: <strong style="color: #005826;"><?php echo $restaurant['speed_score']; ?></strong></div>
                             </div>
                             <div class="radar-chart-container">
                                 <canvas class="radar-chart" data-scores='<?php echo json_encode($radarData['data']); ?>'></canvas>
@@ -121,7 +118,7 @@ $campuses = getCampusList();
         <?php endif; ?>
     </div>
 
-    <footer>
+    <footer class="footer">
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
@@ -129,7 +126,6 @@ $campuses = getCampusList();
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
-                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>

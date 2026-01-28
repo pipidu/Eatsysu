@@ -97,109 +97,105 @@ if (isUserLoggedIn()) {
         }
         .login-header {
             text-align: center;
-            margin-bottom: 40px;
-        }
-        .login-header .logo {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: var(--primary-color);
+            margin-bottom: 32px;
         }
         .login-header h1 {
             font-size: 24px;
-            color: var(--text-main);
+            color: #333;
             font-weight: 600;
             margin-bottom: 8px;
         }
         .login-header p {
-            color: var(--text-secondary);
+            color: #666;
             font-size: 14px;
         }
         .login-tabs {
             display: flex;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 32px;
+            border-bottom: 2px solid #e5e5e5;
+            margin-bottom: 24px;
         }
         .login-tab {
             flex: 1;
-            padding: 16px 0;
+            padding: 12px 0;
             text-align: center;
             cursor: pointer;
-            color: var(--text-secondary);
+            color: #666;
             font-size: 14px;
-            border-bottom: 3px solid transparent;
+            border-bottom: 2px solid transparent;
             margin-bottom: -2px;
             transition: all 0.2s;
             font-weight: 500;
         }
         .login-tab:hover {
-            color: var(--primary-color);
+            color: #005826;
         }
         .login-tab.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
+            color: #005826;
+            border-bottom-color: #005826;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--text-main);
-            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
             font-size: 14px;
         }
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            padding: 10px 14px;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
             font-size: 14px;
             transition: border-color 0.2s;
         }
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: #005826;
         }
         .captcha-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .captcha-input {
             flex: 1;
         }
         .captcha-display {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
-            letter-spacing: 8px;
-            color: var(--primary-color);
-            padding: 8px 16px;
-            background: var(--bg-light);
-            border-radius: 4px;
+            letter-spacing: 6px;
+            color: #005826;
+            padding: 8px 12px;
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
             cursor: pointer;
             user-select: none;
         }
         .btn {
             width: 100%;
             padding: 12px;
-            background: var(--primary-color);
+            background: #005826;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 3px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
         }
         .btn:hover {
-            background: #00441e;
+            background: #00441c;
         }
         .alert {
-            padding: 12px 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            padding: 10px 14px;
+            border-radius: 3px;
+            margin-bottom: 16px;
             font-size: 14px;
-            border-left: 4px solid #c00;
+            border-left: 3px solid #c00;
         }
         .alert-error {
             background: #fef2f2;
@@ -208,30 +204,21 @@ if (isUserLoggedIn()) {
         }
         .back-link {
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
         }
         .back-link a {
-            color: var(--text-secondary);
+            color: #666;
             text-decoration: none;
             font-size: 14px;
         }
         .back-link a:hover {
-            color: var(--primary-color);
-        }
-        :root {
-            --primary-color: #005826;
-            --primary-light: #e8f5e9;
-            --text-main: #333;
-            --text-secondary: #666;
-            --border-color: #e5e5e5;
-            --bg-light: #fafafa;
+            color: #005826;
         }
     </style>
 </head>
 <body>
     <div class="login-wrapper">
         <div class="login-header">
-            <div class="logo">■</div>
             <h1>双鸭山美食</h1>
             <p>登录</p>
         </div>

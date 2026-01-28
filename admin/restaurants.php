@@ -26,7 +26,7 @@ if ($campusFilter) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商家管理 - 双鸭山大学美食分享</title>
+    <title>商家管理 - 双鸭山美食</title>
     <style>
         * {
             margin: 0;
@@ -39,20 +39,19 @@ if ($campusFilter) {
             min-height: 100vh;
         }
         .header {
-            background: white;
-            border-bottom: 1px solid #eee;
-            padding: 16px 40px;
+            background: #005826;
+            color: #fff;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
-            color: #333;
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
         }
         .header .back-link {
-            color: #005826;
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             font-size: 13px;
         }
@@ -62,19 +61,19 @@ if ($campusFilter) {
         .container {
             max-width: 1200px;
             margin: 32px auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
         .filters {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
             align-items: center;
         }
         .filters select {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
             font-size: 13px;
             cursor: pointer;
         }
@@ -83,9 +82,8 @@ if ($campusFilter) {
             border-color: #005826;
         }
         .table-container {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: 4px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
             overflow: hidden;
         }
         table {
@@ -93,22 +91,22 @@ if ($campusFilter) {
             border-collapse: collapse;
         }
         th, td {
-            padding: 12px 14px;
+            padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e5e5e5;
         }
         th {
-            background: #f5f5f5;
+            background: #f8f8f8;
             color: #666;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 13px;
         }
         td {
             color: #333;
-            font-size: 13px;
+            font-size: 14px;
         }
         tr:hover {
-            background: #f9f9f9;
+            background: #fafafa;
         }
         .restaurant-info {
             display: flex;
@@ -118,90 +116,75 @@ if ($campusFilter) {
         .restaurant-image {
             width: 48px;
             height: 48px;
-            border-radius: 4px;
+            border-radius: 3px;
             object-fit: cover;
             background: #f5f5f5;
         }
         .restaurant-name {
             font-weight: 500;
-            font-size: 13px;
+            font-size: 14px;
         }
         .score-badge {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-weight: 600;
             font-size: 12px;
-        }
-        .score-high {
-            background: #f0f9f0;
-            color: #005826;
-        }
-        .score-medium {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .score-low {
-            background: #fef2f2;
-            color: #c00;
+            background: #005826;
+            color: #fff;
         }
         .actions-cell {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         .btn-sm {
-            padding: 4px 10px;
+            padding: 4px 12px;
             font-size: 12px;
             text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.2s;
-            display: inline-block;
+            border-radius: 3px;
         }
         .btn-edit {
-            background: #f5f5f5;
+            background: #fff;
             color: #005826;
-            border: 1px solid #005826;
+            border: 1px solid #e5e5e5;
         }
         .btn-edit:hover {
             background: #e8f5e9;
             border-color: #005826;
         }
         .btn-view {
-            background: #f5f5f5;
+            background: #fff;
             color: #005826;
-            border: 1px solid #005826;
+            border: 1px solid #e5e5e5;
         }
         .btn-view:hover {
             background: #e8f5e9;
             border-color: #005826;
         }
         .btn-delete {
-            background: #fef2f2;
-            color: #c00;
-            border: 1px solid #fee2e2;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #e5e5e5;
         }
         .btn-delete:hover {
-            background: #fecaca;
-            border-color: #fecaca;
+            background: #fef2f2;
+            border-color: #dc3545;
         }
         .btn-add {
-            padding: 6px 14px;
+            padding: 8px 16px;
             background: #005826;
             color: white;
             text-decoration: none;
-            border: 1px solid #005826;
-            border-radius: 4px;
+            border: none;
+            border-radius: 3px;
             font-size: 13px;
             font-weight: 500;
-            transition: all 0.2s;
-            display: inline-block;
         }
         .btn-add:hover {
-            background: #00441e;
-            border-color: #00441e;
+            background: #00441c;
         }
         .empty-state {
-            padding: 50px 20px;
+            padding: 60px 20px;
             text-align: center;
             color: #999;
         }
@@ -214,7 +197,7 @@ if ($campusFilter) {
             font-size: 11px;
             padding: 2px 8px;
             background: #f5f5f5;
-            border-radius: 4px;
+            border-radius: 3px;
             color: #666;
         }
     </style>
@@ -222,7 +205,7 @@ if ($campusFilter) {
 <body>
     <div class="header">
         <h1>商家管理</h1>
-        <a href="/admin/dashboard.php" class="back-link">← 返回控制台</a>
+        <a href="/admin/dashboard.php" class="back-link">返回控制台</a>
     </div>
 
     <div class="container">
@@ -241,7 +224,7 @@ if ($campusFilter) {
                 <option value="ASC" <?php echo $order === 'ASC' ? 'selected' : ''; ?>>评分从低到高</option>
             </select>
 
-            <a href="/admin/add-restaurant.php" class="btn-add">+ 添加商家</a>
+            <a href="/admin/add-restaurant.php" class="btn-add">添加商家</a>
         </div>
 
         <div class="table-container">
@@ -262,8 +245,6 @@ if ($campusFilter) {
                         <?php foreach ($restaurants as $restaurant): ?>
                             <?php
                                 $platforms = json_decode($restaurant['platforms'], true) ?: [];
-                                $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' :
-                                             ($restaurant['overall_score'] >= 6 ? 'score-medium' : 'score-low');
                             ?>
                             <tr>
                                 <td>
@@ -271,7 +252,7 @@ if ($campusFilter) {
                                         <?php if ($restaurant['image_url']): ?>
                                             <img src="<?php echo h($restaurant['image_url']); ?>" alt="<?php echo h($restaurant['name']); ?>" class="restaurant-image">
                                         <?php else: ?>
-                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #ddd;">+</div>
+                                            <div class="restaurant-image" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5; color: #ccc; font-size: 20px;">+</div>
                                         <?php endif; ?>
                                         <span class="restaurant-name"><?php echo h($restaurant['name']); ?></span>
                                     </div>
@@ -287,7 +268,7 @@ if ($campusFilter) {
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="score-badge <?php echo $scoreClass; ?>">
+                                    <span class="score-badge">
                                         <?php echo $restaurant['overall_score']; ?>
                                     </span>
                                 </td>
@@ -308,9 +289,8 @@ if ($campusFilter) {
                 </table>
             <?php else: ?>
                 <div class="empty-state">
-                    <div style="font-size: 40px;">🍽️</div>
                     <p>没有找到商家</p>
-                    <a href="/admin/add-restaurant.php" class="btn-add" style="margin-top: 16px;">添加第一个商家</a>
+                    <a href="/admin/add-restaurant.php" class="btn-add" style="margin-top: 16px; display: inline-block;">添加第一个商家</a>
                 </div>
             <?php endif; ?>
         </div>

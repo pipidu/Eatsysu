@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $currentUser = getCurrentUser();
-        
+
         $data = [
             'name' => $_POST['name'],
             'campus' => $_POST['campus'],
@@ -80,7 +80,6 @@ $currentUser = getCurrentUser();
     <header class="header">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">■</span>
                 <h1>双鸭山美食</h1>
             </a>
             <nav class="nav-links">
@@ -95,117 +94,113 @@ $currentUser = getCurrentUser();
     </header>
 
     <div class="container">
-        <div class="form-container">
-            <div class="form-header">
-                <h1>上传商家</h1>
-                <p>欢迎，<?php echo h($currentUser['username']); ?></p>
+        <h2 class="section-title">上传商家</h2>
+        <p class="section-subtitle">欢迎，<?php echo h($currentUser['username']); ?></p>
+
+        <?php if ($success): ?>
+            <div class="alert alert-success">
+                商家上传成功
+                <br><br>
+                <a href="/" style="color: #005826;">返回首页</a>
             </div>
+        <?php endif; ?>
 
-            <?php if ($success): ?>
-                <div class="alert alert-success">
-                    商家上传成功
-                    <br><br>
-                    <a href="/" style="color: var(--primary-color);">返回首页</a>
+        <?php if ($error): ?>
+            <div class="alert alert-error">
+                <?php echo h($error); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!$success): ?>
+            <form method="POST" action="" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">商家名称 *</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
-            <?php endif; ?>
 
-            <?php if ($error): ?>
-                <div class="alert alert-error">
-                    <?php echo h($error); ?>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="campus">校区 *</label>
+                        <select id="campus" name="campus" class="form-control" required>
+                            <?php foreach (getCampusList() as $campus): ?>
+                                <option value="<?php echo h($campus); ?>"><?php echo h($campus); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">联系电话</label>
+                        <input type="text" id="phone" name="phone" class="form-control" placeholder="如：13800000000">
+                    </div>
                 </div>
-            <?php endif; ?>
 
-            <?php if (!$success): ?>
-                <form method="POST" action="" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="location">位置</label>
+                    <input type="text" id="location" name="location" class="form-control" placeholder="如：南校区东区食堂2楼">
+                </div>
+
+                <div class="form-group">
+                    <label>推荐点单平台</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="dine_in" id="dine_in">
+                            <span>堂食</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="platform_jd" id="platform_jd">
+                            <span>京东</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="platform_meituan" id="platform_meituan">
+                            <span>美团</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="platform_taobao" id="platform_taobao">
+                            <span>淘宝</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="name">商家名称 <span class="required">*</span></label>
-                        <input type="text" id="name" name="name" required>
+                        <label for="taste_score">口味评分 * (0-10)</label>
+                        <input type="number" id="taste_score" name="taste_score" class="form-control" min="0" max="10" step="0.1" required>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="campus">校区 <span class="required">*</span></label>
-                            <select id="campus" name="campus" required>
-                                <?php foreach (getCampusList() as $campus): ?>
-                                    <option value="<?php echo h($campus); ?>"><?php echo h($campus); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">联系电话</label>
-                            <input type="text" id="phone" name="phone" placeholder="如：13800000000">
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <label for="location">位置</label>
-                        <input type="text" id="location" name="location" placeholder="如：南校区东区食堂2楼">
+                        <label for="price_score">价格评分 * (0-10)</label>
+                        <input type="number" id="price_score" name="price_score" class="form-control" min="0" max="10" step="0.1" required>
                     </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group">
-                        <label>推荐点单平台</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="dine_in" id="dine_in">
-                                <span>堂食</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="platform_jd" id="platform_jd">
-                                <span>京东</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="platform_meituan" id="platform_meituan">
-                                <span>美团</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="platform_taobao" id="platform_taobao">
-                                <span>淘宝</span>
-                            </label>
-                        </div>
+                        <label for="packaging_score">包装评分 * (0-10)</label>
+                        <input type="number" id="packaging_score" name="packaging_score" class="form-control" min="0" max="10" step="0.1" required>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="taste_score">口味评分 <span class="required">*</span> (0-10)</label>
-                            <input type="number" id="taste_score" name="taste_score" min="0" max="10" step="0.1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="price_score">价格评分 <span class="required">*</span> (0-10)</label>
-                            <input type="number" id="price_score" name="price_score" min="0" max="10" step="0.1" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="packaging_score">包装评分 <span class="required">*</span> (0-10)</label>
-                            <input type="number" id="packaging_score" name="packaging_score" min="0" max="10" step="0.1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="speed_score">速度评分 <span class="required">*</span> (0-10)</label>
-                            <input type="number" id="speed_score" name="speed_score" min="0" max="10" step="0.1" required>
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <label for="image">图片上传</label>
-                        <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp">
+                        <label for="speed_score">速度评分 * (0-10)</label>
+                        <input type="number" id="speed_score" name="speed_score" class="form-control" min="0" max="10" step="0.1" required>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="description">介绍</label>
-                        <textarea id="description" name="description" placeholder="请简要介绍这家商家..."></textarea>
-                    </div>
+                <div class="form-group">
+                    <label for="image">图片上传</label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp">
+                </div>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">提交</button>
-                        <a href="/" class="btn btn-secondary">取消</a>
-                    </div>
-                </form>
-            <?php endif; ?>
-        </div>
+                <div class="form-group">
+                    <label for="description">介绍</label>
+                    <textarea id="description" name="description" class="form-control" placeholder="请简要介绍这家商家..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button type="submit" class="btn">提交</button>
+                    <a href="/" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        <?php endif; ?>
     </div>
 
-    <footer>
+    <footer class="footer">
         <?php if (defined('SITE_ICP_NUMBER') && SITE_ICP_NUMBER): ?>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
                 <?php echo h(SITE_ICP_NUMBER); ?>
@@ -213,7 +208,6 @@ $currentUser = getCurrentUser();
         <?php endif; ?>
         <?php if (defined('SITE_PSB_NUMBER') && SITE_PSB_NUMBER): ?>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" rel="noopener">
-                <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
                 <?php echo h(SITE_PSB_NUMBER); ?>
             </a>
         <?php endif; ?>

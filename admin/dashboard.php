@@ -31,72 +31,68 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
             min-height: 100vh;
         }
         .header {
-            background: #fff;
-            border-bottom: 2px solid var(--primary-color);
-            padding: 16px 40px;
+            background: #005826;
+            color: #fff;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .header h1 {
-            color: var(--primary-color);
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
         }
         .header .user-info {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         .header .user-info span {
-            color: var(--text-secondary);
             font-size: 14px;
+            opacity: 0.9;
         }
         .header .btn-logout {
-            padding: 8px 20px;
-            background: var(--primary-color);
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             text-decoration: none;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            font-size: 13px;
+            transition: all 0.2s;
         }
         .header .btn-logout:hover {
-            background: #00441e;
+            background: rgba(255, 255, 255, 0.3);
         }
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 24px;
         }
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
         .stat-card {
             background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 28px;
+            border: 1px solid #e5e5e5;
+            padding: 24px;
         }
         .stat-card .label {
-            color: var(--text-secondary);
+            color: #666;
             font-size: 14px;
-            margin-bottom: 12px;
-            font-weight: 600;
+            margin-bottom: 8px;
         }
         .stat-card .value {
-            color: var(--text-main);
-            font-size: 40px;
+            color: #005826;
+            font-size: 32px;
             font-weight: 600;
         }
         .section-title {
-            color: var(--text-main);
-            font-size: 20px;
+            color: #333;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 16px;
         }
@@ -107,35 +103,34 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
             flex-wrap: wrap;
         }
         .btn {
-            padding: 10px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s;
         }
         .btn-primary {
-            background: var(--primary-color);
+            background: #005826;
             color: white;
         }
         .btn-primary:hover {
-            background: #00441e;
+            background: #00441c;
         }
         .btn-secondary {
             background: #fff;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
+            color: #333;
+            border: 1px solid #e5e5e5;
         }
         .btn-secondary:hover {
-            background: var(--bg-light);
-            border-color: var(--primary-color);
+            background: #fafafa;
+            border-color: #005826;
         }
         .table-container {
             background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1px solid #e5e5e5;
             overflow: hidden;
         }
         table {
@@ -143,41 +138,31 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
             border-collapse: collapse;
         }
         th, td {
-            padding: 14px 16px;
+            padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e5e5e5;
         }
         th {
-            background: var(--bg-light);
-            color: var(--text-secondary);
-            font-weight: 600;
+            background: #f8f8f8;
+            color: #666;
+            font-weight: 500;
             font-size: 13px;
         }
         td {
-            color: var(--text-main);
+            color: #333;
             font-size: 14px;
         }
         tr:hover {
-            background: var(--bg-light);
+            background: #fafafa;
         }
         .score-badge {
             display: inline-block;
             padding: 4px 10px;
-            border-radius: 4px;
+            border-radius: 3px;
             font-weight: 600;
             font-size: 12px;
-        }
-        .score-high {
-            background: var(--primary-light);
-            color: var(--primary-color);
-        }
-        .score-medium {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .score-low {
-            background: #fef2f2;
-            color: #c00;
+            background: #005826;
+            color: #fff;
         }
         .actions-cell {
             display: flex;
@@ -187,47 +172,44 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
             padding: 4px 12px;
             font-size: 12px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 3px;
         }
         .btn-edit {
-            background: var(--bg-light);
-            color: var(--primary-color);
-            border: 1px solid var(--border-color);
+            background: #fff;
+            color: #005826;
+            border: 1px solid #e5e5e5;
         }
         .btn-edit:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-color);
+            background: #e8f5e9;
+            border-color: #005826;
         }
         .btn-view {
-            background: var(--bg-light);
-            color: var(--primary-color);
-            border: 1px solid var(--border-color);
+            background: #fff;
+            color: #005826;
+            border: 1px solid #e5e5e5;
         }
         .btn-view:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-color);
+            background: #e8f5e9;
+            border-color: #005826;
         }
         .btn-delete {
-            background: #fef2f2;
-            color: #c00;
-            border: 1px solid #fee2e2;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #e5e5e5;
         }
         .btn-delete:hover {
-            background: #fecaca;
-            border-color: #fecaca;
+            background: #fef2f2;
+            border-color: #dc3545;
         }
         .empty-state {
             padding: 60px 20px;
             text-align: center;
-            color: var(--text-secondary);
+            color: #999;
         }
-        :root {
-            --primary-color: #005826;
-            --primary-light: #e8f5e9;
-            --text-main: #333;
-            --text-secondary: #666;
-            --border-color: #e5e5e5;
-            --bg-light: #fafafa;
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -280,28 +262,24 @@ $recentRestaurants = $pdo->query("SELECT r.*, u.username as created_by_user FROM
                     </thead>
                     <tbody>
                         <?php foreach ($recentRestaurants as $restaurant): ?>
-                            <?php
-                                $scoreClass = $restaurant['overall_score'] >= 8 ? 'score-high' :
-                                                ($restaurant['overall_score'] >= 6 ? 'score-medium' : 'score-low');
-                                ?>
-                                <tr>
-                                    <td><?php echo h($restaurant['name']); ?></td>
-                                    <td><?php echo h($restaurant['campus']); ?></td>
-                                    <td>
-                                        <span class="score-badge <?php echo $scoreClass; ?>">
-                                            <?php echo $restaurant['overall_score']; ?>
-                                        </span>
-                                    </td>
-                                    <td><?php echo h($restaurant['created_by_user'] ?? '管理员'); ?></td>
-                                    <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
-                                    <td>
-                                        <div class="actions-cell">
-                                            <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-view" target="_blank">查看</a>
-                                            <a href="/admin/edit-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
-                                            <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-delete" onclick="return confirm('确定要删除这个商家吗？');">删除</a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td><?php echo h($restaurant['name']); ?></td>
+                                <td><?php echo h($restaurant['campus']); ?></td>
+                                <td>
+                                    <span class="score-badge">
+                                        <?php echo $restaurant['overall_score']; ?>
+                                    </span>
+                                </td>
+                                <td><?php echo h($restaurant['created_by_user'] ?? '管理员'); ?></td>
+                                <td><?php echo date('Y-m-d', strtotime($restaurant['created_at'])); ?></td>
+                                <td>
+                                    <div class="actions-cell">
+                                        <a href="/restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-view" target="_blank">查看</a>
+                                        <a href="/admin/edit-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-edit">编辑</a>
+                                        <a href="/admin/delete-restaurant.php?id=<?php echo $restaurant['id']; ?>" class="btn-sm btn-delete" onclick="return confirm('确定要删除这个商家吗？');">删除</a>
+                                    </div>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
