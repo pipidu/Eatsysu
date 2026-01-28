@@ -653,14 +653,31 @@ tbody tr:hover {
     .nav-container {
         flex-direction: column;
         height: auto;
-        padding: 12px 20px;
+        padding: 12px 15px;
+        gap: 10px;
+    }
+
+    .logo h1 {
+        font-size: 16px;
     }
 
     .nav-links {
-        margin-top: 12px;
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
+        width: 100%;
+        gap: 12px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+    }
+
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+        padding: 6px 0;
+        white-space: nowrap;
     }
 
     .hero h1 {

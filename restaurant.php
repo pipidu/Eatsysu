@@ -82,16 +82,28 @@ if ($currentUser) {
                     <div style="font-size: 14px; color: #666; margin-bottom: 8px;">推荐点单方式</div>
                     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         <?php if ($platforms['dine_in'] ?? false): ?>
-                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px;">堂食</span>
+                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                <img src="https://doges3.img.shygo.cn/2026/01/28/c002587dabac4d25b6575f451e93ed60.png/720x1080" alt="" style="width: 18px; height: 18px;">
+                                堂食
+                            </span>
                         <?php endif; ?>
                         <?php if ($platforms['jd'] ?? false): ?>
-                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px;">京东</span>
+                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                <img src="https://doges3.img.shygo.cn/2026/01/06/d2d2439d19cbb03207b53ace32279b01.jpg/720x1080" alt="" style="width: 18px; height: 18px;">
+                                京东
+                            </span>
                         <?php endif; ?>
                         <?php if ($platforms['meituan'] ?? false): ?>
-                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px;">美团</span>
+                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                <img src="https://doges3.img.shygo.cn/2026/01/06/71b72d9229c9f9d0a843fe527d20540b.png/720x1080" alt="" style="width: 18px; height: 18px;">
+                                美团
+                            </span>
                         <?php endif; ?>
                         <?php if ($platforms['taobao'] ?? false): ?>
-                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px;">淘宝</span>
+                            <span style="background: #e8f5e9; color: #005826; padding: 6px 12px; font-size: 13px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                <img src="https://doges3.img.shygo.cn/2026/01/06/ad8095ff1dfa687f275fbc0459dbdf22.jpg/720x1080" alt="" style="width: 18px; height: 18px;">
+                                淘宝
+                            </span>
                         <?php endif; ?>
                     </div>
                 </div>

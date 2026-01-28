@@ -75,6 +75,12 @@ function initDetailRadarChart() {
     }
 }
 
+// 初始化所有雷达图（用于发现页刷新后）
+function initRadarCharts() {
+    initCardRadarCharts();
+    initDetailRadarChart();
+}
+
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
     initCardRadarCharts();
