@@ -97,7 +97,7 @@ $randomRestaurants = getRandomRestaurants(12);
             loading.style.display = 'block';
             grid.style.opacity = '0.5';
 
-            fetch('/api/random-restaurants.php')
+            fetch('/api/random-restaurants.php?t=' + Date.now())
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('网络响应异常: ' + response.status);
@@ -109,16 +109,7 @@ $randomRestaurants = getRandomRestaurants(12);
                         grid.innerHTML = data.html;
                         loading.style.display = 'none';
                         grid.style.opacity = '1';
-                        // 使用 setTimeout 确保 DOM 更新后再初始化图表
-                        setTimeout(function() {
-                            try {
-                                if (typeof initRadarCharts === 'function') {
-                                    initRadarCharts();
-                                }
-                            } catch (e) {
-                                console.error('初始化雷达图失败:', e);
-                            }
-                        }, 100);
+                        console.log('刷新成功，返回的HTML长度:', data.html.length);
                     } else {
                         throw new Error(data.error || '未知错误');
                     }

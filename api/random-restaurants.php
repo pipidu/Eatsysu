@@ -13,6 +13,10 @@ if (!file_exists($installLockFile)) {
 require_once __DIR__ . '/../includes/functions.php';
 
 header('Content-Type: application/json');
+// 禁用缓存
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
 try {
     // 获取12个随机商家
